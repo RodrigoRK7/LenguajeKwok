@@ -1,0 +1,37 @@
+program media;
+var float promedio, total, calificaciones; int hola, prueba[5][8];
+function int promedio(float total, float calificaciones){
+  promedio = calificaciones / total;
+}
+function void extra(){
+  casa = casa + 5;
+  while(contador == 4){
+    read contador;
+  }
+}
+main{
+  read total , calificaciones;
+  promedio(total, calificaciones)
+  print("promedio");
+  if(promedio < 8){
+    print(reprobados);
+    A= B[i+j]*factorial(A+2);
+    while(casa == 8){
+      i = i + 1;
+  }
+  }else{
+    print("aprobado");
+  }
+  
+  for(i = 1; i <= 7; i = i + 1){
+      max(lista);
+      min(lista);
+      sum(lista);
+  }
+  plot(promedio);
+  binomial(x);
+  normal(x);
+  uniforme(x);
+  poisson(x);
+  return 0;
+}
