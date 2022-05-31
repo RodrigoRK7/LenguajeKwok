@@ -2,13 +2,10 @@ program test1;
 var float soyvariable;
 function void media(){
  int acum;
-    
 }
 main{
     read nombre;
     casa = ((A + B) * C + D * E * F + K / H * J) + G * L + H + J > (A - C * D) / F;
-    if(pelos == 9){
-        hola = 4;
-    }
-    read casa, pino;
+    read casa, pino, PLAYA;
+    print (9, 7, 9, 8, "8*8");
 }

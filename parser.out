@@ -99,45 +99,46 @@ Rule 93    cuadruploIF -> empty
 Rule 94    writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
 Rule 95    writingg -> exp
 Rule 96    writingg -> exp COLON writingg
-Rule 97    writingg -> CTESTRING
-Rule 98    writingg -> CTESTRING COLON writingg
-Rule 99    reading -> READ multivariables SEMICOLON
-Rule 100   multivariables -> variable
-Rule 101   multivariables -> variable COLON multivariables
-Rule 102   while_loop -> WHILE PARENOPEN exp PARENCLOSE body
-Rule 103   for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-Rule 104   for_assignment -> variable EQUAL exp
-Rule 105   return -> RETURN exp SEMICOLON
-Rule 106   max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 107   min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 108   sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 109   param_dist -> variable
-Rule 110   param_dist -> variable COLON param_dist
-Rule 111   binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 112   poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 113   uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 114   normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 115   empty -> <empty>
+Rule 97    writingg -> auxString
+Rule 98    writingg -> auxString COLON writingg
+Rule 99    auxString -> CTESTRING
+Rule 100   reading -> READ multivariables SEMICOLON
+Rule 101   multivariables -> variable
+Rule 102   multivariables -> variable COLON multivariables
+Rule 103   while_loop -> WHILE PARENOPEN exp PARENCLOSE body
+Rule 104   for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+Rule 105   for_assignment -> variable EQUAL exp
+Rule 106   return -> RETURN exp SEMICOLON
+Rule 107   max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 108   min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 109   sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 110   param_dist -> variable
+Rule 111   param_dist -> variable COLON param_dist
+Rule 112   binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 113   poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 114   uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 115   normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 116   empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 67
-BINOMIAL             : 111
+BINOMIAL             : 112
 BRACECLOSE           : 12 13 13 15 16 16 50 51 51 53 54 54 89 90 90
 BRACEOPEN            : 12 13 13 15 16 16 50 51 51 53 54 54 89 90 90
 BRACKETCLOSE         : 25
 BRACKETOPEN          : 25
 CHAR                 : 24
-COLON                : 11 12 13 20 49 50 51 58 96 98 101 110
+COLON                : 11 12 13 20 49 50 51 58 96 98 102 111
 CTEINT               : 12 13 13 15 16 16 50 51 51 53 54 54 84
-CTESTRING            : 97 98
+CTESTRING            : 99
 CTFLOAT              : 85
 DIFFERENT            : 65
 DIVIDE               : 80
 ELSE                 : 92
-EQUAL                : 55 104
+EQUAL                : 55 105
 FLOAT                : 23
-FOR                  : 103
+FOR                  : 104
 FUNCTION             : 17 18
 GREATHEREQUAL        : 63
 GREATHERTHAN         : 61
@@ -147,28 +148,28 @@ INT                  : 22
 LESSEQUAL            : 64
 LESSTHAN             : 62
 MAIN                 : 7
-MAX                  : 106
-MIN                  : 107
+MAX                  : 107
+MIN                  : 108
 MINUS                : 72
 MULTIPLY             : 79
-NORMAL               : 114
+NORMAL               : 115
 OR                   : 68
-PARENCLOSE           : 17 18 56 60 82 91 92 94 102 103 106 107 108 111 112 113 114
-PARENOPEN            : 17 18 56 60 82 91 92 94 102 103 106 107 108 111 112 113 114
+PARENCLOSE           : 17 18 56 60 82 91 92 94 103 104 107 108 109 112 113 114 115
+PARENOPEN            : 17 18 56 60 82 91 92 94 103 104 107 108 109 112 113 114 115
 PLOT                 : 60
 PLUS                 : 71
-POISSON              : 112
+POISSON              : 113
 PRINT                : 94
 PROGRAM              : 1 2 3 4
-READ                 : 99
-RETURN               : 105
+READ                 : 100
+RETURN               : 106
 SAME                 : 66
-SEMICOLON            : 1 2 3 4 9 10 47 48 55 60 94 99 103 103 105 106 107 108 111 112 113 114
-SUM                  : 108
-UNIFORME             : 113
+SEMICOLON            : 1 2 3 4 9 10 47 48 55 60 94 100 104 104 106 107 108 109 112 113 114 115
+SUM                  : 109
+UNIFORME             : 114
 VAR                  : 8
 VOID                 : 18
-WHILE                : 102
+WHILE                : 103
 error                : 
 
 Nonterminals, with rules where they appear
@@ -178,8 +179,9 @@ appendMINUS          : 72
 appendMULTIPLY       : 79
 appendPLUS           : 71
 assignment           : 30
+auxString            : 97 98
 binomial             : 45
-body                 : 7 17 18 91 92 92 102 103
+body                 : 7 17 18 91 92 92 103 104
 bodyy                : 25 27
 call_func            : 34 87
 call_funcc           : 56 58
@@ -190,9 +192,9 @@ dec_mvar             : 47 48 49 50 51
 dec_variables        : 29
 dec_variabless       : 46 47
 empty                : 21 28 59 73 74 75 76 77 81 93
-exp                  : 55 57 58 60 61 61 62 62 63 63 64 64 65 65 66 66 67 67 68 68 82 89 90 90 91 92 95 96 102 103 104 105 106 107 108
+exp                  : 55 57 58 60 61 61 62 62 63 63 64 64 65 65 66 66 67 67 68 68 82 89 90 90 91 92 95 96 103 104 105 106 107 108 109
 f                    : 78
-for_assignment       : 103 103
+for_assignment       : 104 104
 for_loop             : 38
 graph                : 35
 m_exp                : 69 71 72
@@ -201,11 +203,11 @@ main_body            : 1 2 3 4
 max                  : 39
 min                  : 40
 multiple_funcs       : 1 3 6
-multivariables       : 99 101
+multivariables       : 100 102
 mvar                 : 9 10 11 12 13
 normal               : 42
 param                : 17 18 20
-param_dist           : 110 111 112 113 114
+param_dist           : 111 112 113 114 115
 poisson              : 44
 reading              : 33
 return               : 36
@@ -216,7 +218,7 @@ t                    : 70 79 80
 termino              : 78
 type                 : 9 10 17 19 20 47 48
 uniforme             : 43
-variable             : 19 20 55 86 100 101 104 109 110
+variable             : 19 20 55 86 101 102 105 110 111
 vars                 : 1 2
 varss                : 8 9
 while_loop           : 37
@@ -477,25 +479,25 @@ state 22
     (43) statement -> . uniforme
     (44) statement -> . poisson
     (45) statement -> . binomial
-    (115) empty -> .
+    (116) empty -> .
     (46) dec_variables -> . dec_variabless
     (55) assignment -> . variable EQUAL exp SEMICOLON
     (91) condition -> . IF PARENOPEN exp PARENCLOSE body
     (92) condition -> . IF PARENOPEN exp PARENCLOSE body ELSE body
     (94) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
-    (99) reading -> . READ multivariables SEMICOLON
+    (100) reading -> . READ multivariables SEMICOLON
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
     (60) graph -> . PLOT PARENOPEN exp PARENCLOSE SEMICOLON
-    (105) return -> . RETURN exp SEMICOLON
-    (102) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
-    (103) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (106) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
-    (107) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
-    (108) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
-    (114) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (113) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (112) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (111) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (106) return -> . RETURN exp SEMICOLON
+    (103) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
+    (104) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (107) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
+    (109) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
+    (115) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (114) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
     (47) dec_variabless -> . type dec_mvar SEMICOLON dec_variabless
     (48) dec_variabless -> . type dec_mvar SEMICOLON
     (88) variable -> . ID
@@ -505,7 +507,7 @@ state 22
     (23) type -> . FLOAT
     (24) type -> . CHAR
 
-    BRACKETCLOSE    reduce using rule 115 (empty -> .)
+    BRACKETCLOSE    reduce using rule 116 (empty -> .)
     IF              shift and go to state 50
     PRINT           shift and go to state 51
     READ            shift and go to state 52
@@ -623,25 +625,25 @@ state 29
     (43) statement -> . uniforme
     (44) statement -> . poisson
     (45) statement -> . binomial
-    (115) empty -> .
+    (116) empty -> .
     (46) dec_variables -> . dec_variabless
     (55) assignment -> . variable EQUAL exp SEMICOLON
     (91) condition -> . IF PARENOPEN exp PARENCLOSE body
     (92) condition -> . IF PARENOPEN exp PARENCLOSE body ELSE body
     (94) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
-    (99) reading -> . READ multivariables SEMICOLON
+    (100) reading -> . READ multivariables SEMICOLON
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
     (60) graph -> . PLOT PARENOPEN exp PARENCLOSE SEMICOLON
-    (105) return -> . RETURN exp SEMICOLON
-    (102) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
-    (103) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (106) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
-    (107) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
-    (108) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
-    (114) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (113) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (112) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (111) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (106) return -> . RETURN exp SEMICOLON
+    (103) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
+    (104) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (107) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
+    (109) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
+    (115) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (114) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
     (47) dec_variabless -> . type dec_mvar SEMICOLON dec_variabless
     (48) dec_variabless -> . type dec_mvar SEMICOLON
     (88) variable -> . ID
@@ -672,7 +674,7 @@ state 29
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
 
-  ! BRACKETCLOSE    [ reduce using rule 115 (empty -> .) ]
+  ! BRACKETCLOSE    [ reduce using rule 116 (empty -> .) ]
 
     statement                      shift and go to state 29
     bodyy                          shift and go to state 72
@@ -1179,9 +1181,9 @@ state 51
 
 state 52
 
-    (99) reading -> READ . multivariables SEMICOLON
-    (100) multivariables -> . variable
-    (101) multivariables -> . variable COLON multivariables
+    (100) reading -> READ . multivariables SEMICOLON
+    (101) multivariables -> . variable
+    (102) multivariables -> . variable COLON multivariables
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -1212,7 +1214,7 @@ state 54
 
 state 55
 
-    (105) return -> RETURN . exp SEMICOLON
+    (106) return -> RETURN . exp SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -1249,63 +1251,63 @@ state 55
 
 state 56
 
-    (102) while_loop -> WHILE . PARENOPEN exp PARENCLOSE body
+    (103) while_loop -> WHILE . PARENOPEN exp PARENCLOSE body
 
     PARENOPEN       shift and go to state 92
 
 
 state 57
 
-    (103) for_loop -> FOR . PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (104) for_loop -> FOR . PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
 
     PARENOPEN       shift and go to state 93
 
 
 state 58
 
-    (106) max -> MAX . PARENOPEN exp PARENCLOSE SEMICOLON
+    (107) max -> MAX . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 94
 
 
 state 59
 
-    (107) min -> MIN . PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) min -> MIN . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 95
 
 
 state 60
 
-    (108) sum -> SUM . PARENOPEN exp PARENCLOSE SEMICOLON
+    (109) sum -> SUM . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 96
 
 
 state 61
 
-    (114) normal -> NORMAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (115) normal -> NORMAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 97
 
 
 state 62
 
-    (113) uniforme -> UNIFORME . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (114) uniforme -> UNIFORME . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 98
 
 
 state 63
 
-    (112) poisson -> POISSON . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) poisson -> POISSON . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 99
 
 
 state 64
 
-    (111) binomial -> BINOMIAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) binomial -> BINOMIAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 100
 
@@ -1498,8 +1500,8 @@ state 75
     (94) writing -> PRINT PARENOPEN . writingg PARENCLOSE SEMICOLON
     (95) writingg -> . exp
     (96) writingg -> . exp COLON writingg
-    (97) writingg -> . CTESTRING
-    (98) writingg -> . CTESTRING COLON writingg
+    (97) writingg -> . auxString
+    (98) writingg -> . auxString COLON writingg
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -1509,6 +1511,7 @@ state 75
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
+    (99) auxString -> . CTESTRING
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -1522,7 +1525,7 @@ state 75
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    CTESTRING       shift and go to state 112
+    CTESTRING       shift and go to state 113
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
@@ -1530,6 +1533,7 @@ state 75
 
     writingg                       shift and go to state 110
     exp                            shift and go to state 111
+    auxString                      shift and go to state 112
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -1538,18 +1542,18 @@ state 75
 
 state 76
 
-    (99) reading -> READ multivariables . SEMICOLON
+    (100) reading -> READ multivariables . SEMICOLON
 
-    SEMICOLON       shift and go to state 113
+    SEMICOLON       shift and go to state 114
 
 
 state 77
 
-    (100) multivariables -> variable .
-    (101) multivariables -> variable . COLON multivariables
+    (101) multivariables -> variable .
+    (102) multivariables -> variable . COLON multivariables
 
-    SEMICOLON       reduce using rule 100 (multivariables -> variable .)
-    COLON           shift and go to state 114
+    SEMICOLON       reduce using rule 101 (multivariables -> variable .)
+    COLON           shift and go to state 115
 
 
 state 78
@@ -1580,7 +1584,7 @@ state 79
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
-    (115) empty -> .
+    (116) empty -> .
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -1594,15 +1598,15 @@ state 79
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    PARENCLOSE      reduce using rule 115 (empty -> .)
+    PARENCLOSE      reduce using rule 116 (empty -> .)
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    call_funcc                     shift and go to state 115
-    exp                            shift and go to state 116
-    empty                          shift and go to state 117
+    call_funcc                     shift and go to state 116
+    exp                            shift and go to state 117
+    empty                          shift and go to state 118
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -1640,7 +1644,7 @@ state 80
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 118
+    exp                            shift and go to state 119
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -1677,7 +1681,7 @@ state 81
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 119
+    exp                            shift and go to state 120
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -1686,7 +1690,7 @@ state 81
 
 state 82
 
-    (105) return -> RETURN exp . SEMICOLON
+    (106) return -> RETURN exp . SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -1696,15 +1700,15 @@ state 82
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    SEMICOLON       shift and go to state 120
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    SEMICOLON       shift and go to state 121
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 83
@@ -1731,25 +1735,25 @@ state 84
     (71) m_expp -> . PLUS appendPLUS m_exp
     (72) m_expp -> . MINUS appendMINUS m_exp
     (73) m_expp -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    PLUS            shift and go to state 130
-    MINUS           shift and go to state 131
-    SEMICOLON       reduce using rule 115 (empty -> .)
-    GREATHERTHAN    reduce using rule 115 (empty -> .)
-    LESSTHAN        reduce using rule 115 (empty -> .)
-    GREATHEREQUAL   reduce using rule 115 (empty -> .)
-    LESSEQUAL       reduce using rule 115 (empty -> .)
-    DIFFERENT       reduce using rule 115 (empty -> .)
-    SAME            reduce using rule 115 (empty -> .)
-    AND             reduce using rule 115 (empty -> .)
-    OR              reduce using rule 115 (empty -> .)
-    PARENCLOSE      reduce using rule 115 (empty -> .)
-    COLON           reduce using rule 115 (empty -> .)
-    BRACECLOSE      reduce using rule 115 (empty -> .)
+    PLUS            shift and go to state 131
+    MINUS           shift and go to state 132
+    SEMICOLON       reduce using rule 116 (empty -> .)
+    GREATHERTHAN    reduce using rule 116 (empty -> .)
+    LESSTHAN        reduce using rule 116 (empty -> .)
+    GREATHEREQUAL   reduce using rule 116 (empty -> .)
+    LESSEQUAL       reduce using rule 116 (empty -> .)
+    DIFFERENT       reduce using rule 116 (empty -> .)
+    SAME            reduce using rule 116 (empty -> .)
+    AND             reduce using rule 116 (empty -> .)
+    OR              reduce using rule 116 (empty -> .)
+    PARENCLOSE      reduce using rule 116 (empty -> .)
+    COLON           reduce using rule 116 (empty -> .)
+    BRACECLOSE      reduce using rule 116 (empty -> .)
 
-    m_expp                         shift and go to state 129
-    empty                          shift and go to state 132
+    m_expp                         shift and go to state 130
+    empty                          shift and go to state 133
 
 state 85
 
@@ -1757,27 +1761,27 @@ state 85
     (79) termino -> . MULTIPLY appendMULTIPLY t
     (80) termino -> . DIVIDE appendDIVIDE t
     (81) termino -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    MULTIPLY        shift and go to state 134
-    DIVIDE          shift and go to state 135
-    PLUS            reduce using rule 115 (empty -> .)
-    MINUS           reduce using rule 115 (empty -> .)
-    SEMICOLON       reduce using rule 115 (empty -> .)
-    GREATHERTHAN    reduce using rule 115 (empty -> .)
-    LESSTHAN        reduce using rule 115 (empty -> .)
-    GREATHEREQUAL   reduce using rule 115 (empty -> .)
-    LESSEQUAL       reduce using rule 115 (empty -> .)
-    DIFFERENT       reduce using rule 115 (empty -> .)
-    SAME            reduce using rule 115 (empty -> .)
-    AND             reduce using rule 115 (empty -> .)
-    OR              reduce using rule 115 (empty -> .)
-    PARENCLOSE      reduce using rule 115 (empty -> .)
-    COLON           reduce using rule 115 (empty -> .)
-    BRACECLOSE      reduce using rule 115 (empty -> .)
+    MULTIPLY        shift and go to state 135
+    DIVIDE          shift and go to state 136
+    PLUS            reduce using rule 116 (empty -> .)
+    MINUS           reduce using rule 116 (empty -> .)
+    SEMICOLON       reduce using rule 116 (empty -> .)
+    GREATHERTHAN    reduce using rule 116 (empty -> .)
+    LESSTHAN        reduce using rule 116 (empty -> .)
+    GREATHEREQUAL   reduce using rule 116 (empty -> .)
+    LESSEQUAL       reduce using rule 116 (empty -> .)
+    DIFFERENT       reduce using rule 116 (empty -> .)
+    SAME            reduce using rule 116 (empty -> .)
+    AND             reduce using rule 116 (empty -> .)
+    OR              reduce using rule 116 (empty -> .)
+    PARENCLOSE      reduce using rule 116 (empty -> .)
+    COLON           reduce using rule 116 (empty -> .)
+    BRACECLOSE      reduce using rule 116 (empty -> .)
 
-    termino                        shift and go to state 133
-    empty                          shift and go to state 136
+    termino                        shift and go to state 134
+    empty                          shift and go to state 137
 
 state 86
 
@@ -1809,7 +1813,7 @@ state 86
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 137
+    exp                            shift and go to state 138
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -1967,7 +1971,7 @@ state 91
 
 state 92
 
-    (102) while_loop -> WHILE PARENOPEN . exp PARENCLOSE body
+    (103) while_loop -> WHILE PARENOPEN . exp PARENCLOSE body
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -1995,7 +1999,7 @@ state 92
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 138
+    exp                            shift and go to state 139
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -2004,57 +2008,20 @@ state 92
 
 state 93
 
-    (103) for_loop -> FOR PARENOPEN . for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (104) for_assignment -> . variable EQUAL exp
+    (104) for_loop -> FOR PARENOPEN . for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (105) for_assignment -> . variable EQUAL exp
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
 
     ID              shift and go to state 78
 
-    for_assignment                 shift and go to state 139
-    variable                       shift and go to state 140
+    for_assignment                 shift and go to state 140
+    variable                       shift and go to state 141
 
 state 94
 
-    (106) max -> MAX PARENOPEN . exp PARENCLOSE SEMICOLON
-    (61) exp -> . exp GREATHERTHAN exp
-    (62) exp -> . exp LESSTHAN exp
-    (63) exp -> . exp GREATHEREQUAL exp
-    (64) exp -> . exp LESSEQUAL exp
-    (65) exp -> . exp DIFFERENT exp
-    (66) exp -> . exp SAME exp
-    (67) exp -> . exp AND exp
-    (68) exp -> . exp OR exp
-    (69) exp -> . m_exp
-    (70) m_exp -> . t m_expp
-    (78) t -> . f termino
-    (82) f -> . PARENOPEN exp PARENCLOSE
-    (83) f -> . ID
-    (84) f -> . CTEINT
-    (85) f -> . CTFLOAT
-    (86) f -> . variable
-    (87) f -> . call_func
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
-
-    PARENOPEN       shift and go to state 86
-    ID              shift and go to state 87
-    CTEINT          shift and go to state 88
-    CTFLOAT         shift and go to state 89
-
-    exp                            shift and go to state 141
-    m_exp                          shift and go to state 83
-    t                              shift and go to state 84
-    f                              shift and go to state 85
-    variable                       shift and go to state 90
-    call_func                      shift and go to state 91
-
-state 95
-
-    (107) min -> MIN PARENOPEN . exp PARENCLOSE SEMICOLON
+    (107) max -> MAX PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2089,9 +2056,9 @@ state 95
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
-state 96
+state 95
 
-    (108) sum -> SUM PARENOPEN . exp PARENCLOSE SEMICOLON
+    (108) min -> MIN PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2126,390 +2093,9 @@ state 96
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
-state 97
+state 96
 
-    (114) normal -> NORMAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (109) param_dist -> . variable
-    (110) param_dist -> . variable COLON param_dist
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-
-    ID              shift and go to state 78
-
-    param_dist                     shift and go to state 144
-    variable                       shift and go to state 145
-
-state 98
-
-    (113) uniforme -> UNIFORME PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (109) param_dist -> . variable
-    (110) param_dist -> . variable COLON param_dist
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-
-    ID              shift and go to state 78
-
-    param_dist                     shift and go to state 146
-    variable                       shift and go to state 145
-
-state 99
-
-    (112) poisson -> POISSON PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (109) param_dist -> . variable
-    (110) param_dist -> . variable COLON param_dist
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-
-    ID              shift and go to state 78
-
-    param_dist                     shift and go to state 147
-    variable                       shift and go to state 145
-
-state 100
-
-    (111) binomial -> BINOMIAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (109) param_dist -> . variable
-    (110) param_dist -> . variable COLON param_dist
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-
-    ID              shift and go to state 78
-
-    param_dist                     shift and go to state 148
-    variable                       shift and go to state 145
-
-state 101
-
-    (47) dec_variabless -> type dec_mvar . SEMICOLON dec_variabless
-    (48) dec_variabless -> type dec_mvar . SEMICOLON
-
-    SEMICOLON       shift and go to state 149
-
-
-state 102
-
-    (49) dec_mvar -> ID . COLON dec_mvar
-    (50) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
-    (51) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
-    (52) dec_mvar -> ID .
-    (53) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE
-    (54) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
-
-    COLON           shift and go to state 150
-    BRACEOPEN       shift and go to state 151
-    SEMICOLON       reduce using rule 52 (dec_mvar -> ID .)
-
-
-state 103
-
-    (17) dec_func -> FUNCTION type ID PARENOPEN . param PARENCLOSE body
-    (19) param -> . type variable
-    (20) param -> . type variable COLON param
-    (21) param -> . empty
-    (22) type -> . INT
-    (23) type -> . FLOAT
-    (24) type -> . CHAR
-    (115) empty -> .
-
-    INT             shift and go to state 17
-    FLOAT           shift and go to state 18
-    CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 115 (empty -> .)
-
-    type                           shift and go to state 152
-    param                          shift and go to state 153
-    empty                          shift and go to state 154
-
-state 104
-
-    (18) dec_func -> FUNCTION VOID ID PARENOPEN . param PARENCLOSE body
-    (19) param -> . type variable
-    (20) param -> . type variable COLON param
-    (21) param -> . empty
-    (22) type -> . INT
-    (23) type -> . FLOAT
-    (24) type -> . CHAR
-    (115) empty -> .
-
-    INT             shift and go to state 17
-    FLOAT           shift and go to state 18
-    CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 115 (empty -> .)
-
-    param                          shift and go to state 155
-    type                           shift and go to state 152
-    empty                          shift and go to state 154
-
-state 105
-
-    (9) varss -> type mvar SEMICOLON varss .
-
-    MAIN            reduce using rule 9 (varss -> type mvar SEMICOLON varss .)
-    FUNCTION        reduce using rule 9 (varss -> type mvar SEMICOLON varss .)
-
-
-state 106
-
-    (11) mvar -> ID COLON mvar .
-
-    SEMICOLON       reduce using rule 11 (mvar -> ID COLON mvar .)
-
-
-state 107
-
-    (12) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE COLON mvar
-    (13) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar
-    (15) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE
-    (16) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
-
-    BRACECLOSE      shift and go to state 156
-
-
-state 108
-
-    (55) assignment -> variable EQUAL exp . SEMICOLON
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    SEMICOLON       shift and go to state 157
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 109
-
-    (91) condition -> IF PARENOPEN exp . PARENCLOSE body
-    (92) condition -> IF PARENOPEN exp . PARENCLOSE body ELSE body
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    PARENCLOSE      shift and go to state 158
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 110
-
-    (94) writing -> PRINT PARENOPEN writingg . PARENCLOSE SEMICOLON
-
-    PARENCLOSE      shift and go to state 159
-
-
-state 111
-
-    (95) writingg -> exp .
-    (96) writingg -> exp . COLON writingg
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    PARENCLOSE      reduce using rule 95 (writingg -> exp .)
-    COLON           shift and go to state 160
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 112
-
-    (97) writingg -> CTESTRING .
-    (98) writingg -> CTESTRING . COLON writingg
-
-    PARENCLOSE      reduce using rule 97 (writingg -> CTESTRING .)
-    COLON           shift and go to state 161
-
-
-state 113
-
-    (99) reading -> READ multivariables SEMICOLON .
-
-    IF              reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    PRINT           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    READ            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    ID              reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    PLOT            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    RETURN          reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    WHILE           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    FOR             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    MAX             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    MIN             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    SUM             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    NORMAL          reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    UNIFORME        reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    POISSON         reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    BINOMIAL        reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    INT             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    FLOAT           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    CHAR            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
-
-
-state 114
-
-    (101) multivariables -> variable COLON . multivariables
-    (100) multivariables -> . variable
-    (101) multivariables -> . variable COLON multivariables
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-
-    ID              shift and go to state 78
-
-    variable                       shift and go to state 77
-    multivariables                 shift and go to state 162
-
-state 115
-
-    (56) call_func -> ID PARENOPEN call_funcc . PARENCLOSE
-
-    PARENCLOSE      shift and go to state 163
-
-
-state 116
-
-    (57) call_funcc -> exp .
-    (58) call_funcc -> exp . COLON call_funcc
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    PARENCLOSE      reduce using rule 57 (call_funcc -> exp .)
-    COLON           shift and go to state 164
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 117
-
-    (59) call_funcc -> empty .
-
-    PARENCLOSE      reduce using rule 59 (call_funcc -> empty .)
-
-
-state 118
-
-    (89) variable -> ID BRACEOPEN exp . BRACECLOSE
-    (90) variable -> ID BRACEOPEN exp . BRACECLOSE BRACEOPEN exp BRACECLOSE
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    BRACECLOSE      shift and go to state 165
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 119
-
-    (60) graph -> PLOT PARENOPEN exp . PARENCLOSE SEMICOLON
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
-    PARENCLOSE      shift and go to state 166
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 120
-
-    (105) return -> RETURN exp SEMICOLON .
-
-    IF              reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    PRINT           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    READ            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    ID              reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    PLOT            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    RETURN          reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    WHILE           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    FOR             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    MAX             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    MIN             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    SUM             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    NORMAL          reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    UNIFORME        reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    POISSON         reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    BINOMIAL        reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    INT             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    FLOAT           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    CHAR            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 105 (return -> RETURN exp SEMICOLON .)
-
-
-state 121
-
-    (61) exp -> exp GREATHERTHAN . exp
+    (109) sum -> SUM PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2537,16 +2123,405 @@ state 121
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 167
+    exp                            shift and go to state 144
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
+state 97
+
+    (115) normal -> NORMAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (110) param_dist -> . variable
+    (111) param_dist -> . variable COLON param_dist
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+
+    ID              shift and go to state 78
+
+    param_dist                     shift and go to state 145
+    variable                       shift and go to state 146
+
+state 98
+
+    (114) uniforme -> UNIFORME PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (110) param_dist -> . variable
+    (111) param_dist -> . variable COLON param_dist
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+
+    ID              shift and go to state 78
+
+    param_dist                     shift and go to state 147
+    variable                       shift and go to state 146
+
+state 99
+
+    (113) poisson -> POISSON PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (110) param_dist -> . variable
+    (111) param_dist -> . variable COLON param_dist
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+
+    ID              shift and go to state 78
+
+    param_dist                     shift and go to state 148
+    variable                       shift and go to state 146
+
+state 100
+
+    (112) binomial -> BINOMIAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (110) param_dist -> . variable
+    (111) param_dist -> . variable COLON param_dist
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+
+    ID              shift and go to state 78
+
+    param_dist                     shift and go to state 149
+    variable                       shift and go to state 146
+
+state 101
+
+    (47) dec_variabless -> type dec_mvar . SEMICOLON dec_variabless
+    (48) dec_variabless -> type dec_mvar . SEMICOLON
+
+    SEMICOLON       shift and go to state 150
+
+
+state 102
+
+    (49) dec_mvar -> ID . COLON dec_mvar
+    (50) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
+    (51) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
+    (52) dec_mvar -> ID .
+    (53) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE
+    (54) dec_mvar -> ID . BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
+
+    COLON           shift and go to state 151
+    BRACEOPEN       shift and go to state 152
+    SEMICOLON       reduce using rule 52 (dec_mvar -> ID .)
+
+
+state 103
+
+    (17) dec_func -> FUNCTION type ID PARENOPEN . param PARENCLOSE body
+    (19) param -> . type variable
+    (20) param -> . type variable COLON param
+    (21) param -> . empty
+    (22) type -> . INT
+    (23) type -> . FLOAT
+    (24) type -> . CHAR
+    (116) empty -> .
+
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
+    PARENCLOSE      reduce using rule 116 (empty -> .)
+
+    type                           shift and go to state 153
+    param                          shift and go to state 154
+    empty                          shift and go to state 155
+
+state 104
+
+    (18) dec_func -> FUNCTION VOID ID PARENOPEN . param PARENCLOSE body
+    (19) param -> . type variable
+    (20) param -> . type variable COLON param
+    (21) param -> . empty
+    (22) type -> . INT
+    (23) type -> . FLOAT
+    (24) type -> . CHAR
+    (116) empty -> .
+
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
+    PARENCLOSE      reduce using rule 116 (empty -> .)
+
+    param                          shift and go to state 156
+    type                           shift and go to state 153
+    empty                          shift and go to state 155
+
+state 105
+
+    (9) varss -> type mvar SEMICOLON varss .
+
+    MAIN            reduce using rule 9 (varss -> type mvar SEMICOLON varss .)
+    FUNCTION        reduce using rule 9 (varss -> type mvar SEMICOLON varss .)
+
+
+state 106
+
+    (11) mvar -> ID COLON mvar .
+
+    SEMICOLON       reduce using rule 11 (mvar -> ID COLON mvar .)
+
+
+state 107
+
+    (12) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE COLON mvar
+    (13) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar
+    (15) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE
+    (16) mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
+
+    BRACECLOSE      shift and go to state 157
+
+
+state 108
+
+    (55) assignment -> variable EQUAL exp . SEMICOLON
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    SEMICOLON       shift and go to state 158
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 109
+
+    (91) condition -> IF PARENOPEN exp . PARENCLOSE body
+    (92) condition -> IF PARENOPEN exp . PARENCLOSE body ELSE body
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    PARENCLOSE      shift and go to state 159
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 110
+
+    (94) writing -> PRINT PARENOPEN writingg . PARENCLOSE SEMICOLON
+
+    PARENCLOSE      shift and go to state 160
+
+
+state 111
+
+    (95) writingg -> exp .
+    (96) writingg -> exp . COLON writingg
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    PARENCLOSE      reduce using rule 95 (writingg -> exp .)
+    COLON           shift and go to state 161
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 112
+
+    (97) writingg -> auxString .
+    (98) writingg -> auxString . COLON writingg
+
+    PARENCLOSE      reduce using rule 97 (writingg -> auxString .)
+    COLON           shift and go to state 162
+
+
+state 113
+
+    (99) auxString -> CTESTRING .
+
+    COLON           reduce using rule 99 (auxString -> CTESTRING .)
+    PARENCLOSE      reduce using rule 99 (auxString -> CTESTRING .)
+
+
+state 114
+
+    (100) reading -> READ multivariables SEMICOLON .
+
+    IF              reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    PRINT           reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    READ            reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    ID              reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    PLOT            reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    RETURN          reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    WHILE           reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    FOR             reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    MAX             reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    MIN             reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    SUM             reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    NORMAL          reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    UNIFORME        reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    POISSON         reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    BINOMIAL        reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    INT             reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    FLOAT           reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    CHAR            reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 100 (reading -> READ multivariables SEMICOLON .)
+
+
+state 115
+
+    (102) multivariables -> variable COLON . multivariables
+    (101) multivariables -> . variable
+    (102) multivariables -> . variable COLON multivariables
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+
+    ID              shift and go to state 78
+
+    variable                       shift and go to state 77
+    multivariables                 shift and go to state 163
+
+state 116
+
+    (56) call_func -> ID PARENOPEN call_funcc . PARENCLOSE
+
+    PARENCLOSE      shift and go to state 164
+
+
+state 117
+
+    (57) call_funcc -> exp .
+    (58) call_funcc -> exp . COLON call_funcc
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    PARENCLOSE      reduce using rule 57 (call_funcc -> exp .)
+    COLON           shift and go to state 165
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 118
+
+    (59) call_funcc -> empty .
+
+    PARENCLOSE      reduce using rule 59 (call_funcc -> empty .)
+
+
+state 119
+
+    (89) variable -> ID BRACEOPEN exp . BRACECLOSE
+    (90) variable -> ID BRACEOPEN exp . BRACECLOSE BRACEOPEN exp BRACECLOSE
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    BRACECLOSE      shift and go to state 166
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 120
+
+    (60) graph -> PLOT PARENOPEN exp . PARENCLOSE SEMICOLON
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
+
+    PARENCLOSE      shift and go to state 167
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 121
+
+    (106) return -> RETURN exp SEMICOLON .
+
+    IF              reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    PRINT           reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    READ            reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    ID              reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    PLOT            reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    RETURN          reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    WHILE           reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    FOR             reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    MAX             reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    MIN             reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    SUM             reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    NORMAL          reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    UNIFORME        reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    POISSON         reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    BINOMIAL        reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    INT             reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    FLOAT           reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    CHAR            reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 106 (return -> RETURN exp SEMICOLON .)
+
+
 state 122
 
-    (62) exp -> exp LESSTHAN . exp
+    (61) exp -> exp GREATHERTHAN . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2583,7 +2558,7 @@ state 122
 
 state 123
 
-    (63) exp -> exp GREATHEREQUAL . exp
+    (62) exp -> exp LESSTHAN . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2620,7 +2595,7 @@ state 123
 
 state 124
 
-    (64) exp -> exp LESSEQUAL . exp
+    (63) exp -> exp GREATHEREQUAL . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2657,7 +2632,7 @@ state 124
 
 state 125
 
-    (65) exp -> exp DIFFERENT . exp
+    (64) exp -> exp LESSEQUAL . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2694,7 +2669,7 @@ state 125
 
 state 126
 
-    (66) exp -> exp SAME . exp
+    (65) exp -> exp DIFFERENT . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2731,7 +2706,7 @@ state 126
 
 state 127
 
-    (67) exp -> exp AND . exp
+    (66) exp -> exp SAME . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2768,7 +2743,7 @@ state 127
 
 state 128
 
-    (68) exp -> exp OR . exp
+    (67) exp -> exp AND . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2805,6 +2780,43 @@ state 128
 
 state 129
 
+    (68) exp -> exp OR . exp
+    (61) exp -> . exp GREATHERTHAN exp
+    (62) exp -> . exp LESSTHAN exp
+    (63) exp -> . exp GREATHEREQUAL exp
+    (64) exp -> . exp LESSEQUAL exp
+    (65) exp -> . exp DIFFERENT exp
+    (66) exp -> . exp SAME exp
+    (67) exp -> . exp AND exp
+    (68) exp -> . exp OR exp
+    (69) exp -> . m_exp
+    (70) m_exp -> . t m_expp
+    (78) t -> . f termino
+    (82) f -> . PARENOPEN exp PARENCLOSE
+    (83) f -> . ID
+    (84) f -> . CTEINT
+    (85) f -> . CTFLOAT
+    (86) f -> . variable
+    (87) f -> . call_func
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
+
+    PARENOPEN       shift and go to state 86
+    ID              shift and go to state 87
+    CTEINT          shift and go to state 88
+    CTFLOAT         shift and go to state 89
+
+    exp                            shift and go to state 175
+    m_exp                          shift and go to state 83
+    t                              shift and go to state 84
+    f                              shift and go to state 85
+    variable                       shift and go to state 90
+    call_func                      shift and go to state 91
+
+state 130
+
     (70) m_exp -> t m_expp .
 
     SEMICOLON       reduce using rule 70 (m_exp -> t m_expp .)
@@ -2821,35 +2833,35 @@ state 129
     BRACECLOSE      reduce using rule 70 (m_exp -> t m_expp .)
 
 
-state 130
+state 131
 
     (71) m_expp -> PLUS . appendPLUS m_exp
     (74) appendPLUS -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    PARENOPEN       reduce using rule 115 (empty -> .)
-    ID              reduce using rule 115 (empty -> .)
-    CTEINT          reduce using rule 115 (empty -> .)
-    CTFLOAT         reduce using rule 115 (empty -> .)
+    PARENOPEN       reduce using rule 116 (empty -> .)
+    ID              reduce using rule 116 (empty -> .)
+    CTEINT          reduce using rule 116 (empty -> .)
+    CTFLOAT         reduce using rule 116 (empty -> .)
 
-    appendPLUS                     shift and go to state 175
-    empty                          shift and go to state 176
+    appendPLUS                     shift and go to state 176
+    empty                          shift and go to state 177
 
-state 131
+state 132
 
     (72) m_expp -> MINUS . appendMINUS m_exp
     (75) appendMINUS -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    PARENOPEN       reduce using rule 115 (empty -> .)
-    ID              reduce using rule 115 (empty -> .)
-    CTEINT          reduce using rule 115 (empty -> .)
-    CTFLOAT         reduce using rule 115 (empty -> .)
+    PARENOPEN       reduce using rule 116 (empty -> .)
+    ID              reduce using rule 116 (empty -> .)
+    CTEINT          reduce using rule 116 (empty -> .)
+    CTFLOAT         reduce using rule 116 (empty -> .)
 
-    appendMINUS                    shift and go to state 177
-    empty                          shift and go to state 178
+    appendMINUS                    shift and go to state 178
+    empty                          shift and go to state 179
 
-state 132
+state 133
 
     (73) m_expp -> empty .
 
@@ -2867,7 +2879,7 @@ state 132
     BRACECLOSE      reduce using rule 73 (m_expp -> empty .)
 
 
-state 133
+state 134
 
     (78) t -> f termino .
 
@@ -2887,35 +2899,35 @@ state 133
     BRACECLOSE      reduce using rule 78 (t -> f termino .)
 
 
-state 134
+state 135
 
     (79) termino -> MULTIPLY . appendMULTIPLY t
     (76) appendMULTIPLY -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    PARENOPEN       reduce using rule 115 (empty -> .)
-    ID              reduce using rule 115 (empty -> .)
-    CTEINT          reduce using rule 115 (empty -> .)
-    CTFLOAT         reduce using rule 115 (empty -> .)
+    PARENOPEN       reduce using rule 116 (empty -> .)
+    ID              reduce using rule 116 (empty -> .)
+    CTEINT          reduce using rule 116 (empty -> .)
+    CTFLOAT         reduce using rule 116 (empty -> .)
 
-    appendMULTIPLY                 shift and go to state 179
-    empty                          shift and go to state 180
+    appendMULTIPLY                 shift and go to state 180
+    empty                          shift and go to state 181
 
-state 135
+state 136
 
     (80) termino -> DIVIDE . appendDIVIDE t
     (77) appendDIVIDE -> . empty
-    (115) empty -> .
+    (116) empty -> .
 
-    PARENOPEN       reduce using rule 115 (empty -> .)
-    ID              reduce using rule 115 (empty -> .)
-    CTEINT          reduce using rule 115 (empty -> .)
-    CTFLOAT         reduce using rule 115 (empty -> .)
+    PARENOPEN       reduce using rule 116 (empty -> .)
+    ID              reduce using rule 116 (empty -> .)
+    CTEINT          reduce using rule 116 (empty -> .)
+    CTFLOAT         reduce using rule 116 (empty -> .)
 
-    appendDIVIDE                   shift and go to state 181
-    empty                          shift and go to state 182
+    appendDIVIDE                   shift and go to state 182
+    empty                          shift and go to state 183
 
-state 136
+state 137
 
     (81) termino -> empty .
 
@@ -2935,7 +2947,7 @@ state 136
     BRACECLOSE      reduce using rule 81 (termino -> empty .)
 
 
-state 137
+state 138
 
     (82) f -> PARENOPEN exp . PARENCLOSE
     (61) exp -> exp . GREATHERTHAN exp
@@ -2947,57 +2959,20 @@ state 137
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    PARENCLOSE      shift and go to state 183
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
-
-
-state 138
-
-    (102) while_loop -> WHILE PARENOPEN exp . PARENCLOSE body
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
-
     PARENCLOSE      shift and go to state 184
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 139
 
-    (103) for_loop -> FOR PARENOPEN for_assignment . SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-
-    SEMICOLON       shift and go to state 185
-
-
-state 140
-
-    (104) for_assignment -> variable . EQUAL exp
-
-    EQUAL           shift and go to state 186
-
-
-state 141
-
-    (106) max -> MAX PARENOPEN exp . PARENCLOSE SEMICOLON
+    (103) while_loop -> WHILE PARENOPEN exp . PARENCLOSE body
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3007,20 +2982,34 @@ state 141
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    PARENCLOSE      shift and go to state 187
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    PARENCLOSE      shift and go to state 185
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
+
+
+state 140
+
+    (104) for_loop -> FOR PARENOPEN for_assignment . SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+
+    SEMICOLON       shift and go to state 186
+
+
+state 141
+
+    (105) for_assignment -> variable . EQUAL exp
+
+    EQUAL           shift and go to state 187
 
 
 state 142
 
-    (107) min -> MIN PARENOPEN exp . PARENCLOSE SEMICOLON
+    (107) max -> MAX PARENOPEN exp . PARENCLOSE SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3031,19 +3020,19 @@ state 142
     (68) exp -> exp . OR exp
 
     PARENCLOSE      shift and go to state 188
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 143
 
-    (108) sum -> SUM PARENOPEN exp . PARENCLOSE SEMICOLON
+    (108) min -> MIN PARENOPEN exp . PARENCLOSE SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3054,54 +3043,77 @@ state 143
     (68) exp -> exp . OR exp
 
     PARENCLOSE      shift and go to state 189
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 144
 
-    (114) normal -> NORMAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (109) sum -> SUM PARENOPEN exp . PARENCLOSE SEMICOLON
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
 
     PARENCLOSE      shift and go to state 190
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 145
 
-    (109) param_dist -> variable .
-    (110) param_dist -> variable . COLON param_dist
+    (115) normal -> NORMAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
-    PARENCLOSE      reduce using rule 109 (param_dist -> variable .)
-    COLON           shift and go to state 191
+    PARENCLOSE      shift and go to state 191
 
 
 state 146
 
-    (113) uniforme -> UNIFORME PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (110) param_dist -> variable .
+    (111) param_dist -> variable . COLON param_dist
 
-    PARENCLOSE      shift and go to state 192
+    PARENCLOSE      reduce using rule 110 (param_dist -> variable .)
+    COLON           shift and go to state 192
 
 
 state 147
 
-    (112) poisson -> POISSON PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (114) uniforme -> UNIFORME PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 193
 
 
 state 148
 
-    (111) binomial -> BINOMIAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (113) poisson -> POISSON PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 194
 
 
 state 149
+
+    (112) binomial -> BINOMIAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
+
+    PARENCLOSE      shift and go to state 195
+
+
+state 150
 
     (47) dec_variabless -> type dec_mvar SEMICOLON . dec_variabless
     (48) dec_variabless -> type dec_mvar SEMICOLON .
@@ -3139,9 +3151,9 @@ state 149
   ! CHAR            [ reduce using rule 48 (dec_variabless -> type dec_mvar SEMICOLON .) ]
 
     type                           shift and go to state 65
-    dec_variabless                 shift and go to state 195
+    dec_variabless                 shift and go to state 196
 
-state 150
+state 151
 
     (49) dec_mvar -> ID COLON . dec_mvar
     (49) dec_mvar -> . ID COLON dec_mvar
@@ -3153,19 +3165,19 @@ state 150
 
     ID              shift and go to state 102
 
-    dec_mvar                       shift and go to state 196
+    dec_mvar                       shift and go to state 197
 
-state 151
+state 152
 
     (50) dec_mvar -> ID BRACEOPEN . CTEINT BRACECLOSE COLON dec_mvar
     (51) dec_mvar -> ID BRACEOPEN . CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
     (53) dec_mvar -> ID BRACEOPEN . CTEINT BRACECLOSE
     (54) dec_mvar -> ID BRACEOPEN . CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
 
-    CTEINT          shift and go to state 197
+    CTEINT          shift and go to state 198
 
 
-state 152
+state 153
 
     (19) param -> type . variable
     (20) param -> type . variable COLON param
@@ -3175,42 +3187,42 @@ state 152
 
     ID              shift and go to state 78
 
-    variable                       shift and go to state 198
+    variable                       shift and go to state 199
 
-state 153
+state 154
 
     (17) dec_func -> FUNCTION type ID PARENOPEN param . PARENCLOSE body
 
-    PARENCLOSE      shift and go to state 199
+    PARENCLOSE      shift and go to state 200
 
 
-state 154
+state 155
 
     (21) param -> empty .
 
     PARENCLOSE      reduce using rule 21 (param -> empty .)
 
 
-state 155
+state 156
 
     (18) dec_func -> FUNCTION VOID ID PARENOPEN param . PARENCLOSE body
 
-    PARENCLOSE      shift and go to state 200
+    PARENCLOSE      shift and go to state 201
 
 
-state 156
+state 157
 
     (12) mvar -> ID BRACEOPEN CTEINT BRACECLOSE . COLON mvar
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE . BRACEOPEN CTEINT BRACECLOSE COLON mvar
     (15) mvar -> ID BRACEOPEN CTEINT BRACECLOSE .
     (16) mvar -> ID BRACEOPEN CTEINT BRACECLOSE . BRACEOPEN CTEINT BRACECLOSE
 
-    COLON           shift and go to state 202
-    BRACEOPEN       shift and go to state 201
+    COLON           shift and go to state 203
+    BRACEOPEN       shift and go to state 202
     SEMICOLON       reduce using rule 15 (mvar -> ID BRACEOPEN CTEINT BRACECLOSE .)
 
 
-state 157
+state 158
 
     (55) assignment -> variable EQUAL exp SEMICOLON .
 
@@ -3235,7 +3247,7 @@ state 157
     BRACKETCLOSE    reduce using rule 55 (assignment -> variable EQUAL exp SEMICOLON .)
 
 
-state 158
+state 159
 
     (91) condition -> IF PARENOPEN exp PARENCLOSE . body
     (92) condition -> IF PARENOPEN exp PARENCLOSE . body ELSE body
@@ -3243,22 +3255,22 @@ state 158
 
     BRACKETOPEN     shift and go to state 22
 
-    body                           shift and go to state 203
+    body                           shift and go to state 204
 
-state 159
+state 160
 
     (94) writing -> PRINT PARENOPEN writingg PARENCLOSE . SEMICOLON
 
-    SEMICOLON       shift and go to state 204
+    SEMICOLON       shift and go to state 205
 
 
-state 160
+state 161
 
     (96) writingg -> exp COLON . writingg
     (95) writingg -> . exp
     (96) writingg -> . exp COLON writingg
-    (97) writingg -> . CTESTRING
-    (98) writingg -> . CTESTRING COLON writingg
+    (97) writingg -> . auxString
+    (98) writingg -> . auxString COLON writingg
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -3268,6 +3280,7 @@ state 160
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
+    (99) auxString -> . CTESTRING
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -3281,57 +3294,15 @@ state 160
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    CTESTRING       shift and go to state 112
+    CTESTRING       shift and go to state 113
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
     exp                            shift and go to state 111
-    writingg                       shift and go to state 205
-    m_exp                          shift and go to state 83
-    t                              shift and go to state 84
-    f                              shift and go to state 85
-    variable                       shift and go to state 90
-    call_func                      shift and go to state 91
-
-state 161
-
-    (98) writingg -> CTESTRING COLON . writingg
-    (95) writingg -> . exp
-    (96) writingg -> . exp COLON writingg
-    (97) writingg -> . CTESTRING
-    (98) writingg -> . CTESTRING COLON writingg
-    (61) exp -> . exp GREATHERTHAN exp
-    (62) exp -> . exp LESSTHAN exp
-    (63) exp -> . exp GREATHEREQUAL exp
-    (64) exp -> . exp LESSEQUAL exp
-    (65) exp -> . exp DIFFERENT exp
-    (66) exp -> . exp SAME exp
-    (67) exp -> . exp AND exp
-    (68) exp -> . exp OR exp
-    (69) exp -> . m_exp
-    (70) m_exp -> . t m_expp
-    (78) t -> . f termino
-    (82) f -> . PARENOPEN exp PARENCLOSE
-    (83) f -> . ID
-    (84) f -> . CTEINT
-    (85) f -> . CTFLOAT
-    (86) f -> . variable
-    (87) f -> . call_func
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
-
-    CTESTRING       shift and go to state 112
-    PARENOPEN       shift and go to state 86
-    ID              shift and go to state 87
-    CTEINT          shift and go to state 88
-    CTFLOAT         shift and go to state 89
-
     writingg                       shift and go to state 206
-    exp                            shift and go to state 111
+    auxString                      shift and go to state 112
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
@@ -3340,12 +3311,57 @@ state 161
 
 state 162
 
-    (101) multivariables -> variable COLON multivariables .
+    (98) writingg -> auxString COLON . writingg
+    (95) writingg -> . exp
+    (96) writingg -> . exp COLON writingg
+    (97) writingg -> . auxString
+    (98) writingg -> . auxString COLON writingg
+    (61) exp -> . exp GREATHERTHAN exp
+    (62) exp -> . exp LESSTHAN exp
+    (63) exp -> . exp GREATHEREQUAL exp
+    (64) exp -> . exp LESSEQUAL exp
+    (65) exp -> . exp DIFFERENT exp
+    (66) exp -> . exp SAME exp
+    (67) exp -> . exp AND exp
+    (68) exp -> . exp OR exp
+    (69) exp -> . m_exp
+    (99) auxString -> . CTESTRING
+    (70) m_exp -> . t m_expp
+    (78) t -> . f termino
+    (82) f -> . PARENOPEN exp PARENCLOSE
+    (83) f -> . ID
+    (84) f -> . CTEINT
+    (85) f -> . CTFLOAT
+    (86) f -> . variable
+    (87) f -> . call_func
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    SEMICOLON       reduce using rule 101 (multivariables -> variable COLON multivariables .)
+    CTESTRING       shift and go to state 113
+    PARENOPEN       shift and go to state 86
+    ID              shift and go to state 87
+    CTEINT          shift and go to state 88
+    CTFLOAT         shift and go to state 89
 
+    auxString                      shift and go to state 112
+    writingg                       shift and go to state 207
+    exp                            shift and go to state 111
+    m_exp                          shift and go to state 83
+    t                              shift and go to state 84
+    f                              shift and go to state 85
+    variable                       shift and go to state 90
+    call_func                      shift and go to state 91
 
 state 163
+
+    (102) multivariables -> variable COLON multivariables .
+
+    SEMICOLON       reduce using rule 102 (multivariables -> variable COLON multivariables .)
+
+
+state 164
 
     (56) call_func -> ID PARENOPEN call_funcc PARENCLOSE .
 
@@ -3386,7 +3402,7 @@ state 163
     BRACECLOSE      reduce using rule 56 (call_func -> ID PARENOPEN call_funcc PARENCLOSE .)
 
 
-state 164
+state 165
 
     (58) call_funcc -> exp COLON . call_funcc
     (57) call_funcc -> . exp
@@ -3401,7 +3417,7 @@ state 164
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
-    (115) empty -> .
+    (116) empty -> .
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -3415,22 +3431,22 @@ state 164
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    PARENCLOSE      reduce using rule 115 (empty -> .)
+    PARENCLOSE      reduce using rule 116 (empty -> .)
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 116
-    call_funcc                     shift and go to state 207
-    empty                          shift and go to state 117
+    exp                            shift and go to state 117
+    call_funcc                     shift and go to state 208
+    empty                          shift and go to state 118
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
-state 165
+state 166
 
     (89) variable -> ID BRACEOPEN exp BRACECLOSE .
     (90) variable -> ID BRACEOPEN exp BRACECLOSE . BRACEOPEN exp BRACECLOSE
@@ -3452,17 +3468,17 @@ state 165
     OR              reduce using rule 89 (variable -> ID BRACEOPEN exp BRACECLOSE .)
     PARENCLOSE      reduce using rule 89 (variable -> ID BRACEOPEN exp BRACECLOSE .)
     BRACECLOSE      reduce using rule 89 (variable -> ID BRACEOPEN exp BRACECLOSE .)
-    BRACEOPEN       shift and go to state 208
-
-
-state 166
-
-    (60) graph -> PLOT PARENOPEN exp PARENCLOSE . SEMICOLON
-
-    SEMICOLON       shift and go to state 209
+    BRACEOPEN       shift and go to state 209
 
 
 state 167
+
+    (60) graph -> PLOT PARENOPEN exp PARENCLOSE . SEMICOLON
+
+    SEMICOLON       shift and go to state 210
+
+
+state 168
 
     (61) exp -> exp GREATHERTHAN exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3486,14 +3502,14 @@ state 167
     PARENCLOSE      reduce using rule 61 (exp -> exp GREATHERTHAN exp .)
     COLON           reduce using rule 61 (exp -> exp GREATHERTHAN exp .)
     BRACECLOSE      reduce using rule 61 (exp -> exp GREATHERTHAN exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 61 (exp -> exp GREATHERTHAN exp .) ]
   ! LESSTHAN        [ reduce using rule 61 (exp -> exp GREATHERTHAN exp .) ]
@@ -3505,7 +3521,7 @@ state 167
   ! OR              [ reduce using rule 61 (exp -> exp GREATHERTHAN exp .) ]
 
 
-state 168
+state 169
 
     (62) exp -> exp LESSTHAN exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3529,14 +3545,14 @@ state 168
     PARENCLOSE      reduce using rule 62 (exp -> exp LESSTHAN exp .)
     COLON           reduce using rule 62 (exp -> exp LESSTHAN exp .)
     BRACECLOSE      reduce using rule 62 (exp -> exp LESSTHAN exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 62 (exp -> exp LESSTHAN exp .) ]
   ! LESSTHAN        [ reduce using rule 62 (exp -> exp LESSTHAN exp .) ]
@@ -3548,7 +3564,7 @@ state 168
   ! OR              [ reduce using rule 62 (exp -> exp LESSTHAN exp .) ]
 
 
-state 169
+state 170
 
     (63) exp -> exp GREATHEREQUAL exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3572,14 +3588,14 @@ state 169
     PARENCLOSE      reduce using rule 63 (exp -> exp GREATHEREQUAL exp .)
     COLON           reduce using rule 63 (exp -> exp GREATHEREQUAL exp .)
     BRACECLOSE      reduce using rule 63 (exp -> exp GREATHEREQUAL exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 63 (exp -> exp GREATHEREQUAL exp .) ]
   ! LESSTHAN        [ reduce using rule 63 (exp -> exp GREATHEREQUAL exp .) ]
@@ -3591,7 +3607,7 @@ state 169
   ! OR              [ reduce using rule 63 (exp -> exp GREATHEREQUAL exp .) ]
 
 
-state 170
+state 171
 
     (64) exp -> exp LESSEQUAL exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3615,14 +3631,14 @@ state 170
     PARENCLOSE      reduce using rule 64 (exp -> exp LESSEQUAL exp .)
     COLON           reduce using rule 64 (exp -> exp LESSEQUAL exp .)
     BRACECLOSE      reduce using rule 64 (exp -> exp LESSEQUAL exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 64 (exp -> exp LESSEQUAL exp .) ]
   ! LESSTHAN        [ reduce using rule 64 (exp -> exp LESSEQUAL exp .) ]
@@ -3634,7 +3650,7 @@ state 170
   ! OR              [ reduce using rule 64 (exp -> exp LESSEQUAL exp .) ]
 
 
-state 171
+state 172
 
     (65) exp -> exp DIFFERENT exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3658,14 +3674,14 @@ state 171
     PARENCLOSE      reduce using rule 65 (exp -> exp DIFFERENT exp .)
     COLON           reduce using rule 65 (exp -> exp DIFFERENT exp .)
     BRACECLOSE      reduce using rule 65 (exp -> exp DIFFERENT exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 65 (exp -> exp DIFFERENT exp .) ]
   ! LESSTHAN        [ reduce using rule 65 (exp -> exp DIFFERENT exp .) ]
@@ -3677,7 +3693,7 @@ state 171
   ! OR              [ reduce using rule 65 (exp -> exp DIFFERENT exp .) ]
 
 
-state 172
+state 173
 
     (66) exp -> exp SAME exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3701,14 +3717,14 @@ state 172
     PARENCLOSE      reduce using rule 66 (exp -> exp SAME exp .)
     COLON           reduce using rule 66 (exp -> exp SAME exp .)
     BRACECLOSE      reduce using rule 66 (exp -> exp SAME exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 66 (exp -> exp SAME exp .) ]
   ! LESSTHAN        [ reduce using rule 66 (exp -> exp SAME exp .) ]
@@ -3720,7 +3736,7 @@ state 172
   ! OR              [ reduce using rule 66 (exp -> exp SAME exp .) ]
 
 
-state 173
+state 174
 
     (67) exp -> exp AND exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3744,14 +3760,14 @@ state 173
     PARENCLOSE      reduce using rule 67 (exp -> exp AND exp .)
     COLON           reduce using rule 67 (exp -> exp AND exp .)
     BRACECLOSE      reduce using rule 67 (exp -> exp AND exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 67 (exp -> exp AND exp .) ]
   ! LESSTHAN        [ reduce using rule 67 (exp -> exp AND exp .) ]
@@ -3763,7 +3779,7 @@ state 173
   ! OR              [ reduce using rule 67 (exp -> exp AND exp .) ]
 
 
-state 174
+state 175
 
     (68) exp -> exp OR exp .
     (61) exp -> exp . GREATHERTHAN exp
@@ -3787,14 +3803,14 @@ state 174
     PARENCLOSE      reduce using rule 68 (exp -> exp OR exp .)
     COLON           reduce using rule 68 (exp -> exp OR exp .)
     BRACECLOSE      reduce using rule 68 (exp -> exp OR exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
   ! GREATHERTHAN    [ reduce using rule 68 (exp -> exp OR exp .) ]
   ! LESSTHAN        [ reduce using rule 68 (exp -> exp OR exp .) ]
@@ -3806,46 +3822,9 @@ state 174
   ! OR              [ reduce using rule 68 (exp -> exp OR exp .) ]
 
 
-state 175
-
-    (71) m_expp -> PLUS appendPLUS . m_exp
-    (70) m_exp -> . t m_expp
-    (78) t -> . f termino
-    (82) f -> . PARENOPEN exp PARENCLOSE
-    (83) f -> . ID
-    (84) f -> . CTEINT
-    (85) f -> . CTFLOAT
-    (86) f -> . variable
-    (87) f -> . call_func
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
-
-    PARENOPEN       shift and go to state 86
-    ID              shift and go to state 87
-    CTEINT          shift and go to state 88
-    CTFLOAT         shift and go to state 89
-
-    m_exp                          shift and go to state 210
-    t                              shift and go to state 84
-    f                              shift and go to state 85
-    variable                       shift and go to state 90
-    call_func                      shift and go to state 91
-
 state 176
 
-    (74) appendPLUS -> empty .
-
-    PARENOPEN       reduce using rule 74 (appendPLUS -> empty .)
-    ID              reduce using rule 74 (appendPLUS -> empty .)
-    CTEINT          reduce using rule 74 (appendPLUS -> empty .)
-    CTFLOAT         reduce using rule 74 (appendPLUS -> empty .)
-
-
-state 177
-
-    (72) m_expp -> MINUS appendMINUS . m_exp
+    (71) m_expp -> PLUS appendPLUS . m_exp
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -3870,19 +3849,20 @@ state 177
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
+state 177
+
+    (74) appendPLUS -> empty .
+
+    PARENOPEN       reduce using rule 74 (appendPLUS -> empty .)
+    ID              reduce using rule 74 (appendPLUS -> empty .)
+    CTEINT          reduce using rule 74 (appendPLUS -> empty .)
+    CTFLOAT         reduce using rule 74 (appendPLUS -> empty .)
+
+
 state 178
 
-    (75) appendMINUS -> empty .
-
-    PARENOPEN       reduce using rule 75 (appendMINUS -> empty .)
-    ID              reduce using rule 75 (appendMINUS -> empty .)
-    CTEINT          reduce using rule 75 (appendMINUS -> empty .)
-    CTFLOAT         reduce using rule 75 (appendMINUS -> empty .)
-
-
-state 179
-
-    (79) termino -> MULTIPLY appendMULTIPLY . t
+    (72) m_expp -> MINUS appendMINUS . m_exp
+    (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
     (83) f -> . ID
@@ -3900,24 +3880,25 @@ state 179
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    t                              shift and go to state 212
+    m_exp                          shift and go to state 212
+    t                              shift and go to state 84
     f                              shift and go to state 85
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
+state 179
+
+    (75) appendMINUS -> empty .
+
+    PARENOPEN       reduce using rule 75 (appendMINUS -> empty .)
+    ID              reduce using rule 75 (appendMINUS -> empty .)
+    CTEINT          reduce using rule 75 (appendMINUS -> empty .)
+    CTFLOAT         reduce using rule 75 (appendMINUS -> empty .)
+
+
 state 180
 
-    (76) appendMULTIPLY -> empty .
-
-    PARENOPEN       reduce using rule 76 (appendMULTIPLY -> empty .)
-    ID              reduce using rule 76 (appendMULTIPLY -> empty .)
-    CTEINT          reduce using rule 76 (appendMULTIPLY -> empty .)
-    CTFLOAT         reduce using rule 76 (appendMULTIPLY -> empty .)
-
-
-state 181
-
-    (80) termino -> DIVIDE appendDIVIDE . t
+    (79) termino -> MULTIPLY appendMULTIPLY . t
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
     (83) f -> . ID
@@ -3940,7 +3921,42 @@ state 181
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
+state 181
+
+    (76) appendMULTIPLY -> empty .
+
+    PARENOPEN       reduce using rule 76 (appendMULTIPLY -> empty .)
+    ID              reduce using rule 76 (appendMULTIPLY -> empty .)
+    CTEINT          reduce using rule 76 (appendMULTIPLY -> empty .)
+    CTFLOAT         reduce using rule 76 (appendMULTIPLY -> empty .)
+
+
 state 182
+
+    (80) termino -> DIVIDE appendDIVIDE . t
+    (78) t -> . f termino
+    (82) f -> . PARENOPEN exp PARENCLOSE
+    (83) f -> . ID
+    (84) f -> . CTEINT
+    (85) f -> . CTFLOAT
+    (86) f -> . variable
+    (87) f -> . call_func
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
+
+    PARENOPEN       shift and go to state 86
+    ID              shift and go to state 87
+    CTEINT          shift and go to state 88
+    CTFLOAT         shift and go to state 89
+
+    t                              shift and go to state 214
+    f                              shift and go to state 85
+    variable                       shift and go to state 90
+    call_func                      shift and go to state 91
+
+state 183
 
     (77) appendDIVIDE -> empty .
 
@@ -3950,7 +3966,7 @@ state 182
     CTFLOAT         reduce using rule 77 (appendDIVIDE -> empty .)
 
 
-state 183
+state 184
 
     (82) f -> PARENOPEN exp PARENCLOSE .
 
@@ -3972,55 +3988,18 @@ state 183
     BRACECLOSE      reduce using rule 82 (f -> PARENOPEN exp PARENCLOSE .)
 
 
-state 184
+state 185
 
-    (102) while_loop -> WHILE PARENOPEN exp PARENCLOSE . body
+    (103) while_loop -> WHILE PARENOPEN exp PARENCLOSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
 
-    body                           shift and go to state 214
-
-state 185
-
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON . exp SEMICOLON for_assignment PARENCLOSE body
-    (61) exp -> . exp GREATHERTHAN exp
-    (62) exp -> . exp LESSTHAN exp
-    (63) exp -> . exp GREATHEREQUAL exp
-    (64) exp -> . exp LESSEQUAL exp
-    (65) exp -> . exp DIFFERENT exp
-    (66) exp -> . exp SAME exp
-    (67) exp -> . exp AND exp
-    (68) exp -> . exp OR exp
-    (69) exp -> . m_exp
-    (70) m_exp -> . t m_expp
-    (78) t -> . f termino
-    (82) f -> . PARENOPEN exp PARENCLOSE
-    (83) f -> . ID
-    (84) f -> . CTEINT
-    (85) f -> . CTFLOAT
-    (86) f -> . variable
-    (87) f -> . call_func
-    (88) variable -> . ID
-    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
-    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
-    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
-
-    PARENOPEN       shift and go to state 86
-    ID              shift and go to state 87
-    CTEINT          shift and go to state 88
-    CTFLOAT         shift and go to state 89
-
-    exp                            shift and go to state 215
-    m_exp                          shift and go to state 83
-    t                              shift and go to state 84
-    f                              shift and go to state 85
-    variable                       shift and go to state 90
-    call_func                      shift and go to state 91
+    body                           shift and go to state 215
 
 state 186
 
-    (104) for_assignment -> variable EQUAL . exp
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON . exp SEMICOLON for_assignment PARENCLOSE body
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -4048,77 +4027,114 @@ state 186
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    variable                       shift and go to state 90
     exp                            shift and go to state 216
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
+    variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
 state 187
 
-    (106) max -> MAX PARENOPEN exp PARENCLOSE . SEMICOLON
+    (105) for_assignment -> variable EQUAL . exp
+    (61) exp -> . exp GREATHERTHAN exp
+    (62) exp -> . exp LESSTHAN exp
+    (63) exp -> . exp GREATHEREQUAL exp
+    (64) exp -> . exp LESSEQUAL exp
+    (65) exp -> . exp DIFFERENT exp
+    (66) exp -> . exp SAME exp
+    (67) exp -> . exp AND exp
+    (68) exp -> . exp OR exp
+    (69) exp -> . m_exp
+    (70) m_exp -> . t m_expp
+    (78) t -> . f termino
+    (82) f -> . PARENOPEN exp PARENCLOSE
+    (83) f -> . ID
+    (84) f -> . CTEINT
+    (85) f -> . CTFLOAT
+    (86) f -> . variable
+    (87) f -> . call_func
+    (88) variable -> . ID
+    (89) variable -> . ID BRACEOPEN exp BRACECLOSE
+    (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+    (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    SEMICOLON       shift and go to state 217
+    PARENOPEN       shift and go to state 86
+    ID              shift and go to state 87
+    CTEINT          shift and go to state 88
+    CTFLOAT         shift and go to state 89
 
+    variable                       shift and go to state 90
+    exp                            shift and go to state 217
+    m_exp                          shift and go to state 83
+    t                              shift and go to state 84
+    f                              shift and go to state 85
+    call_func                      shift and go to state 91
 
 state 188
 
-    (107) min -> MIN PARENOPEN exp PARENCLOSE . SEMICOLON
+    (107) max -> MAX PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 218
 
 
 state 189
 
-    (108) sum -> SUM PARENOPEN exp PARENCLOSE . SEMICOLON
+    (108) min -> MIN PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 219
 
 
 state 190
 
-    (114) normal -> NORMAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (109) sum -> SUM PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 220
 
 
 state 191
 
-    (110) param_dist -> variable COLON . param_dist
-    (109) param_dist -> . variable
-    (110) param_dist -> . variable COLON param_dist
+    (115) normal -> NORMAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+
+    SEMICOLON       shift and go to state 221
+
+
+state 192
+
+    (111) param_dist -> variable COLON . param_dist
+    (110) param_dist -> . variable
+    (111) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
 
     ID              shift and go to state 78
 
-    variable                       shift and go to state 145
-    param_dist                     shift and go to state 221
-
-state 192
-
-    (113) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE . SEMICOLON
-
-    SEMICOLON       shift and go to state 222
-
+    variable                       shift and go to state 146
+    param_dist                     shift and go to state 222
 
 state 193
 
-    (112) poisson -> POISSON PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (114) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 223
 
 
 state 194
 
-    (111) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (113) poisson -> POISSON PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 224
 
 
 state 195
+
+    (112) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+
+    SEMICOLON       shift and go to state 225
+
+
+state 196
 
     (47) dec_variabless -> type dec_mvar SEMICOLON dec_variabless .
 
@@ -4143,44 +4159,35 @@ state 195
     BRACKETCLOSE    reduce using rule 47 (dec_variabless -> type dec_mvar SEMICOLON dec_variabless .)
 
 
-state 196
+state 197
 
     (49) dec_mvar -> ID COLON dec_mvar .
 
     SEMICOLON       reduce using rule 49 (dec_mvar -> ID COLON dec_mvar .)
 
 
-state 197
+state 198
 
     (50) dec_mvar -> ID BRACEOPEN CTEINT . BRACECLOSE COLON dec_mvar
     (51) dec_mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
     (53) dec_mvar -> ID BRACEOPEN CTEINT . BRACECLOSE
     (54) dec_mvar -> ID BRACEOPEN CTEINT . BRACECLOSE BRACEOPEN CTEINT BRACECLOSE
 
-    BRACECLOSE      shift and go to state 225
+    BRACECLOSE      shift and go to state 226
 
 
-state 198
+state 199
 
     (19) param -> type variable .
     (20) param -> type variable . COLON param
 
     PARENCLOSE      reduce using rule 19 (param -> type variable .)
-    COLON           shift and go to state 226
+    COLON           shift and go to state 227
 
-
-state 199
-
-    (17) dec_func -> FUNCTION type ID PARENOPEN param PARENCLOSE . body
-    (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
-
-    BRACKETOPEN     shift and go to state 22
-
-    body                           shift and go to state 227
 
 state 200
 
-    (18) dec_func -> FUNCTION VOID ID PARENOPEN param PARENCLOSE . body
+    (17) dec_func -> FUNCTION type ID PARENOPEN param PARENCLOSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
@@ -4189,13 +4196,22 @@ state 200
 
 state 201
 
+    (18) dec_func -> FUNCTION VOID ID PARENOPEN param PARENCLOSE . body
+    (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
+
+    BRACKETOPEN     shift and go to state 22
+
+    body                           shift and go to state 229
+
+state 202
+
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN . CTEINT BRACECLOSE COLON mvar
     (16) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN . CTEINT BRACECLOSE
 
-    CTEINT          shift and go to state 229
+    CTEINT          shift and go to state 230
 
 
-state 202
+state 203
 
     (12) mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON . mvar
     (11) mvar -> . ID COLON mvar
@@ -4207,9 +4223,9 @@ state 202
 
     ID              shift and go to state 27
 
-    mvar                           shift and go to state 230
+    mvar                           shift and go to state 231
 
-state 203
+state 204
 
     (91) condition -> IF PARENOPEN exp PARENCLOSE body .
     (92) condition -> IF PARENOPEN exp PARENCLOSE body . ELSE body
@@ -4233,10 +4249,10 @@ state 203
     FLOAT           reduce using rule 91 (condition -> IF PARENOPEN exp PARENCLOSE body .)
     CHAR            reduce using rule 91 (condition -> IF PARENOPEN exp PARENCLOSE body .)
     BRACKETCLOSE    reduce using rule 91 (condition -> IF PARENOPEN exp PARENCLOSE body .)
-    ELSE            shift and go to state 231
+    ELSE            shift and go to state 232
 
 
-state 204
+state 205
 
     (94) writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .
 
@@ -4261,28 +4277,28 @@ state 204
     BRACKETCLOSE    reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
 
 
-state 205
+state 206
 
     (96) writingg -> exp COLON writingg .
 
     PARENCLOSE      reduce using rule 96 (writingg -> exp COLON writingg .)
 
 
-state 206
-
-    (98) writingg -> CTESTRING COLON writingg .
-
-    PARENCLOSE      reduce using rule 98 (writingg -> CTESTRING COLON writingg .)
-
-
 state 207
+
+    (98) writingg -> auxString COLON writingg .
+
+    PARENCLOSE      reduce using rule 98 (writingg -> auxString COLON writingg .)
+
+
+state 208
 
     (58) call_funcc -> exp COLON call_funcc .
 
     PARENCLOSE      reduce using rule 58 (call_funcc -> exp COLON call_funcc .)
 
 
-state 208
+state 209
 
     (90) variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN . exp BRACECLOSE
     (61) exp -> . exp GREATHERTHAN exp
@@ -4312,14 +4328,14 @@ state 208
     CTEINT          shift and go to state 88
     CTFLOAT         shift and go to state 89
 
-    exp                            shift and go to state 232
+    exp                            shift and go to state 233
     m_exp                          shift and go to state 83
     t                              shift and go to state 84
     f                              shift and go to state 85
     variable                       shift and go to state 90
     call_func                      shift and go to state 91
 
-state 209
+state 210
 
     (60) graph -> PLOT PARENOPEN exp PARENCLOSE SEMICOLON .
 
@@ -4344,7 +4360,7 @@ state 209
     BRACKETCLOSE    reduce using rule 60 (graph -> PLOT PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
-state 210
+state 211
 
     (71) m_expp -> PLUS appendPLUS m_exp .
 
@@ -4362,7 +4378,7 @@ state 210
     BRACECLOSE      reduce using rule 71 (m_expp -> PLUS appendPLUS m_exp .)
 
 
-state 211
+state 212
 
     (72) m_expp -> MINUS appendMINUS m_exp .
 
@@ -4380,7 +4396,7 @@ state 211
     BRACECLOSE      reduce using rule 72 (m_expp -> MINUS appendMINUS m_exp .)
 
 
-state 212
+state 213
 
     (79) termino -> MULTIPLY appendMULTIPLY t .
 
@@ -4400,7 +4416,7 @@ state 212
     BRACECLOSE      reduce using rule 79 (termino -> MULTIPLY appendMULTIPLY t .)
 
 
-state 213
+state 214
 
     (80) termino -> DIVIDE appendDIVIDE t .
 
@@ -4420,57 +4436,34 @@ state 213
     BRACECLOSE      reduce using rule 80 (termino -> DIVIDE appendDIVIDE t .)
 
 
-state 214
-
-    (102) while_loop -> WHILE PARENOPEN exp PARENCLOSE body .
-
-    IF              reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    PRINT           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    READ            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    ID              reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    PLOT            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    RETURN          reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    WHILE           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    FOR             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    MAX             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    MIN             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    SUM             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    NORMAL          reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    UNIFORME        reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    POISSON         reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    BINOMIAL        reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    INT             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    FLOAT           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    CHAR            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    BRACKETCLOSE    reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-
-
 state 215
 
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp . SEMICOLON for_assignment PARENCLOSE body
-    (61) exp -> exp . GREATHERTHAN exp
-    (62) exp -> exp . LESSTHAN exp
-    (63) exp -> exp . GREATHEREQUAL exp
-    (64) exp -> exp . LESSEQUAL exp
-    (65) exp -> exp . DIFFERENT exp
-    (66) exp -> exp . SAME exp
-    (67) exp -> exp . AND exp
-    (68) exp -> exp . OR exp
+    (103) while_loop -> WHILE PARENOPEN exp PARENCLOSE body .
 
-    SEMICOLON       shift and go to state 233
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    IF              reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    PRINT           reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    READ            reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    ID              reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    PLOT            reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    RETURN          reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    WHILE           reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    FOR             reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    MAX             reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    MIN             reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    SUM             reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    NORMAL          reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    UNIFORME        reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    POISSON         reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    BINOMIAL        reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    INT             reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    FLOAT           reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    CHAR            reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    BRACKETCLOSE    reduce using rule 103 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
 
 
 state 216
 
-    (104) for_assignment -> variable EQUAL exp .
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp . SEMICOLON for_assignment PARENCLOSE body
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -4480,213 +4473,236 @@ state 216
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    SEMICOLON       reduce using rule 104 (for_assignment -> variable EQUAL exp .)
-    PARENCLOSE      reduce using rule 104 (for_assignment -> variable EQUAL exp .)
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    SEMICOLON       shift and go to state 234
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 217
 
-    (106) max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .
+    (105) for_assignment -> variable EQUAL exp .
+    (61) exp -> exp . GREATHERTHAN exp
+    (62) exp -> exp . LESSTHAN exp
+    (63) exp -> exp . GREATHEREQUAL exp
+    (64) exp -> exp . LESSEQUAL exp
+    (65) exp -> exp . DIFFERENT exp
+    (66) exp -> exp . SAME exp
+    (67) exp -> exp . AND exp
+    (68) exp -> exp . OR exp
 
-    IF              reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SEMICOLON       reduce using rule 105 (for_assignment -> variable EQUAL exp .)
+    PARENCLOSE      reduce using rule 105 (for_assignment -> variable EQUAL exp .)
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
 state 218
 
-    (107) min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .
+    (107) max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 107 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 219
 
-    (108) sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .
+    (108) min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 108 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 220
 
-    (114) normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (109) sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 109 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 221
 
-    (110) param_dist -> variable COLON param_dist .
+    (115) normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    PARENCLOSE      reduce using rule 110 (param_dist -> variable COLON param_dist .)
+    IF              reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 115 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 222
 
-    (113) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (111) param_dist -> variable COLON param_dist .
 
-    IF              reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PARENCLOSE      reduce using rule 111 (param_dist -> variable COLON param_dist .)
 
 
 state 223
 
-    (112) poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (114) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 114 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 224
 
-    (111) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (113) poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 113 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 225
+
+    (112) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
+
+    IF              reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 112 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+
+
+state 226
 
     (50) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE . COLON dec_mvar
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE . BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
     (53) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE .
     (54) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE . BRACEOPEN CTEINT BRACECLOSE
 
-    COLON           shift and go to state 235
-    BRACEOPEN       shift and go to state 234
+    COLON           shift and go to state 236
+    BRACEOPEN       shift and go to state 235
     SEMICOLON       reduce using rule 53 (dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE .)
 
 
-state 226
+state 227
 
     (20) param -> type variable COLON . param
     (19) param -> . type variable
@@ -4695,18 +4711,18 @@ state 226
     (22) type -> . INT
     (23) type -> . FLOAT
     (24) type -> . CHAR
-    (115) empty -> .
+    (116) empty -> .
 
     INT             shift and go to state 17
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 115 (empty -> .)
+    PARENCLOSE      reduce using rule 116 (empty -> .)
 
-    type                           shift and go to state 152
-    param                          shift and go to state 236
-    empty                          shift and go to state 154
+    type                           shift and go to state 153
+    param                          shift and go to state 237
+    empty                          shift and go to state 155
 
-state 227
+state 228
 
     (17) dec_func -> FUNCTION type ID PARENOPEN param PARENCLOSE body .
 
@@ -4714,7 +4730,7 @@ state 227
     MAIN            reduce using rule 17 (dec_func -> FUNCTION type ID PARENOPEN param PARENCLOSE body .)
 
 
-state 228
+state 229
 
     (18) dec_func -> FUNCTION VOID ID PARENOPEN param PARENCLOSE body .
 
@@ -4722,31 +4738,31 @@ state 228
     MAIN            reduce using rule 18 (dec_func -> FUNCTION VOID ID PARENOPEN param PARENCLOSE body .)
 
 
-state 229
+state 230
 
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT . BRACECLOSE COLON mvar
     (16) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT . BRACECLOSE
 
-    BRACECLOSE      shift and go to state 237
+    BRACECLOSE      shift and go to state 238
 
 
-state 230
+state 231
 
     (12) mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON mvar .
 
     SEMICOLON       reduce using rule 12 (mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON mvar .)
 
 
-state 231
+state 232
 
     (92) condition -> IF PARENOPEN exp PARENCLOSE body ELSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
 
-    body                           shift and go to state 238
+    body                           shift and go to state 239
 
-state 232
+state 233
 
     (90) variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp . BRACECLOSE
     (61) exp -> exp . GREATHERTHAN exp
@@ -4758,39 +4774,39 @@ state 232
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    BRACECLOSE      shift and go to state 239
-    GREATHERTHAN    shift and go to state 121
-    LESSTHAN        shift and go to state 122
-    GREATHEREQUAL   shift and go to state 123
-    LESSEQUAL       shift and go to state 124
-    DIFFERENT       shift and go to state 125
-    SAME            shift and go to state 126
-    AND             shift and go to state 127
-    OR              shift and go to state 128
+    BRACECLOSE      shift and go to state 240
+    GREATHERTHAN    shift and go to state 122
+    LESSTHAN        shift and go to state 123
+    GREATHEREQUAL   shift and go to state 124
+    LESSEQUAL       shift and go to state 125
+    DIFFERENT       shift and go to state 126
+    SAME            shift and go to state 127
+    AND             shift and go to state 128
+    OR              shift and go to state 129
 
 
-state 233
+state 234
 
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON . for_assignment PARENCLOSE body
-    (104) for_assignment -> . variable EQUAL exp
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON . for_assignment PARENCLOSE body
+    (105) for_assignment -> . variable EQUAL exp
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
 
     ID              shift and go to state 78
 
-    for_assignment                 shift and go to state 240
-    variable                       shift and go to state 140
+    for_assignment                 shift and go to state 241
+    variable                       shift and go to state 141
 
-state 234
+state 235
 
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN . CTEINT BRACECLOSE COLON dec_mvar
     (54) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN . CTEINT BRACECLOSE
 
-    CTEINT          shift and go to state 241
+    CTEINT          shift and go to state 242
 
 
-state 235
+state 236
 
     (50) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON . dec_mvar
     (49) dec_mvar -> . ID COLON dec_mvar
@@ -4802,25 +4818,25 @@ state 235
 
     ID              shift and go to state 102
 
-    dec_mvar                       shift and go to state 242
+    dec_mvar                       shift and go to state 243
 
-state 236
+state 237
 
     (20) param -> type variable COLON param .
 
     PARENCLOSE      reduce using rule 20 (param -> type variable COLON param .)
 
 
-state 237
+state 238
 
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE . COLON mvar
     (16) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE .
 
-    COLON           shift and go to state 243
+    COLON           shift and go to state 244
     SEMICOLON       reduce using rule 16 (mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE .)
 
 
-state 238
+state 239
 
     (92) condition -> IF PARENOPEN exp PARENCLOSE body ELSE body .
 
@@ -4845,7 +4861,7 @@ state 238
     BRACKETCLOSE    reduce using rule 92 (condition -> IF PARENOPEN exp PARENCLOSE body ELSE body .)
 
 
-state 239
+state 240
 
     (90) variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE .
 
@@ -4868,29 +4884,29 @@ state 239
     BRACECLOSE      reduce using rule 90 (variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE .)
 
 
-state 240
-
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment . PARENCLOSE body
-
-    PARENCLOSE      shift and go to state 244
-
-
 state 241
+
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment . PARENCLOSE body
+
+    PARENCLOSE      shift and go to state 245
+
+
+state 242
 
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT . BRACECLOSE COLON dec_mvar
     (54) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT . BRACECLOSE
 
-    BRACECLOSE      shift and go to state 245
+    BRACECLOSE      shift and go to state 246
 
 
-state 242
+state 243
 
     (50) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar .
 
     SEMICOLON       reduce using rule 50 (dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar .)
 
 
-state 243
+state 244
 
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON . mvar
     (11) mvar -> . ID COLON mvar
@@ -4902,59 +4918,59 @@ state 243
 
     ID              shift and go to state 27
 
-    mvar                           shift and go to state 246
+    mvar                           shift and go to state 247
 
-state 244
+state 245
 
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE . body
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
 
-    body                           shift and go to state 247
+    body                           shift and go to state 248
 
-state 245
+state 246
 
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE . COLON dec_mvar
     (54) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE .
 
-    COLON           shift and go to state 248
+    COLON           shift and go to state 249
     SEMICOLON       reduce using rule 54 (dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE .)
 
 
-state 246
+state 247
 
     (13) mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar .
 
     SEMICOLON       reduce using rule 13 (mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar .)
 
 
-state 247
-
-    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .
-
-    IF              reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    PRINT           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    READ            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    ID              reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    PLOT            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    RETURN          reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    WHILE           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    FOR             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    MAX             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    MIN             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    SUM             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    NORMAL          reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    UNIFORME        reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    POISSON         reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    BINOMIAL        reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    INT             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    FLOAT           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    CHAR            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    BRACKETCLOSE    reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-
-
 state 248
+
+    (104) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .
+
+    IF              reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    PRINT           reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    READ            reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    ID              reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    PLOT            reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    RETURN          reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    WHILE           reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    FOR             reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    MAX             reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    MIN             reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    SUM             reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    NORMAL          reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    UNIFORME        reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    POISSON         reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    BINOMIAL        reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    INT             reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    FLOAT           reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    CHAR            reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    BRACKETCLOSE    reduce using rule 104 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+
+
+state 249
 
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON . dec_mvar
     (49) dec_mvar -> . ID COLON dec_mvar
@@ -4966,9 +4982,9 @@ state 248
 
     ID              shift and go to state 102
 
-    dec_mvar                       shift and go to state 249
+    dec_mvar                       shift and go to state 250
 
-state 249
+state 250
 
     (51) dec_mvar -> ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar .
 
@@ -4977,17 +4993,9 @@ state 249
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for INT in state 149 resolved as shift
-WARNING: shift/reduce conflict for FLOAT in state 149 resolved as shift
-WARNING: shift/reduce conflict for CHAR in state 149 resolved as shift
-WARNING: shift/reduce conflict for GREATHERTHAN in state 167 resolved as shift
-WARNING: shift/reduce conflict for LESSTHAN in state 167 resolved as shift
-WARNING: shift/reduce conflict for GREATHEREQUAL in state 167 resolved as shift
-WARNING: shift/reduce conflict for LESSEQUAL in state 167 resolved as shift
-WARNING: shift/reduce conflict for DIFFERENT in state 167 resolved as shift
-WARNING: shift/reduce conflict for SAME in state 167 resolved as shift
-WARNING: shift/reduce conflict for AND in state 167 resolved as shift
-WARNING: shift/reduce conflict for OR in state 167 resolved as shift
+WARNING: shift/reduce conflict for INT in state 150 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 150 resolved as shift
+WARNING: shift/reduce conflict for CHAR in state 150 resolved as shift
 WARNING: shift/reduce conflict for GREATHERTHAN in state 168 resolved as shift
 WARNING: shift/reduce conflict for LESSTHAN in state 168 resolved as shift
 WARNING: shift/reduce conflict for GREATHEREQUAL in state 168 resolved as shift
@@ -5044,6 +5052,14 @@ WARNING: shift/reduce conflict for DIFFERENT in state 174 resolved as shift
 WARNING: shift/reduce conflict for SAME in state 174 resolved as shift
 WARNING: shift/reduce conflict for AND in state 174 resolved as shift
 WARNING: shift/reduce conflict for OR in state 174 resolved as shift
+WARNING: shift/reduce conflict for GREATHERTHAN in state 175 resolved as shift
+WARNING: shift/reduce conflict for LESSTHAN in state 175 resolved as shift
+WARNING: shift/reduce conflict for GREATHEREQUAL in state 175 resolved as shift
+WARNING: shift/reduce conflict for LESSEQUAL in state 175 resolved as shift
+WARNING: shift/reduce conflict for DIFFERENT in state 175 resolved as shift
+WARNING: shift/reduce conflict for SAME in state 175 resolved as shift
+WARNING: shift/reduce conflict for AND in state 175 resolved as shift
+WARNING: shift/reduce conflict for OR in state 175 resolved as shift
 WARNING: reduce/reduce conflict in state 29 resolved using rule (bodyy -> statement)
 WARNING: rejected rule (empty -> <empty>) in state 29
 WARNING: reduce/reduce conflict in state 87 resolved using rule (f -> ID)

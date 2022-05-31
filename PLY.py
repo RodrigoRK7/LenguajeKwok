@@ -79,7 +79,7 @@ def t_CTFLOAT(t):
     return t
 
 def t_CTESTRING(t):
-    r'(\")([A-Za-z0-9]|[ \t\n] | (\() | (\))) + (\")'
+    r'".*"'
     t.value = str(t.value)
     return t
 
@@ -447,10 +447,27 @@ def p_writingg(p):
     '''
     writingg : exp
     | exp COLON writingg
-    | CTESTRING 
-    | CTESTRING COLON writingg
+    | auxString
+    | auxString COLON writingg
     '''
-    #print(p[:])
+    print(p[:])
+    print(operandos)
+    operadores.append("print")
+    print(operandos)
+    operador = operadores.pop()
+    operandoDer = operandos.pop(0)
+    global temporal
+    lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
+    print(operandos)
+
+def p_auxString(p):
+    '''
+    auxString : CTESTRING
+       
+    '''
+    if(p[1]):
+        operandos.append(p[1])
+
 def p_reading(p):
     '''
     reading : READ multivariables SEMICOLON
