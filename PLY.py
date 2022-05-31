@@ -253,18 +253,18 @@ def p_assignment(p):
     '''
     assignment : variable EQUAL exp SEMICOLON
     '''
-    print(p[:])
+    print("Entré en Assignment y la pila de operandos va: ",p[-1])
+    print("Entré en Assignment y la pila de operadores va ",operadores)
+   # print(p[:])
     if p[2] and len(p) > 4:
-        print("Entré en Assignment y la pila de operandos va: ",operandos)
-        print("Entré en Assignment y la pila de operadores va ",operadores)
         operadores.append(p[2])
         operador = operadores.pop()
         operandoIzq = operandos.pop()
         operandoDer = operandos.pop()
         global temporal
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
-        print("Salí de Assignment y la pila de operandos va: ",operandos)
-        print("Salí de Assignment y la pila de operadores va ",operadores)
+    print("Salí de Assignment y la pila de operandos va: ",operandos)
+    print("Salí de Assignment y la pila de operadores va ",operadores)
 
 def p_call_func(p):
     '''
@@ -296,9 +296,9 @@ def p_exp(p):
 
     '''
     print(p[:])
+    print("Entré en exp y la pila de operandos va: ",operandos)
+    print("Entré en exp y la pila de operadores va ",operadores)
     if len(p) >= 3 and p[2]:
-        print("Entré en exp y la pila de operandos va: ",operandos)
-        print("Entré en exp y la pila de operadores va ",operadores)
         operadores.append(p[2])
         operador = operadores.pop()
         operandoDer = operandos.pop()
@@ -307,54 +307,67 @@ def p_exp(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-        print("Salí de exp y la pila de operandos va: ",operandos)
-        print("Salí de exp y la pila de operadores va ",operadores)
+    print("Salí de exp y la pila de operandos va: ",operandos)
+    print("Salí de exp y la pila de operadores va ",operadores)
 
 
 def p_m_exp(p):
     '''
     m_exp : t m_expp 
     '''
-    #print(p[:])
-    if(len(operadores) > 0):
-        #print(operadores)
-        #print("Pila de operadores antes pop: ",operadores)
-        print("Entré en m_exp y la pila de operandos va: ",operandos)
-        print("Entré en m_exp y la pila de operadores va ",operadores)
-        operador = operadores.pop()
-        #print("Pila de operadores después de pop: ",operadores)
-        operandoDer = operandos.pop()
-        operandoIzq = operandos.pop()
-        global temporal
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-        operandos.append("t"+str(temporal))
-        temporal = temporal + 1
-        print("Salí de m_exp y la pila de operandos va: ",operandos)
-        print("Salí de m_exp y la pila de operadores va ",operadores)
+    print("Entré en m_exp y la pila de operandos va: ",operandos)
+    print("Entré en m_exp y la pila de operadores va ",operadores)
+    print(p[:])
+    
+    print("Salí de m_exp y la pila de operandos va: ",operandos)
+    print("Salí de m_exp y la pila de operadores va ",operadores)
 
 def p_m_expp(p):
     '''
-    m_expp : PLUS m_exp 
-        | MINUS m_exp 
+    m_expp : PLUS appendPLUS m_exp
+        | MINUS appendMINUS m_exp
         | empty
     '''
     print(p[:])
-    if p[1] and len(p) > 2:
-        print("Entré en m_expp y la pila de operandos va: ",operandos)
-        print("Entré en m_expp y la pila de operadores va ",operadores)
-        operadores.append(p[1])
-       
-        print("Salí de m_expp y la pila de operandos va: ",operandos)
-        print("Salí de m_expp y la pila de operadores va ",operadores)
+    print("Entré en m_expp y la pila de operandos va: ",operandos)
+    print("Entré en m_expp y la pila de operadores va ",operadores)
+    #if p[1] and len(p) > 2:
+    print("Salí de m_expp y la pila de operandos va: ",operandos)
+    print("Salí de m_expp y la pila de operadores va ",operadores)
+
+def p_appendPLUS(p):
+    '''
+    appendPLUS : empty
+    '''
+    operadores.append("+")
+
+def p_appendMINUS(p):
+    '''
+    appendMINUS : empty
+    '''
+    operadores.append("-")
+
+def p_appendMULTIPLY(p):
+    '''
+    appendMULTIPLY : empty
+    '''
+    operadores.append("*")
+
+def p_appendDIVIDE(p):
+    '''
+    appendDIVIDE : empty
+    '''
+    operadores.append("/")
 
 def p_t(p):
     '''
     t : f termino
     '''
-    #print(operadores)
-    if(len(operadores) > 0 and (operadores[len(operadores)-1] == "*" or operadores[len(operadores)-1] == "/")):
-        print("Entré en t y la pila de operandos va: ",operandos)
-        print("Entré en t y la pila de operadores va ",operadores)
+    print(p[:])
+    print(p[-1])
+    print("Entré en t y la pila de operandos va: ",operandos)
+    print("Entré en t y la pila de operadores va ",operadores)
+    if(len(operadores) > 0 and (operadores[len(operadores)-1] == "+" or operadores[len(operadores)-1] == "-")):
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
@@ -362,46 +375,48 @@ def p_t(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-        print("Salí de t y la pila de operandos va: ",operandos)
-        print("Salí de t y la pila de operadores va ",operadores)
+    print("Salí de t y la pila de operandos va: ",operandos)
+    print("Salí de t y la pila de operadores va ",operadores)
     
 
 def p_termino(p):
     '''
-    termino : MULTIPLY t 
-        | DIVIDE t 
+    termino : MULTIPLY appendMULTIPLY t 
+        | DIVIDE appendDIVIDE t 
         | empty
     '''
-    #print(p[:]) 
-    if p[1] and len(p) > 2:
-        print("Entré en termino y la pila de operandos va: ",operandos)
-        print("Entré en termino y la pila de operadores va ",operadores)
-        operadores.append(p[1])
-        print("Salí de termino y la pila de operandos va: ",operandos)
-        print("Salí de termino y la pila de operadores va ",operadores)
+    print("termino", p[:])
+    print("Entré en termino y la pila de operandos va: ",operandos)
+    print("Entré en termino y la pila de operadores va ",operadores)
+    #if p[1] and len(p) > 2:
+    print("Salí de termino y la pila de operandos va: ",operandos)
+    print("Salí de termino y la pila de operadores va ",operadores)
 
 def p_f(p):
     '''
     f : PARENOPEN exp PARENCLOSE 
-    | PLUS ID
-    | MINUS ID
     | ID
-    | PLUS CTEINT
-    | MINUS CTEINT
     | CTEINT
-    | PLUS CTFLOAT
-    | MINUS CTFLOAT
     | CTFLOAT 
     | variable
     | call_func
     '''
-    #print(p[:])
+    print(p[:])
+    print(p[-1])
+    print("Entré de f y la pila de operandos va: ",operandos)
+    print("Entré de f y la pila de operadores va ",operadores)
     if len(p) == 2:
-        print("Entré de f y la pila de operandos va: ",operandos)
-        print("Entré de f y la pila de operadores va ",operadores)
         operandos.append(p[1])
-        print("Salí de f y la pila de operandos va: ",operandos)
-        print("Salí de f y la pila de operadores va ",operadores)
+        if(len(operadores) > 0 and (operadores[len(operadores)-1] == "*" or operadores[len(operadores)-1] == "/")):
+            operador = operadores.pop()
+            operandoDer = operandos.pop()
+            operandoIzq = operandos.pop()
+            global temporal
+            lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
+            operandos.append("t"+str(temporal))
+            temporal = temporal + 1
+    print("Salí de f y la pila de operandos va: ",operandos)
+    print("Salí de f y la pila de operadores va ",operadores)
 
 def p_variable(p):
     '''
@@ -410,12 +425,12 @@ def p_variable(p):
     | ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     '''
     #print(p[:])
+    print("Entré de variable y la pila de operandos va: ",operandos)
+    print("Entré de variable y la pila de operadores va ",operadores)
     if len(p) >= 2 and p[1]:
-        print("Entré de variable y la pila de operandos va: ",operandos)
-        print("Entré de variable y la pila de operadores va ",operadores)
         operandos.append(p[1])
-        print("Salí de variable y la pila de operandos va: ",operandos)
-        print("Salí de variable y la pila de operadores va ",operadores)
+    print("Salí de variable y la pila de operandos va: ",operandos)
+    print("Salí de variable y la pila de operadores va ",operadores)
 
 def p_condition(p):
     '''
@@ -426,6 +441,7 @@ def p_writing(p):
     '''
     writing : PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
     '''
+    #print(p[:])
 
 def p_writingg(p):
     '''
@@ -434,6 +450,7 @@ def p_writingg(p):
     | CTESTRING 
     | CTESTRING COLON writingg
     '''
+    #print(p[:])
 def p_reading(p):
     '''
     reading : READ multivariables SEMICOLON
@@ -520,7 +537,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test4.txt','r')
+        archivo = open('test2.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

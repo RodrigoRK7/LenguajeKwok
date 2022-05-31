@@ -1,5 +1,5 @@
 Rodrigo de Jesús Ruiz Kwok A00824488
 
-Sexto avance - Lenguaje Kwok
+Septimo avance - Lenguaje Kwok
 
-En este sexto avance implementé el Cuadruplos.py que tiene la clase cuadruplos la cual importo en PLY.py para generar los cuadruplos de los estatutos lineales con las pilas de operandos. Igual modifiqué la gramática para tener variables globales y locales en las funciones, de igual forma ya guardo las variables locales en el scope global.
+En este septimo avance se generan completamente los cuadruplos con sus respectivos temporales, de los estatutos lineales solo queda corregir un bug que hay respecto a la asociatividad por izquierda. Avancé en la documentación y de igual forma avancé con el trabajo de estatutos no lineales.
