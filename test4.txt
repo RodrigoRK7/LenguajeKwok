@@ -1,0 +1,8 @@
+program test1;
+var float soyvariable;
+function void media(){
+ int acum;
+}
+main{
+  A = B / C / D * E;
+}

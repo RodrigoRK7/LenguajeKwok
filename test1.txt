@@ -6,7 +6,7 @@ function void media(){
 }
 main{
     media()
-    promedio = suma / total * casa;
+    promedio = suma + total * casa / hola - 8;
     futbol = pasion + gol;
     if(gol >= 6){
         print(futbol);
