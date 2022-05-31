@@ -5,5 +5,10 @@ function void media(){
     
 }
 main{
+    read nombre;
     casa = ((A + B) * C + D * E * F + K / H * J) + G * L + H + J > (A - C * D) / F;
+    if(pelos == 9){
+        hola = 4;
+    }
+    read casa, pino;
 }

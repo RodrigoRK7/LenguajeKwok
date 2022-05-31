@@ -5,5 +5,5 @@ function void media(){
     
 }
 main{
-    casa = ((A * B - C * D ) > C + D * E / F) < (G * H - J > L - A) < B + C > D * F;
+    casa = ((A * B - C * D ) > C + D * E / F) && (G * H - J > L - A) && B + C > D * F;
 }

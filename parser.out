@@ -95,48 +95,49 @@ Rule 89    variable -> ID BRACEOPEN exp BRACECLOSE
 Rule 90    variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
 Rule 91    condition -> IF PARENOPEN exp PARENCLOSE body
 Rule 92    condition -> IF PARENOPEN exp PARENCLOSE body ELSE body
-Rule 93    writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
-Rule 94    writingg -> exp
-Rule 95    writingg -> exp COLON writingg
-Rule 96    writingg -> CTESTRING
-Rule 97    writingg -> CTESTRING COLON writingg
-Rule 98    reading -> READ multivariables SEMICOLON
-Rule 99    multivariables -> variable
-Rule 100   multivariables -> variable COLON multivariables
-Rule 101   while_loop -> WHILE PARENOPEN exp PARENCLOSE body
-Rule 102   for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-Rule 103   for_assignment -> variable EQUAL exp
-Rule 104   return -> RETURN exp SEMICOLON
-Rule 105   max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 106   min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 107   sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON
-Rule 108   param_dist -> variable
-Rule 109   param_dist -> variable COLON param_dist
-Rule 110   binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 111   poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 112   uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 113   normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-Rule 114   empty -> <empty>
+Rule 93    cuadruploIF -> empty
+Rule 94    writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
+Rule 95    writingg -> exp
+Rule 96    writingg -> exp COLON writingg
+Rule 97    writingg -> CTESTRING
+Rule 98    writingg -> CTESTRING COLON writingg
+Rule 99    reading -> READ multivariables SEMICOLON
+Rule 100   multivariables -> variable
+Rule 101   multivariables -> variable COLON multivariables
+Rule 102   while_loop -> WHILE PARENOPEN exp PARENCLOSE body
+Rule 103   for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+Rule 104   for_assignment -> variable EQUAL exp
+Rule 105   return -> RETURN exp SEMICOLON
+Rule 106   max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 107   min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 108   sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON
+Rule 109   param_dist -> variable
+Rule 110   param_dist -> variable COLON param_dist
+Rule 111   binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 112   poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 113   uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 114   normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+Rule 115   empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 67
-BINOMIAL             : 110
+BINOMIAL             : 111
 BRACECLOSE           : 12 13 13 15 16 16 50 51 51 53 54 54 89 90 90
 BRACEOPEN            : 12 13 13 15 16 16 50 51 51 53 54 54 89 90 90
 BRACKETCLOSE         : 25
 BRACKETOPEN          : 25
 CHAR                 : 24
-COLON                : 11 12 13 20 49 50 51 58 95 97 100 109
+COLON                : 11 12 13 20 49 50 51 58 96 98 101 110
 CTEINT               : 12 13 13 15 16 16 50 51 51 53 54 54 84
-CTESTRING            : 96 97
+CTESTRING            : 97 98
 CTFLOAT              : 85
 DIFFERENT            : 65
 DIVIDE               : 80
 ELSE                 : 92
-EQUAL                : 55 103
+EQUAL                : 55 104
 FLOAT                : 23
-FOR                  : 102
+FOR                  : 103
 FUNCTION             : 17 18
 GREATHEREQUAL        : 63
 GREATHERTHAN         : 61
@@ -146,28 +147,28 @@ INT                  : 22
 LESSEQUAL            : 64
 LESSTHAN             : 62
 MAIN                 : 7
-MAX                  : 105
-MIN                  : 106
+MAX                  : 106
+MIN                  : 107
 MINUS                : 72
 MULTIPLY             : 79
-NORMAL               : 113
+NORMAL               : 114
 OR                   : 68
-PARENCLOSE           : 17 18 56 60 82 91 92 93 101 102 105 106 107 110 111 112 113
-PARENOPEN            : 17 18 56 60 82 91 92 93 101 102 105 106 107 110 111 112 113
+PARENCLOSE           : 17 18 56 60 82 91 92 94 102 103 106 107 108 111 112 113 114
+PARENOPEN            : 17 18 56 60 82 91 92 94 102 103 106 107 108 111 112 113 114
 PLOT                 : 60
 PLUS                 : 71
-POISSON              : 111
-PRINT                : 93
+POISSON              : 112
+PRINT                : 94
 PROGRAM              : 1 2 3 4
-READ                 : 98
-RETURN               : 104
+READ                 : 99
+RETURN               : 105
 SAME                 : 66
-SEMICOLON            : 1 2 3 4 9 10 47 48 55 60 93 98 102 102 104 105 106 107 110 111 112 113
-SUM                  : 107
-UNIFORME             : 112
+SEMICOLON            : 1 2 3 4 9 10 47 48 55 60 94 99 103 103 105 106 107 108 111 112 113 114
+SUM                  : 108
+UNIFORME             : 113
 VAR                  : 8
 VOID                 : 18
-WHILE                : 101
+WHILE                : 102
 error                : 
 
 Nonterminals, with rules where they appear
@@ -178,19 +179,20 @@ appendMULTIPLY       : 79
 appendPLUS           : 71
 assignment           : 30
 binomial             : 45
-body                 : 7 17 18 91 92 92 101 102
+body                 : 7 17 18 91 92 92 102 103
 bodyy                : 25 27
 call_func            : 34 87
 call_funcc           : 56 58
 condition            : 31
+cuadruploIF          : 
 dec_func             : 5 6
 dec_mvar             : 47 48 49 50 51
 dec_variables        : 29
 dec_variabless       : 46 47
-empty                : 21 28 59 73 74 75 76 77 81
-exp                  : 55 57 58 60 61 61 62 62 63 63 64 64 65 65 66 66 67 67 68 68 82 89 90 90 91 92 94 95 101 102 103 104 105 106 107
+empty                : 21 28 59 73 74 75 76 77 81 93
+exp                  : 55 57 58 60 61 61 62 62 63 63 64 64 65 65 66 66 67 67 68 68 82 89 90 90 91 92 95 96 102 103 104 105 106 107 108
 f                    : 78
-for_assignment       : 102 102
+for_assignment       : 103 103
 for_loop             : 38
 graph                : 35
 m_exp                : 69 71 72
@@ -199,11 +201,11 @@ main_body            : 1 2 3 4
 max                  : 39
 min                  : 40
 multiple_funcs       : 1 3 6
-multivariables       : 98 100
+multivariables       : 99 101
 mvar                 : 9 10 11 12 13
 normal               : 42
 param                : 17 18 20
-param_dist           : 109 110 111 112 113
+param_dist           : 110 111 112 113 114
 poisson              : 44
 reading              : 33
 return               : 36
@@ -214,12 +216,12 @@ t                    : 70 79 80
 termino              : 78
 type                 : 9 10 17 19 20 47 48
 uniforme             : 43
-variable             : 19 20 55 86 99 100 103 108 109
+variable             : 19 20 55 86 100 101 104 109 110
 vars                 : 1 2
 varss                : 8 9
 while_loop           : 37
 writing              : 32
-writingg             : 93 95 97
+writingg             : 94 96 98
 
 Parsing method: LALR
 
@@ -475,25 +477,25 @@ state 22
     (43) statement -> . uniforme
     (44) statement -> . poisson
     (45) statement -> . binomial
-    (114) empty -> .
+    (115) empty -> .
     (46) dec_variables -> . dec_variabless
     (55) assignment -> . variable EQUAL exp SEMICOLON
     (91) condition -> . IF PARENOPEN exp PARENCLOSE body
     (92) condition -> . IF PARENOPEN exp PARENCLOSE body ELSE body
-    (93) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
-    (98) reading -> . READ multivariables SEMICOLON
+    (94) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
+    (99) reading -> . READ multivariables SEMICOLON
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
     (60) graph -> . PLOT PARENOPEN exp PARENCLOSE SEMICOLON
-    (104) return -> . RETURN exp SEMICOLON
-    (101) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
-    (102) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (105) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
-    (106) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
-    (107) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
-    (113) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (112) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (111) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (110) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (105) return -> . RETURN exp SEMICOLON
+    (102) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
+    (103) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (106) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
+    (107) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
+    (114) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (111) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
     (47) dec_variabless -> . type dec_mvar SEMICOLON dec_variabless
     (48) dec_variabless -> . type dec_mvar SEMICOLON
     (88) variable -> . ID
@@ -503,7 +505,7 @@ state 22
     (23) type -> . FLOAT
     (24) type -> . CHAR
 
-    BRACKETCLOSE    reduce using rule 114 (empty -> .)
+    BRACKETCLOSE    reduce using rule 115 (empty -> .)
     IF              shift and go to state 50
     PRINT           shift and go to state 51
     READ            shift and go to state 52
@@ -621,25 +623,25 @@ state 29
     (43) statement -> . uniforme
     (44) statement -> . poisson
     (45) statement -> . binomial
-    (114) empty -> .
+    (115) empty -> .
     (46) dec_variables -> . dec_variabless
     (55) assignment -> . variable EQUAL exp SEMICOLON
     (91) condition -> . IF PARENOPEN exp PARENCLOSE body
     (92) condition -> . IF PARENOPEN exp PARENCLOSE body ELSE body
-    (93) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
-    (98) reading -> . READ multivariables SEMICOLON
+    (94) writing -> . PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
+    (99) reading -> . READ multivariables SEMICOLON
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
     (60) graph -> . PLOT PARENOPEN exp PARENCLOSE SEMICOLON
-    (104) return -> . RETURN exp SEMICOLON
-    (101) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
-    (102) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (105) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
-    (106) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
-    (107) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
-    (113) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (112) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (111) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
-    (110) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (105) return -> . RETURN exp SEMICOLON
+    (102) while_loop -> . WHILE PARENOPEN exp PARENCLOSE body
+    (103) for_loop -> . FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (106) max -> . MAX PARENOPEN exp PARENCLOSE SEMICOLON
+    (107) min -> . MIN PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) sum -> . SUM PARENOPEN exp PARENCLOSE SEMICOLON
+    (114) normal -> . NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) uniforme -> . UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) poisson -> . POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (111) binomial -> . BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
     (47) dec_variabless -> . type dec_mvar SEMICOLON dec_variabless
     (48) dec_variabless -> . type dec_mvar SEMICOLON
     (88) variable -> . ID
@@ -670,7 +672,7 @@ state 29
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
 
-  ! BRACKETCLOSE    [ reduce using rule 114 (empty -> .) ]
+  ! BRACKETCLOSE    [ reduce using rule 115 (empty -> .) ]
 
     statement                      shift and go to state 29
     bodyy                          shift and go to state 72
@@ -1170,16 +1172,16 @@ state 50
 
 state 51
 
-    (93) writing -> PRINT . PARENOPEN writingg PARENCLOSE SEMICOLON
+    (94) writing -> PRINT . PARENOPEN writingg PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 75
 
 
 state 52
 
-    (98) reading -> READ . multivariables SEMICOLON
-    (99) multivariables -> . variable
-    (100) multivariables -> . variable COLON multivariables
+    (99) reading -> READ . multivariables SEMICOLON
+    (100) multivariables -> . variable
+    (101) multivariables -> . variable COLON multivariables
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -1210,7 +1212,7 @@ state 54
 
 state 55
 
-    (104) return -> RETURN . exp SEMICOLON
+    (105) return -> RETURN . exp SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -1247,63 +1249,63 @@ state 55
 
 state 56
 
-    (101) while_loop -> WHILE . PARENOPEN exp PARENCLOSE body
+    (102) while_loop -> WHILE . PARENOPEN exp PARENCLOSE body
 
     PARENOPEN       shift and go to state 92
 
 
 state 57
 
-    (102) for_loop -> FOR . PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (103) for_loop -> FOR . PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
 
     PARENOPEN       shift and go to state 93
 
 
 state 58
 
-    (105) max -> MAX . PARENOPEN exp PARENCLOSE SEMICOLON
+    (106) max -> MAX . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 94
 
 
 state 59
 
-    (106) min -> MIN . PARENOPEN exp PARENCLOSE SEMICOLON
+    (107) min -> MIN . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 95
 
 
 state 60
 
-    (107) sum -> SUM . PARENOPEN exp PARENCLOSE SEMICOLON
+    (108) sum -> SUM . PARENOPEN exp PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 96
 
 
 state 61
 
-    (113) normal -> NORMAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (114) normal -> NORMAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 97
 
 
 state 62
 
-    (112) uniforme -> UNIFORME . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (113) uniforme -> UNIFORME . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 98
 
 
 state 63
 
-    (111) poisson -> POISSON . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (112) poisson -> POISSON . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 99
 
 
 state 64
 
-    (110) binomial -> BINOMIAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
+    (111) binomial -> BINOMIAL . PARENOPEN param_dist PARENCLOSE SEMICOLON
 
     PARENOPEN       shift and go to state 100
 
@@ -1493,11 +1495,11 @@ state 74
 
 state 75
 
-    (93) writing -> PRINT PARENOPEN . writingg PARENCLOSE SEMICOLON
-    (94) writingg -> . exp
-    (95) writingg -> . exp COLON writingg
-    (96) writingg -> . CTESTRING
-    (97) writingg -> . CTESTRING COLON writingg
+    (94) writing -> PRINT PARENOPEN . writingg PARENCLOSE SEMICOLON
+    (95) writingg -> . exp
+    (96) writingg -> . exp COLON writingg
+    (97) writingg -> . CTESTRING
+    (98) writingg -> . CTESTRING COLON writingg
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -1536,17 +1538,17 @@ state 75
 
 state 76
 
-    (98) reading -> READ multivariables . SEMICOLON
+    (99) reading -> READ multivariables . SEMICOLON
 
     SEMICOLON       shift and go to state 113
 
 
 state 77
 
-    (99) multivariables -> variable .
-    (100) multivariables -> variable . COLON multivariables
+    (100) multivariables -> variable .
+    (101) multivariables -> variable . COLON multivariables
 
-    SEMICOLON       reduce using rule 99 (multivariables -> variable .)
+    SEMICOLON       reduce using rule 100 (multivariables -> variable .)
     COLON           shift and go to state 114
 
 
@@ -1578,7 +1580,7 @@ state 79
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
-    (114) empty -> .
+    (115) empty -> .
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -1592,7 +1594,7 @@ state 79
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    PARENCLOSE      reduce using rule 114 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
@@ -1684,7 +1686,7 @@ state 81
 
 state 82
 
-    (104) return -> RETURN exp . SEMICOLON
+    (105) return -> RETURN exp . SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -1729,22 +1731,22 @@ state 84
     (71) m_expp -> . PLUS appendPLUS m_exp
     (72) m_expp -> . MINUS appendMINUS m_exp
     (73) m_expp -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
     PLUS            shift and go to state 130
     MINUS           shift and go to state 131
-    SEMICOLON       reduce using rule 114 (empty -> .)
-    GREATHERTHAN    reduce using rule 114 (empty -> .)
-    LESSTHAN        reduce using rule 114 (empty -> .)
-    GREATHEREQUAL   reduce using rule 114 (empty -> .)
-    LESSEQUAL       reduce using rule 114 (empty -> .)
-    DIFFERENT       reduce using rule 114 (empty -> .)
-    SAME            reduce using rule 114 (empty -> .)
-    AND             reduce using rule 114 (empty -> .)
-    OR              reduce using rule 114 (empty -> .)
-    PARENCLOSE      reduce using rule 114 (empty -> .)
-    COLON           reduce using rule 114 (empty -> .)
-    BRACECLOSE      reduce using rule 114 (empty -> .)
+    SEMICOLON       reduce using rule 115 (empty -> .)
+    GREATHERTHAN    reduce using rule 115 (empty -> .)
+    LESSTHAN        reduce using rule 115 (empty -> .)
+    GREATHEREQUAL   reduce using rule 115 (empty -> .)
+    LESSEQUAL       reduce using rule 115 (empty -> .)
+    DIFFERENT       reduce using rule 115 (empty -> .)
+    SAME            reduce using rule 115 (empty -> .)
+    AND             reduce using rule 115 (empty -> .)
+    OR              reduce using rule 115 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
+    COLON           reduce using rule 115 (empty -> .)
+    BRACECLOSE      reduce using rule 115 (empty -> .)
 
     m_expp                         shift and go to state 129
     empty                          shift and go to state 132
@@ -1755,24 +1757,24 @@ state 85
     (79) termino -> . MULTIPLY appendMULTIPLY t
     (80) termino -> . DIVIDE appendDIVIDE t
     (81) termino -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
     MULTIPLY        shift and go to state 134
     DIVIDE          shift and go to state 135
-    PLUS            reduce using rule 114 (empty -> .)
-    MINUS           reduce using rule 114 (empty -> .)
-    SEMICOLON       reduce using rule 114 (empty -> .)
-    GREATHERTHAN    reduce using rule 114 (empty -> .)
-    LESSTHAN        reduce using rule 114 (empty -> .)
-    GREATHEREQUAL   reduce using rule 114 (empty -> .)
-    LESSEQUAL       reduce using rule 114 (empty -> .)
-    DIFFERENT       reduce using rule 114 (empty -> .)
-    SAME            reduce using rule 114 (empty -> .)
-    AND             reduce using rule 114 (empty -> .)
-    OR              reduce using rule 114 (empty -> .)
-    PARENCLOSE      reduce using rule 114 (empty -> .)
-    COLON           reduce using rule 114 (empty -> .)
-    BRACECLOSE      reduce using rule 114 (empty -> .)
+    PLUS            reduce using rule 115 (empty -> .)
+    MINUS           reduce using rule 115 (empty -> .)
+    SEMICOLON       reduce using rule 115 (empty -> .)
+    GREATHERTHAN    reduce using rule 115 (empty -> .)
+    LESSTHAN        reduce using rule 115 (empty -> .)
+    GREATHEREQUAL   reduce using rule 115 (empty -> .)
+    LESSEQUAL       reduce using rule 115 (empty -> .)
+    DIFFERENT       reduce using rule 115 (empty -> .)
+    SAME            reduce using rule 115 (empty -> .)
+    AND             reduce using rule 115 (empty -> .)
+    OR              reduce using rule 115 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
+    COLON           reduce using rule 115 (empty -> .)
+    BRACECLOSE      reduce using rule 115 (empty -> .)
 
     termino                        shift and go to state 133
     empty                          shift and go to state 136
@@ -1965,7 +1967,7 @@ state 91
 
 state 92
 
-    (101) while_loop -> WHILE PARENOPEN . exp PARENCLOSE body
+    (102) while_loop -> WHILE PARENOPEN . exp PARENCLOSE body
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2002,8 +2004,8 @@ state 92
 
 state 93
 
-    (102) for_loop -> FOR PARENOPEN . for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-    (103) for_assignment -> . variable EQUAL exp
+    (103) for_loop -> FOR PARENOPEN . for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (104) for_assignment -> . variable EQUAL exp
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2015,7 +2017,7 @@ state 93
 
 state 94
 
-    (105) max -> MAX PARENOPEN . exp PARENCLOSE SEMICOLON
+    (106) max -> MAX PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2052,7 +2054,7 @@ state 94
 
 state 95
 
-    (106) min -> MIN PARENOPEN . exp PARENCLOSE SEMICOLON
+    (107) min -> MIN PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2089,7 +2091,7 @@ state 95
 
 state 96
 
-    (107) sum -> SUM PARENOPEN . exp PARENCLOSE SEMICOLON
+    (108) sum -> SUM PARENOPEN . exp PARENCLOSE SEMICOLON
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -2126,9 +2128,9 @@ state 96
 
 state 97
 
-    (113) normal -> NORMAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (108) param_dist -> . variable
-    (109) param_dist -> . variable COLON param_dist
+    (114) normal -> NORMAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (109) param_dist -> . variable
+    (110) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2140,9 +2142,9 @@ state 97
 
 state 98
 
-    (112) uniforme -> UNIFORME PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (108) param_dist -> . variable
-    (109) param_dist -> . variable COLON param_dist
+    (113) uniforme -> UNIFORME PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (109) param_dist -> . variable
+    (110) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2154,9 +2156,9 @@ state 98
 
 state 99
 
-    (111) poisson -> POISSON PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (108) param_dist -> . variable
-    (109) param_dist -> . variable COLON param_dist
+    (112) poisson -> POISSON PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (109) param_dist -> . variable
+    (110) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2168,9 +2170,9 @@ state 99
 
 state 100
 
-    (110) binomial -> BINOMIAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
-    (108) param_dist -> . variable
-    (109) param_dist -> . variable COLON param_dist
+    (111) binomial -> BINOMIAL PARENOPEN . param_dist PARENCLOSE SEMICOLON
+    (109) param_dist -> . variable
+    (110) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2211,12 +2213,12 @@ state 103
     (22) type -> . INT
     (23) type -> . FLOAT
     (24) type -> . CHAR
-    (114) empty -> .
+    (115) empty -> .
 
     INT             shift and go to state 17
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 114 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
 
     type                           shift and go to state 152
     param                          shift and go to state 153
@@ -2231,12 +2233,12 @@ state 104
     (22) type -> . INT
     (23) type -> . FLOAT
     (24) type -> . CHAR
-    (114) empty -> .
+    (115) empty -> .
 
     INT             shift and go to state 17
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 114 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
 
     param                          shift and go to state 155
     type                           shift and go to state 152
@@ -2316,15 +2318,15 @@ state 109
 
 state 110
 
-    (93) writing -> PRINT PARENOPEN writingg . PARENCLOSE SEMICOLON
+    (94) writing -> PRINT PARENOPEN writingg . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 159
 
 
 state 111
 
-    (94) writingg -> exp .
-    (95) writingg -> exp . COLON writingg
+    (95) writingg -> exp .
+    (96) writingg -> exp . COLON writingg
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -2334,7 +2336,7 @@ state 111
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    PARENCLOSE      reduce using rule 94 (writingg -> exp .)
+    PARENCLOSE      reduce using rule 95 (writingg -> exp .)
     COLON           shift and go to state 160
     GREATHERTHAN    shift and go to state 121
     LESSTHAN        shift and go to state 122
@@ -2348,43 +2350,43 @@ state 111
 
 state 112
 
-    (96) writingg -> CTESTRING .
-    (97) writingg -> CTESTRING . COLON writingg
+    (97) writingg -> CTESTRING .
+    (98) writingg -> CTESTRING . COLON writingg
 
-    PARENCLOSE      reduce using rule 96 (writingg -> CTESTRING .)
+    PARENCLOSE      reduce using rule 97 (writingg -> CTESTRING .)
     COLON           shift and go to state 161
 
 
 state 113
 
-    (98) reading -> READ multivariables SEMICOLON .
+    (99) reading -> READ multivariables SEMICOLON .
 
-    IF              reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    PRINT           reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    READ            reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    ID              reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    PLOT            reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    RETURN          reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    WHILE           reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    FOR             reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    MAX             reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    MIN             reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    SUM             reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    NORMAL          reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    UNIFORME        reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    POISSON         reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    BINOMIAL        reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    INT             reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    FLOAT           reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    CHAR            reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 98 (reading -> READ multivariables SEMICOLON .)
+    IF              reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    PRINT           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    READ            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    ID              reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    PLOT            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    RETURN          reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    WHILE           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    FOR             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    MAX             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    MIN             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    SUM             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    NORMAL          reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    UNIFORME        reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    POISSON         reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    BINOMIAL        reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    INT             reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    FLOAT           reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    CHAR            reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 99 (reading -> READ multivariables SEMICOLON .)
 
 
 state 114
 
-    (100) multivariables -> variable COLON . multivariables
-    (99) multivariables -> . variable
-    (100) multivariables -> . variable COLON multivariables
+    (101) multivariables -> variable COLON . multivariables
+    (100) multivariables -> . variable
+    (101) multivariables -> . variable COLON multivariables
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -2482,27 +2484,27 @@ state 119
 
 state 120
 
-    (104) return -> RETURN exp SEMICOLON .
+    (105) return -> RETURN exp SEMICOLON .
 
-    IF              reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    PRINT           reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    READ            reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    ID              reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    PLOT            reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    RETURN          reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    WHILE           reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    FOR             reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    MAX             reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    MIN             reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    SUM             reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    NORMAL          reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    UNIFORME        reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    POISSON         reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    BINOMIAL        reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    INT             reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    FLOAT           reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    CHAR            reduce using rule 104 (return -> RETURN exp SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 104 (return -> RETURN exp SEMICOLON .)
+    IF              reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    PRINT           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    READ            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    ID              reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    PLOT            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    RETURN          reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    WHILE           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    FOR             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    MAX             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    MIN             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    SUM             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    NORMAL          reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    UNIFORME        reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    POISSON         reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    BINOMIAL        reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    INT             reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    FLOAT           reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    CHAR            reduce using rule 105 (return -> RETURN exp SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 105 (return -> RETURN exp SEMICOLON .)
 
 
 state 121
@@ -2823,12 +2825,12 @@ state 130
 
     (71) m_expp -> PLUS . appendPLUS m_exp
     (74) appendPLUS -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
-    PARENOPEN       reduce using rule 114 (empty -> .)
-    ID              reduce using rule 114 (empty -> .)
-    CTEINT          reduce using rule 114 (empty -> .)
-    CTFLOAT         reduce using rule 114 (empty -> .)
+    PARENOPEN       reduce using rule 115 (empty -> .)
+    ID              reduce using rule 115 (empty -> .)
+    CTEINT          reduce using rule 115 (empty -> .)
+    CTFLOAT         reduce using rule 115 (empty -> .)
 
     appendPLUS                     shift and go to state 175
     empty                          shift and go to state 176
@@ -2837,12 +2839,12 @@ state 131
 
     (72) m_expp -> MINUS . appendMINUS m_exp
     (75) appendMINUS -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
-    PARENOPEN       reduce using rule 114 (empty -> .)
-    ID              reduce using rule 114 (empty -> .)
-    CTEINT          reduce using rule 114 (empty -> .)
-    CTFLOAT         reduce using rule 114 (empty -> .)
+    PARENOPEN       reduce using rule 115 (empty -> .)
+    ID              reduce using rule 115 (empty -> .)
+    CTEINT          reduce using rule 115 (empty -> .)
+    CTFLOAT         reduce using rule 115 (empty -> .)
 
     appendMINUS                    shift and go to state 177
     empty                          shift and go to state 178
@@ -2889,12 +2891,12 @@ state 134
 
     (79) termino -> MULTIPLY . appendMULTIPLY t
     (76) appendMULTIPLY -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
-    PARENOPEN       reduce using rule 114 (empty -> .)
-    ID              reduce using rule 114 (empty -> .)
-    CTEINT          reduce using rule 114 (empty -> .)
-    CTFLOAT         reduce using rule 114 (empty -> .)
+    PARENOPEN       reduce using rule 115 (empty -> .)
+    ID              reduce using rule 115 (empty -> .)
+    CTEINT          reduce using rule 115 (empty -> .)
+    CTFLOAT         reduce using rule 115 (empty -> .)
 
     appendMULTIPLY                 shift and go to state 179
     empty                          shift and go to state 180
@@ -2903,12 +2905,12 @@ state 135
 
     (80) termino -> DIVIDE . appendDIVIDE t
     (77) appendDIVIDE -> . empty
-    (114) empty -> .
+    (115) empty -> .
 
-    PARENOPEN       reduce using rule 114 (empty -> .)
-    ID              reduce using rule 114 (empty -> .)
-    CTEINT          reduce using rule 114 (empty -> .)
-    CTFLOAT         reduce using rule 114 (empty -> .)
+    PARENOPEN       reduce using rule 115 (empty -> .)
+    ID              reduce using rule 115 (empty -> .)
+    CTEINT          reduce using rule 115 (empty -> .)
+    CTFLOAT         reduce using rule 115 (empty -> .)
 
     appendDIVIDE                   shift and go to state 181
     empty                          shift and go to state 182
@@ -2958,7 +2960,7 @@ state 137
 
 state 138
 
-    (101) while_loop -> WHILE PARENOPEN exp . PARENCLOSE body
+    (102) while_loop -> WHILE PARENOPEN exp . PARENCLOSE body
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -2981,21 +2983,21 @@ state 138
 
 state 139
 
-    (102) for_loop -> FOR PARENOPEN for_assignment . SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
+    (103) for_loop -> FOR PARENOPEN for_assignment . SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
 
     SEMICOLON       shift and go to state 185
 
 
 state 140
 
-    (103) for_assignment -> variable . EQUAL exp
+    (104) for_assignment -> variable . EQUAL exp
 
     EQUAL           shift and go to state 186
 
 
 state 141
 
-    (105) max -> MAX PARENOPEN exp . PARENCLOSE SEMICOLON
+    (106) max -> MAX PARENOPEN exp . PARENCLOSE SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3018,7 +3020,7 @@ state 141
 
 state 142
 
-    (106) min -> MIN PARENOPEN exp . PARENCLOSE SEMICOLON
+    (107) min -> MIN PARENOPEN exp . PARENCLOSE SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3041,7 +3043,7 @@ state 142
 
 state 143
 
-    (107) sum -> SUM PARENOPEN exp . PARENCLOSE SEMICOLON
+    (108) sum -> SUM PARENOPEN exp . PARENCLOSE SEMICOLON
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -3064,37 +3066,37 @@ state 143
 
 state 144
 
-    (113) normal -> NORMAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (114) normal -> NORMAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 190
 
 
 state 145
 
-    (108) param_dist -> variable .
-    (109) param_dist -> variable . COLON param_dist
+    (109) param_dist -> variable .
+    (110) param_dist -> variable . COLON param_dist
 
-    PARENCLOSE      reduce using rule 108 (param_dist -> variable .)
+    PARENCLOSE      reduce using rule 109 (param_dist -> variable .)
     COLON           shift and go to state 191
 
 
 state 146
 
-    (112) uniforme -> UNIFORME PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (113) uniforme -> UNIFORME PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 192
 
 
 state 147
 
-    (111) poisson -> POISSON PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (112) poisson -> POISSON PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 193
 
 
 state 148
 
-    (110) binomial -> BINOMIAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
+    (111) binomial -> BINOMIAL PARENOPEN param_dist . PARENCLOSE SEMICOLON
 
     PARENCLOSE      shift and go to state 194
 
@@ -3245,18 +3247,18 @@ state 158
 
 state 159
 
-    (93) writing -> PRINT PARENOPEN writingg PARENCLOSE . SEMICOLON
+    (94) writing -> PRINT PARENOPEN writingg PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 204
 
 
 state 160
 
-    (95) writingg -> exp COLON . writingg
-    (94) writingg -> . exp
-    (95) writingg -> . exp COLON writingg
-    (96) writingg -> . CTESTRING
-    (97) writingg -> . CTESTRING COLON writingg
+    (96) writingg -> exp COLON . writingg
+    (95) writingg -> . exp
+    (96) writingg -> . exp COLON writingg
+    (97) writingg -> . CTESTRING
+    (98) writingg -> . CTESTRING COLON writingg
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -3295,11 +3297,11 @@ state 160
 
 state 161
 
-    (97) writingg -> CTESTRING COLON . writingg
-    (94) writingg -> . exp
-    (95) writingg -> . exp COLON writingg
-    (96) writingg -> . CTESTRING
-    (97) writingg -> . CTESTRING COLON writingg
+    (98) writingg -> CTESTRING COLON . writingg
+    (95) writingg -> . exp
+    (96) writingg -> . exp COLON writingg
+    (97) writingg -> . CTESTRING
+    (98) writingg -> . CTESTRING COLON writingg
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -3338,9 +3340,9 @@ state 161
 
 state 162
 
-    (100) multivariables -> variable COLON multivariables .
+    (101) multivariables -> variable COLON multivariables .
 
-    SEMICOLON       reduce using rule 100 (multivariables -> variable COLON multivariables .)
+    SEMICOLON       reduce using rule 101 (multivariables -> variable COLON multivariables .)
 
 
 state 163
@@ -3399,7 +3401,7 @@ state 164
     (67) exp -> . exp AND exp
     (68) exp -> . exp OR exp
     (69) exp -> . m_exp
-    (114) empty -> .
+    (115) empty -> .
     (70) m_exp -> . t m_expp
     (78) t -> . f termino
     (82) f -> . PARENOPEN exp PARENCLOSE
@@ -3413,7 +3415,7 @@ state 164
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     (56) call_func -> . ID PARENOPEN call_funcc PARENCLOSE
 
-    PARENCLOSE      reduce using rule 114 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
     PARENOPEN       shift and go to state 86
     ID              shift and go to state 87
     CTEINT          shift and go to state 88
@@ -3972,7 +3974,7 @@ state 183
 
 state 184
 
-    (101) while_loop -> WHILE PARENOPEN exp PARENCLOSE . body
+    (102) while_loop -> WHILE PARENOPEN exp PARENCLOSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
@@ -3981,7 +3983,7 @@ state 184
 
 state 185
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON . exp SEMICOLON for_assignment PARENCLOSE body
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON . exp SEMICOLON for_assignment PARENCLOSE body
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -4018,7 +4020,7 @@ state 185
 
 state 186
 
-    (103) for_assignment -> variable EQUAL . exp
+    (104) for_assignment -> variable EQUAL . exp
     (61) exp -> . exp GREATHERTHAN exp
     (62) exp -> . exp LESSTHAN exp
     (63) exp -> . exp GREATHEREQUAL exp
@@ -4055,37 +4057,37 @@ state 186
 
 state 187
 
-    (105) max -> MAX PARENOPEN exp PARENCLOSE . SEMICOLON
+    (106) max -> MAX PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 217
 
 
 state 188
 
-    (106) min -> MIN PARENOPEN exp PARENCLOSE . SEMICOLON
+    (107) min -> MIN PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 218
 
 
 state 189
 
-    (107) sum -> SUM PARENOPEN exp PARENCLOSE . SEMICOLON
+    (108) sum -> SUM PARENOPEN exp PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 219
 
 
 state 190
 
-    (113) normal -> NORMAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (114) normal -> NORMAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 220
 
 
 state 191
 
-    (109) param_dist -> variable COLON . param_dist
-    (108) param_dist -> . variable
-    (109) param_dist -> . variable COLON param_dist
+    (110) param_dist -> variable COLON . param_dist
+    (109) param_dist -> . variable
+    (110) param_dist -> . variable COLON param_dist
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -4097,21 +4099,21 @@ state 191
 
 state 192
 
-    (112) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (113) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 222
 
 
 state 193
 
-    (111) poisson -> POISSON PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (112) poisson -> POISSON PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 223
 
 
 state 194
 
-    (110) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
+    (111) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE . SEMICOLON
 
     SEMICOLON       shift and go to state 224
 
@@ -4236,41 +4238,41 @@ state 203
 
 state 204
 
-    (93) writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .
+    (94) writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 93 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 94 (writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON .)
 
 
 state 205
 
-    (95) writingg -> exp COLON writingg .
+    (96) writingg -> exp COLON writingg .
 
-    PARENCLOSE      reduce using rule 95 (writingg -> exp COLON writingg .)
+    PARENCLOSE      reduce using rule 96 (writingg -> exp COLON writingg .)
 
 
 state 206
 
-    (97) writingg -> CTESTRING COLON writingg .
+    (98) writingg -> CTESTRING COLON writingg .
 
-    PARENCLOSE      reduce using rule 97 (writingg -> CTESTRING COLON writingg .)
+    PARENCLOSE      reduce using rule 98 (writingg -> CTESTRING COLON writingg .)
 
 
 state 207
@@ -4420,32 +4422,32 @@ state 213
 
 state 214
 
-    (101) while_loop -> WHILE PARENOPEN exp PARENCLOSE body .
+    (102) while_loop -> WHILE PARENOPEN exp PARENCLOSE body .
 
-    IF              reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    PRINT           reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    READ            reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    ID              reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    PLOT            reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    RETURN          reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    WHILE           reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    FOR             reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    MAX             reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    MIN             reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    SUM             reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    NORMAL          reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    UNIFORME        reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    POISSON         reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    BINOMIAL        reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    INT             reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    FLOAT           reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    CHAR            reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
-    BRACKETCLOSE    reduce using rule 101 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    IF              reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    PRINT           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    READ            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    ID              reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    PLOT            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    RETURN          reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    WHILE           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    FOR             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    MAX             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    MIN             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    SUM             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    NORMAL          reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    UNIFORME        reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    POISSON         reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    BINOMIAL        reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    INT             reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    FLOAT           reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    CHAR            reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
+    BRACKETCLOSE    reduce using rule 102 (while_loop -> WHILE PARENOPEN exp PARENCLOSE body .)
 
 
 state 215
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp . SEMICOLON for_assignment PARENCLOSE body
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp . SEMICOLON for_assignment PARENCLOSE body
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -4468,7 +4470,7 @@ state 215
 
 state 216
 
-    (103) for_assignment -> variable EQUAL exp .
+    (104) for_assignment -> variable EQUAL exp .
     (61) exp -> exp . GREATHERTHAN exp
     (62) exp -> exp . LESSTHAN exp
     (63) exp -> exp . GREATHEREQUAL exp
@@ -4478,8 +4480,8 @@ state 216
     (67) exp -> exp . AND exp
     (68) exp -> exp . OR exp
 
-    SEMICOLON       reduce using rule 103 (for_assignment -> variable EQUAL exp .)
-    PARENCLOSE      reduce using rule 103 (for_assignment -> variable EQUAL exp .)
+    SEMICOLON       reduce using rule 104 (for_assignment -> variable EQUAL exp .)
+    PARENCLOSE      reduce using rule 104 (for_assignment -> variable EQUAL exp .)
     GREATHERTHAN    shift and go to state 121
     LESSTHAN        shift and go to state 122
     GREATHEREQUAL   shift and go to state 123
@@ -4492,184 +4494,184 @@ state 216
 
 state 217
 
-    (105) max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .
+    (106) max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 105 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 106 (max -> MAX PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 218
 
-    (106) min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .
+    (107) min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 106 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 107 (min -> MIN PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 219
 
-    (107) sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .
+    (108) sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 107 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 108 (sum -> SUM PARENOPEN exp PARENCLOSE SEMICOLON .)
 
 
 state 220
 
-    (113) normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (114) normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 113 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 114 (normal -> NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 221
 
-    (109) param_dist -> variable COLON param_dist .
+    (110) param_dist -> variable COLON param_dist .
 
-    PARENCLOSE      reduce using rule 109 (param_dist -> variable COLON param_dist .)
+    PARENCLOSE      reduce using rule 110 (param_dist -> variable COLON param_dist .)
 
 
 state 222
 
-    (112) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (113) uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 112 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 113 (uniforme -> UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 223
 
-    (111) poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (112) poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 111 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 112 (poisson -> POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 224
 
-    (110) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
+    (111) binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .
 
-    IF              reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PRINT           reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    READ            reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    ID              reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    PLOT            reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    RETURN          reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    WHILE           reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FOR             reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MAX             reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    MIN             reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    SUM             reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    NORMAL          reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    UNIFORME        reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    POISSON         reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BINOMIAL        reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    INT             reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    FLOAT           reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    CHAR            reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
-    BRACKETCLOSE    reduce using rule 110 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    IF              reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PRINT           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    READ            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    ID              reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    PLOT            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    RETURN          reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    WHILE           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FOR             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MAX             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    MIN             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    SUM             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    NORMAL          reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    UNIFORME        reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    POISSON         reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BINOMIAL        reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    INT             reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    FLOAT           reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    CHAR            reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
+    BRACKETCLOSE    reduce using rule 111 (binomial -> BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON .)
 
 
 state 225
@@ -4693,12 +4695,12 @@ state 226
     (22) type -> . INT
     (23) type -> . FLOAT
     (24) type -> . CHAR
-    (114) empty -> .
+    (115) empty -> .
 
     INT             shift and go to state 17
     FLOAT           shift and go to state 18
     CHAR            shift and go to state 19
-    PARENCLOSE      reduce using rule 114 (empty -> .)
+    PARENCLOSE      reduce using rule 115 (empty -> .)
 
     type                           shift and go to state 152
     param                          shift and go to state 236
@@ -4769,8 +4771,8 @@ state 232
 
 state 233
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON . for_assignment PARENCLOSE body
-    (103) for_assignment -> . variable EQUAL exp
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON . for_assignment PARENCLOSE body
+    (104) for_assignment -> . variable EQUAL exp
     (88) variable -> . ID
     (89) variable -> . ID BRACEOPEN exp BRACECLOSE
     (90) variable -> . ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
@@ -4868,7 +4870,7 @@ state 239
 
 state 240
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment . PARENCLOSE body
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment . PARENCLOSE body
 
     PARENCLOSE      shift and go to state 244
 
@@ -4904,7 +4906,7 @@ state 243
 
 state 244
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE . body
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE . body
     (25) body -> . BRACKETOPEN bodyy BRACKETCLOSE
 
     BRACKETOPEN     shift and go to state 22
@@ -4929,27 +4931,27 @@ state 246
 
 state 247
 
-    (102) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .
+    (103) for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .
 
-    IF              reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    PRINT           reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    READ            reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    ID              reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    PLOT            reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    RETURN          reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    WHILE           reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    FOR             reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    MAX             reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    MIN             reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    SUM             reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    NORMAL          reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    UNIFORME        reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    POISSON         reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    BINOMIAL        reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    INT             reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    FLOAT           reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    CHAR            reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
-    BRACKETCLOSE    reduce using rule 102 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    IF              reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    PRINT           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    READ            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    ID              reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    PLOT            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    RETURN          reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    WHILE           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    FOR             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    MAX             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    MIN             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    SUM             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    NORMAL          reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    UNIFORME        reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    POISSON         reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    BINOMIAL        reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    INT             reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    FLOAT           reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    CHAR            reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
+    BRACKETCLOSE    reduce using rule 103 (for_loop -> FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body .)
 
 
 state 248
