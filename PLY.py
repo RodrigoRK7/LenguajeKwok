@@ -79,7 +79,7 @@ def t_CTFLOAT(t):
     return t
 
 def t_CTESTRING(t):
-    r'".*"'
+    r'"(.*?)"'
     t.value = str(t.value)
     return t
 
