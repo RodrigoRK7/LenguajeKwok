@@ -1,4 +1,5 @@
 import sys
+from turtle import goto
 import ply.lex as lex
 import ply.yacc as yacc
 from DirectorioFunciones import DirectorioFunciones
@@ -93,10 +94,13 @@ operadores = []
 operandos = []
 tipos = []
 lista_cuadruplos = []
+saltos = []
+operandos_verificar = []
 directorioFunciones = DirectorioFunciones()
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
 temporal = 1
+
 
 def p_start_program(p):
     '''
@@ -110,6 +114,7 @@ def p_start_program(p):
     print("Pila de tipos: ", tipos)
     print("Pila de operandos: ",operandos)
     print("Pila de operadores: ",operadores)
+    print("Pila de saltos: ", saltos)
     print("Directorio Global: ", directorioFunciones.get("global").variables)
     #print("Tabla de variables: ", directorioFunciones.get("media").variables)
     for index, i in enumerate(lista_cuadruplos):
@@ -450,15 +455,15 @@ def p_writingg(p):
     | auxString
     | auxString COLON writingg
     '''
-    print(p[:])
-    print(operandos)
+    #print(p[:])
+    #print(operandos)
     operadores.append("print")
-    print(operandos)
+    #print(operandos)
     operador = operadores.pop()
     operandoDer = operandos.pop(0)
     global temporal
     lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
-    print(operandos)
+    #print(operandos)
 
 def p_auxString(p):
     '''
@@ -488,9 +493,38 @@ def p_multivariables(p):
 
 def p_while_loop(p):
     '''
-    while_loop : WHILE PARENOPEN exp PARENCLOSE body
+    while_loop : WHILE whileMigaja PARENOPEN exp PARENCLOSE whileEval body whileEnd
        
     '''
+def p_whileMigaja(p):
+    '''
+    whileMigaja : empty
+       
+    '''
+    saltos.append(len(lista_cuadruplos)+1)
+
+def p_whileEval(p):
+    '''
+    whileEval : empty
+       
+    '''
+    resultado = operandos.pop()
+    saltos.append(len(lista_cuadruplos))
+    operandos_verificar.append(resultado)
+
+def p_whileEnd(p):
+    '''
+    whileEnd : empty
+       
+    '''
+    goto = saltos.pop(0)
+    insertarCuadruplo = saltos.pop(0)
+    resultado = operandos_verificar.pop()
+    lista_cuadruplos.append(Cuadruplos("GOTO","", "", goto))
+    saltos.append(len(lista_cuadruplos)+1)
+    gotof = saltos.pop(0)
+    lista_cuadruplos.insert(insertarCuadruplo, Cuadruplos("GOTOF",resultado , "", gotof+1))
+
 def p_for_loop(p):
     '''
     for_loop : FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
@@ -561,7 +595,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test3.txt','r')
+        archivo = open('test5.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

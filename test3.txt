@@ -8,4 +8,9 @@ main{
     casa = ((A + B) * C + D * E * F + K / H * J) + G * L + H + J > (A - C * D) / F;
     read casa, pino, PLAYA;
     print (9, "78hola+", 9, 8, "7");
+    while(A > B * C){
+        A = A - D;
+        print(A);
+    }
+    B = C + A;
 }
