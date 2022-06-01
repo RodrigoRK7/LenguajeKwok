@@ -1,6 +1,6 @@
 program test1;
 var float soyvariable;
-main{
+main(){
     print("Probare el while");
     print("Probare el while", lol);
     while(A > B){

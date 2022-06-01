@@ -3,7 +3,7 @@ var float soyvariable;
 function void media(){
  int acum;
 }
-main{
+main(){
     read nombre;
     casa = ((A + B) * C + D * E * F + K / H * J) + G * L + H + J > (A - C * D) / F;
     read casa, pino, PLAYA;

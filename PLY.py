@@ -104,10 +104,10 @@ temporal = 1
 
 def p_start_program(p):
     '''
-    start_program : PROGRAM ID SEMICOLON vars multiple_funcs main_body
-    | PROGRAM ID SEMICOLON vars main_body
-    | PROGRAM ID SEMICOLON multiple_funcs main_body
-    | PROGRAM ID SEMICOLON main_body
+    start_program : cuadruploMain PROGRAM ID SEMICOLON vars multiple_funcs main_body
+    | cuadruploMain PROGRAM ID SEMICOLON vars main_body
+    | cuadruploMain PROGRAM ID SEMICOLON multiple_funcs main_body
+    | cuadruploMain PROGRAM ID SEMICOLON main_body
     '''
     p[0] = "COMPILED"
 
@@ -120,6 +120,14 @@ def p_start_program(p):
     for index, i in enumerate(lista_cuadruplos):
         print(str(index+1)+".-", i.get())
 
+def p_cuadruploMain(p):
+    '''
+    cuadruploMain : empty
+    '''
+    #Goto para el main
+    lista_cuadruplos.append(Cuadruplos("GOTO","" , "", ""))
+    #Guardamos el index actual para luego reemplazar el cuadruplo GOTO por uno completo
+    saltos.append(len(lista_cuadruplos)-1)
 
 def p_multiple_funcs(p):
     '''
@@ -128,8 +136,23 @@ def p_multiple_funcs(p):
     '''
 def p_main_body(p):
     '''
-    main_body : MAIN body
+    main_body : MAIN PARENOPEN PARENCLOSE gotoMain body 
     '''
+def p_gotoMain(p):
+    '''
+    gotoMain : empty
+    '''
+    saltos.append(len(lista_cuadruplos)+1)
+    print(saltos)
+    #Cambiar el GOTOF incompleto por el completo
+    goto = saltos.pop()
+    
+    #Index del GOTOF incompleto
+    index = saltos.pop()
+
+    #Cambiar el GOTOF incompleto por el completo
+    lista_cuadruplos.pop(index)
+    lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "", goto))
 
 def p_vars(p):
     '''
@@ -686,7 +709,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test7.txt','r')
+        archivo = open('test2.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

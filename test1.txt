@@ -4,7 +4,7 @@ function void media(){
  int acum;
     
 }
-main{
+main(){
     media()
     promedio = suma + total * casa / hola - 8;
     futbol = pasion + gol;

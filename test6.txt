@@ -1,5 +1,5 @@
 program test1;
-main{
+main(){
     if(A + B > C * D){
         A = B + D;
         print("Estoy en el if");
