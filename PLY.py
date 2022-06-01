@@ -441,10 +441,15 @@ def p_cuadruploIF(p):
     '''
     cuadruploIF : empty 
     '''
+    #Obtener la expresion a evaluar
     resultado = operandos.pop()
     #Posicion para insertar el GotoF
-    insertar_ciclos.append(len(lista_cuadruplos))
-    #Guardar el temporal a usar para el GotoF
+    lista_cuadruplos.append(Cuadruplos("GOTOF",resultado , "", ""))
+    
+    #Guardamos el index actual para luego reemplazar el cuadruplo GOTOF por uno completo
+    saltos.append(len(lista_cuadruplos)-1)
+
+    #Guardamos la expresion a estar evaluando para cuando armemos el GOTOF completo
     operandos_verificar.append(resultado)
 
 def p_cuadruploElse(p):
@@ -461,12 +466,17 @@ def p_ifEnd(p):
     '''
     ifEnd : empty 
     '''
-    insertarCuadruplo = insertar_ciclos.pop(0)
-    resultado = operandos_verificar.pop()
-    #Se suma uno porque se va a insertar el GOTOF
     saltos.append(len(lista_cuadruplos)+1)
-    gotof = saltos.pop(0)
-    lista_cuadruplos.insert(insertarCuadruplo, Cuadruplos("GOTOF",resultado , "", gotof+1))
+    #Obtener la expresion a evaluar
+    resultado = operandos_verificar.pop()
+
+    #Index del GOTOF incompleto
+    index = saltos.pop(0)
+
+    #Cambiar el GOTOF incompleto por el completo
+    #lista_cuadruplos.pop(index)
+    #gotoF = saltos.pop(0)
+    #lista_cuadruplos.insert(index, Cuadruplos("GOTOF",resultado , "", gotoF))
 
 def p_ifEndElse(p):
     '''
@@ -542,15 +552,24 @@ def p_whileMigaja(p):
     whileMigaja : empty
        
     '''
-    saltos.append(len(lista_cuadruplos)+1)
+    #Se suma 1 porque las listas inician en 0
+    saltos.append(len(lista_cuadruplos) + 1)
 
 def p_whileEval(p):
     '''
     whileEval : empty
        
     '''
+    #Obtenemos la expresion a estar evaluando
     resultado = operandos.pop()
-    saltos.append(len(lista_cuadruplos))
+    
+    #Reservamos el espacio para el GOTOF
+    lista_cuadruplos.append(Cuadruplos("GOTOF",resultado , "", ""))
+    
+    #Guardamos el index actual para luego reemplazar el cuadruplo GOTOF por uno completo
+    saltos.append(len(lista_cuadruplos)-1)
+
+    #Guardamos la expresion a estar evaluando para cuando armemos el GOTOF completo
     operandos_verificar.append(resultado)
 
 def p_whileEnd(p):
@@ -558,13 +577,28 @@ def p_whileEnd(p):
     whileEnd : empty
        
     '''
-    goto = saltos.pop(0)
-    insertarCuadruplo = saltos.pop(0)
+    #Guardar el index en el que acaba el while (se suma 2 para direccionar a lo que sigue fuera del while)
+    saltos.append(len(lista_cuadruplos)+2)
+    
+    #Cambiar el GOTOF incompleto por el completo
+    gotoF = saltos.pop()
+
+    #Index del GOTOF incompleto
+    index = saltos.pop()
+    lista_cuadruplos.pop(index)
+
+    #Obtener la expresion a evaluar
     resultado = operandos_verificar.pop()
-    lista_cuadruplos.append(Cuadruplos("GOTO","", "", goto))
-    saltos.append(len(lista_cuadruplos)+1)
-    gotof = saltos.pop(0)
-    lista_cuadruplos.insert(insertarCuadruplo, Cuadruplos("GOTOF",resultado , "", gotof+1))
+
+    lista_cuadruplos.insert(index, Cuadruplos("GOTOF",resultado , "", gotoF))
+
+    #Obtener el index del cuadruplo que obtiene la expresion a evaluar para regresar a reevaluar la expresion
+    goto = saltos.pop()
+    
+    #Generar el GOTO
+    lista_cuadruplos.append(Cuadruplos("GOTO","", "", goto))    
+    #saltos.append(len(lista_cuadruplos)+1)
+    #gotof = saltos.pop(0)
 
 def p_for_loop(p):
     '''
@@ -636,7 +670,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test6.txt','r')
+        archivo = open('test5.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

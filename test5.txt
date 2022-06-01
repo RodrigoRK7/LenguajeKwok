@@ -1,11 +1,14 @@
 program test1;
 var float soyvariable;
 main{
-    while(A > B * C){
-        A = A - D;
+    print("Probare el while");
+    print("Probare el while", lol);
+    while(A > B){
+        casa = 8;
+        while(A > B){
         print(A);
         casa = 8;
-        A = A * B - B / A;
+        }
     }
     B = C + A;
 }

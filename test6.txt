@@ -5,9 +5,12 @@ main{
         print("Estoy en el if");
         print("Estoy en el if");
         print("Estoy en el if", "chau");
-    }else{
-        A = D - C;
-        print("Estoy en el else", casa, 8+9);
+        while(A > B * C + 8){
+        A = A - D;
+        print(A, B, C, D);
+        casa = 8;
+        A = A * B - B / A;
+    }
     }
     B = A * C + D;
 }
