@@ -1,0 +1,13 @@
+program test1;
+main{
+    if(A + B > C * D){
+        A = B + D;
+        print("Estoy en el if");
+        print("Estoy en el if");
+        print("Estoy en el if", "chau");
+    }else{
+        A = D - C;
+        print("Estoy en el else", casa, 8+9);
+    }
+    B = A * C + D;
+}

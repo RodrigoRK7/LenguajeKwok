@@ -95,6 +95,7 @@ operandos = []
 tipos = []
 lista_cuadruplos = []
 saltos = []
+insertar_ciclos = []
 operandos_verificar = []
 directorioFunciones = DirectorioFunciones()
 directorioFunciones.add("global")
@@ -433,14 +434,54 @@ def p_variable(p):
 
 def p_condition(p):
     '''
-    condition : IF PARENOPEN exp PARENCLOSE body  
-        | IF PARENOPEN exp PARENCLOSE body ELSE body 
+    condition : IF PARENOPEN exp PARENCLOSE cuadruploIF body ifEnd
+        | IF PARENOPEN exp PARENCLOSE cuadruploIF body cuadruploElse ELSE body ifEndElse
     '''
 def p_cuadruploIF(p):
     '''
     cuadruploIF : empty 
     '''
     resultado = operandos.pop()
+    #Posicion para insertar el GotoF
+    insertar_ciclos.append(len(lista_cuadruplos))
+    #Guardar el temporal a usar para el GotoF
+    operandos_verificar.append(resultado)
+
+def p_cuadruploElse(p):
+    '''
+    cuadruploElse : empty 
+    '''
+    #Posicion del GOTO
+    insertar_ciclos.append(len(lista_cuadruplos))
+
+    #Donde inicia el Else (se suma dos para brincar el cuadruplo del goto)
+    saltos.append(len(lista_cuadruplos)+2)
+    
+def p_ifEnd(p):
+    '''
+    ifEnd : empty 
+    '''
+    insertarCuadruplo = insertar_ciclos.pop(0)
+    resultado = operandos_verificar.pop()
+    #Se suma uno porque se va a insertar el GOTOF
+    saltos.append(len(lista_cuadruplos)+1)
+    gotof = saltos.pop(0)
+    lista_cuadruplos.insert(insertarCuadruplo, Cuadruplos("GOTOF",resultado , "", gotof+1))
+
+def p_ifEndElse(p):
+    '''
+    ifEndElse : empty 
+    '''
+    insertarGOTOF = insertar_ciclos.pop(0)
+    insertarGOTO = insertar_ciclos.pop(0)
+    gotof = saltos.pop(0)
+    #Se suma 3 porque debemos contemplar que se insertarán los cuadruplos de GOTO, GOTOF y queremos acceder fuera del else 
+    saltos.append(len(lista_cuadruplos)+3)
+    goto = saltos.pop(0)
+    resultado = operandos_verificar.pop()
+    lista_cuadruplos.insert(insertarGOTO, Cuadruplos("GOTO","", "", goto))
+    lista_cuadruplos.insert(insertarGOTOF, Cuadruplos("GOTOF",resultado , "", gotof+1))
+
 
 def p_writing(p):
     '''
@@ -595,7 +636,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test5.txt','r')
+        archivo = open('test6.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
