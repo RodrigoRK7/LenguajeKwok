@@ -96,8 +96,8 @@ Rule 90    variable -> ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
 Rule 91    condition -> IF PARENOPEN exp PARENCLOSE cuadruploIF body ifEnd
 Rule 92    condition -> IF PARENOPEN exp PARENCLOSE cuadruploIF body cuadruploElse ELSE body ifEndElse
 Rule 93    cuadruploIF -> empty
-Rule 94    cuadruploElse -> empty
-Rule 95    ifEnd -> empty
+Rule 94    ifEnd -> empty
+Rule 95    cuadruploElse -> empty
 Rule 96    ifEndElse -> empty
 Rule 97    writing -> PRINT PARENOPEN writingg PARENCLOSE SEMICOLON
 Rule 98    writingg -> exp
@@ -4756,8 +4756,8 @@ state 234
 
     (91) condition -> IF PARENOPEN exp PARENCLOSE cuadruploIF body . ifEnd
     (92) condition -> IF PARENOPEN exp PARENCLOSE cuadruploIF body . cuadruploElse ELSE body ifEndElse
-    (95) ifEnd -> . empty
-    (94) cuadruploElse -> . empty
+    (94) ifEnd -> . empty
+    (95) cuadruploElse -> . empty
     (122) empty -> .
 
     IF              reduce using rule 122 (empty -> .)
@@ -4909,29 +4909,29 @@ state 244
 
 state 245
 
-    (95) ifEnd -> empty .
-    (94) cuadruploElse -> empty .
+    (94) ifEnd -> empty .
+    (95) cuadruploElse -> empty .
 
-    IF              reduce using rule 95 (ifEnd -> empty .)
-    PRINT           reduce using rule 95 (ifEnd -> empty .)
-    READ            reduce using rule 95 (ifEnd -> empty .)
-    ID              reduce using rule 95 (ifEnd -> empty .)
-    PLOT            reduce using rule 95 (ifEnd -> empty .)
-    RETURN          reduce using rule 95 (ifEnd -> empty .)
-    WHILE           reduce using rule 95 (ifEnd -> empty .)
-    FOR             reduce using rule 95 (ifEnd -> empty .)
-    MAX             reduce using rule 95 (ifEnd -> empty .)
-    MIN             reduce using rule 95 (ifEnd -> empty .)
-    SUM             reduce using rule 95 (ifEnd -> empty .)
-    NORMAL          reduce using rule 95 (ifEnd -> empty .)
-    UNIFORME        reduce using rule 95 (ifEnd -> empty .)
-    POISSON         reduce using rule 95 (ifEnd -> empty .)
-    BINOMIAL        reduce using rule 95 (ifEnd -> empty .)
-    INT             reduce using rule 95 (ifEnd -> empty .)
-    FLOAT           reduce using rule 95 (ifEnd -> empty .)
-    CHAR            reduce using rule 95 (ifEnd -> empty .)
-    BRACKETCLOSE    reduce using rule 95 (ifEnd -> empty .)
-    ELSE            reduce using rule 94 (cuadruploElse -> empty .)
+    IF              reduce using rule 94 (ifEnd -> empty .)
+    PRINT           reduce using rule 94 (ifEnd -> empty .)
+    READ            reduce using rule 94 (ifEnd -> empty .)
+    ID              reduce using rule 94 (ifEnd -> empty .)
+    PLOT            reduce using rule 94 (ifEnd -> empty .)
+    RETURN          reduce using rule 94 (ifEnd -> empty .)
+    WHILE           reduce using rule 94 (ifEnd -> empty .)
+    FOR             reduce using rule 94 (ifEnd -> empty .)
+    MAX             reduce using rule 94 (ifEnd -> empty .)
+    MIN             reduce using rule 94 (ifEnd -> empty .)
+    SUM             reduce using rule 94 (ifEnd -> empty .)
+    NORMAL          reduce using rule 94 (ifEnd -> empty .)
+    UNIFORME        reduce using rule 94 (ifEnd -> empty .)
+    POISSON         reduce using rule 94 (ifEnd -> empty .)
+    BINOMIAL        reduce using rule 94 (ifEnd -> empty .)
+    INT             reduce using rule 94 (ifEnd -> empty .)
+    FLOAT           reduce using rule 94 (ifEnd -> empty .)
+    CHAR            reduce using rule 94 (ifEnd -> empty .)
+    BRACKETCLOSE    reduce using rule 94 (ifEnd -> empty .)
+    ELSE            reduce using rule 95 (cuadruploElse -> empty .)
 
 
 state 246

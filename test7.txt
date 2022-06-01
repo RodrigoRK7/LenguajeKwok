@@ -1,0 +1,20 @@
+program test1;
+main{
+    A = B + C * ( D - E / F ) * H;
+    B = E - F;
+    while(A*B-C >= D*E/(G+H)){
+        H = J * K+B;
+        if(B<H){
+            while(B > A+C){
+                print(A+B*C, D-E);
+                B = B-J;
+            }
+        }else{
+            while(A-D < C+B){
+                A = A+B;
+                print(B-D);
+            }
+        }
+    }
+    F = A + B;
+}

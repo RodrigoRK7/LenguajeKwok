@@ -95,7 +95,6 @@ operandos = []
 tipos = []
 lista_cuadruplos = []
 saltos = []
-insertar_ciclos = []
 operandos_verificar = []
 directorioFunciones = DirectorioFunciones()
 directorioFunciones.add("global")
@@ -451,16 +450,6 @@ def p_cuadruploIF(p):
 
     #Guardamos la expresion a estar evaluando para cuando armemos el GOTOF completo
     operandos_verificar.append(resultado)
-
-def p_cuadruploElse(p):
-    '''
-    cuadruploElse : empty 
-    '''
-    #Posicion del GOTO
-    insertar_ciclos.append(len(lista_cuadruplos))
-
-    #Donde inicia el Else (se suma dos para brincar el cuadruplo del goto)
-    saltos.append(len(lista_cuadruplos)+2)
     
 def p_ifEnd(p):
     '''
@@ -470,28 +459,55 @@ def p_ifEnd(p):
     #Obtener la expresion a evaluar
     resultado = operandos_verificar.pop()
 
+    #Cambiar el GOTOF incompleto por el completo
+    gotoF = saltos.pop()
+    
     #Index del GOTOF incompleto
-    index = saltos.pop(0)
+    index = saltos.pop()
 
     #Cambiar el GOTOF incompleto por el completo
-    #lista_cuadruplos.pop(index)
-    #gotoF = saltos.pop(0)
-    #lista_cuadruplos.insert(index, Cuadruplos("GOTOF",resultado , "", gotoF))
+    lista_cuadruplos.pop(index)
+    lista_cuadruplos.insert(index, Cuadruplos("GOTOF",resultado , "", gotoF))
+
+def p_cuadruploElse(p):
+    '''
+    cuadruploElse : empty 
+    '''
+    #Posicion para insertar el Goto
+    lista_cuadruplos.append(Cuadruplos("GOTO", "", "", ""))
+    
+    #Posicion saliendo del else
+    saltos.append(len(lista_cuadruplos)+1)
+
+    #Obtener la expresion a evaluar
+    resultado = operandos_verificar.pop()
+
+    #Cambiar el GOTOF incompleto por el completo
+    gotoF = saltos.pop()
+    
+    #Index del GOTOF incompleto
+    index = saltos.pop()
+
+    #Cambiar el GOTOF incompleto por el completo
+    lista_cuadruplos.pop(index)
+    lista_cuadruplos.insert(index, Cuadruplos("GOTOF",resultado , "", gotoF))
+    
+    #Posicion del GOTO
+    saltos.append(len(lista_cuadruplos)-1)
+
 
 def p_ifEndElse(p):
     '''
     ifEndElse : empty 
     '''
-    insertarGOTOF = insertar_ciclos.pop(0)
-    insertarGOTO = insertar_ciclos.pop(0)
-    gotof = saltos.pop(0)
-    #Se suma 3 porque debemos contemplar que se insertarán los cuadruplos de GOTO, GOTOF y queremos acceder fuera del else 
-    saltos.append(len(lista_cuadruplos)+3)
-    goto = saltos.pop(0)
-    resultado = operandos_verificar.pop()
-    lista_cuadruplos.insert(insertarGOTO, Cuadruplos("GOTO","", "", goto))
-    lista_cuadruplos.insert(insertarGOTOF, Cuadruplos("GOTOF",resultado , "", gotof+1))
+    #Agregar el index actual (+1 para salir del else)
+    saltos.append(len(lista_cuadruplos)+1)
 
+    #Cambiar el GOTO incompleto por el completo
+    goto = saltos.pop()
+    index = saltos.pop()
+    lista_cuadruplos.pop(index)
+    lista_cuadruplos.insert(index, Cuadruplos("GOTO","", "", goto))
 
 def p_writing(p):
     '''
@@ -670,7 +686,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test5.txt','r')
+        archivo = open('test7.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
