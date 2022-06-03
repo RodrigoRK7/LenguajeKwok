@@ -2,15 +2,17 @@ program test1;
 var int casa, oficina;
 char respuesta, letra;
 float piso;
+int A,B,C,D;
 
-function int promedio(){
+function void promedio(int omniman, char paso){
     int hola;
     char casa;
-    int promedio;
+    int valor;
 }
-function int hola(){
+function int hola(float casa){
     int bye;
     char ca;
+    bye = ca;
 }
 main(){
     char soyGlobal;
@@ -19,10 +21,10 @@ main(){
         print("Estoy en el if");
         print("Estoy en el if");
         print("Estoy en el if", "chau");
-        while(A > B * C + 8){
+        while(A > B * C + A){
         A = A - D;
         print(A, B, C, D);
-        casa = 8;
+        casa = A;
         A = A * B - B / A;
     }
     }

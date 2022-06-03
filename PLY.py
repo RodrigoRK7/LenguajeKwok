@@ -121,10 +121,11 @@ def p_start_program(p):
     print("Pila de operandos: ",operandos)
     print("Pila de operadores: ",operadores)
     print("Pila de saltos: ", saltos)
-    #for index, i in enumerate(directorioFunciones):
-    #   print(i.get())
     print("Directorio Global: ", directorioFunciones.get("global").variables)
-    print("Tabla de variables: ", directorioFunciones.get("promedio").variables)
+    print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
+    print("Tabla de hola: ", directorioFunciones.get("hola").variables)
+    print("Tabla de main: ", directorioFunciones.get("main").variables)
+    
     for index, i in enumerate(lista_cuadruplos):
         print(str(index+1)+".-", i.get())
 
@@ -243,13 +244,34 @@ def p_exitFunc(p):
 
 def p_param(p):
     '''
-    param : type variable
-    | type variable COLON param
+    param : typeParam ID
+    | typeParam ID COLON param
     | empty
     '''
-    ##print(p[:])
-    #operandos.append(p[1])
+    #print(p[:])
+    if len(p) > 2:
+        operandos.append(p[2])
+        tablaVar = directorioFunciones.get(contexto[-1])
+        variable = operandos.pop()
+        if tablaVar.verify(variable):
+            raise Error("NOMBRES DE VARIABLES REPETIDOS DENTRO DE LA MISMA FUNCION")
+        else:
+            if directorioFunciones.verify(variable):
+                raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
+            else:
+                tablaVar.add(variable, tipos.pop())
     
+
+def p_typeParam(p):
+    '''
+    typeParam : INT
+    | FLOAT
+    | CHAR
+    '''
+    #print(p[:])
+    if p[1]:
+        tipos.append(p[1])
+
 def p_type(p):
     '''
     type : INT
@@ -488,15 +510,28 @@ def p_f(p):
     #print("Entré de f y la pila de operandos va: ",operandos)
     #print("Entré de f y la pila de operadores va ",operadores)
     if len(p) == 2:
-        operandos.append(p[1])
-        if(len(operadores) > 0 and (operadores[len(operadores)-1] == "*" or operadores[len(operadores)-1] == "/")):
-            operador = operadores.pop()
-            operandoDer = operandos.pop()
-            operandoIzq = operandos.pop()
-            global temporal
-            lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-            operandos.append("t"+str(temporal))
-            temporal = temporal + 1
+        declarada = False
+        tablaVar = directorioFunciones.get(contexto[-1])
+        #variable = operandos.pop()
+        if tablaVar.verify(p[1]):
+            declarada = True
+        else:
+            if directorioFunciones.get("global").verify(p[1]):
+                declarada = True
+            else:
+                print("No declarada")
+                raise Error("VARIABLE NO DECLARADA")
+        
+        if declarada:
+            operandos.append(p[1])
+            if(len(operadores) > 0 and (operadores[len(operadores)-1] == "*" or operadores[len(operadores)-1] == "/")):
+                operador = operadores.pop()
+                operandoDer = operandos.pop()
+                operandoIzq = operandos.pop()
+                global temporal
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
+                operandos.append("t"+str(temporal))
+                temporal = temporal + 1
     #print("Salí de f y la pila de operandos va: ",operandos)
     #print("Salí de f y la pila de operadores va ",operadores)
 
