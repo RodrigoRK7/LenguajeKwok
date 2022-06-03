@@ -1,5 +1,19 @@
 program test1;
+var int casa, oficina;
+char respuesta, letra;
+float piso;
+
+function int promedio(){
+    int hola;
+    char casa;
+    int promedio;
+}
+function int hola(){
+    int bye;
+    char ca;
+}
 main(){
+    char soyGlobal;
     if(A + B > C * D){
         A = B + D;
         print("Estoy en el if");

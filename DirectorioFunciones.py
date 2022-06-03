@@ -1,4 +1,3 @@
-import logging
 from SymbolTable import SymbolTable
 
 class Singleton(type):
@@ -16,9 +15,12 @@ class DirectorioFunciones(metaclass=Singleton):
     def get(self, moduleName):
         if(moduleName in self.funciones):
             return self.funciones[moduleName]
-        logging.warning("NO EXISTE ESE MODULO")
     
-    def add(self, moduleName):
+    def verify(self, moduleName):
         if(moduleName in self.funciones):
-            logging.warning("YA EXISTE EL MODULO")
+            return 1
+        else:
+            return 0
+
+    def add(self, moduleName):
         self.funciones[moduleName] = SymbolTable()

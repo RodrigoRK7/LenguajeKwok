@@ -5,10 +5,13 @@ class SymbolTable:
         self.variables = {}
         
     def add (self, name, type):
-        if(name in self.variables):
-            logging.warning("ERROR YA EXISTE UNA VARIABLE CON ESE NOMBRE")
-            return 
         self.variables[name] = type
+
+    def verify(self, name):
+        if(name in self.variables):
+            return 1
+        else:
+            return 0
 
     def search (self, name):
         if(name in self.variables):

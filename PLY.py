@@ -6,6 +6,10 @@ from DirectorioFunciones import DirectorioFunciones
 from SymbolTable import DirectorioGlobal
 from Cuadruplos import Cuadruplos
 
+class Error(Exception):
+    def __init__(self, message):
+        self.message = message
+
 reserverdWords = {
     'program' : 'PROGRAM',
     'int' : 'INT',
@@ -29,7 +33,8 @@ reserverdWords = {
     'sum' : 'SUM',
     'uniforme' : 'UNIFORME',
     'poisson' : 'POISSON',
-    'return' : 'RETURN'
+    'return' : 'RETURN',
+    'to': 'TO'
 }
 
 tokens = [
@@ -96,6 +101,7 @@ tipos = []
 lista_cuadruplos = []
 saltos = []
 operandos_verificar = []
+contexto = ["global"]
 directorioFunciones = DirectorioFunciones()
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
@@ -115,8 +121,10 @@ def p_start_program(p):
     print("Pila de operandos: ",operandos)
     print("Pila de operadores: ",operadores)
     print("Pila de saltos: ", saltos)
+    #for index, i in enumerate(directorioFunciones):
+    #   print(i.get())
     print("Directorio Global: ", directorioFunciones.get("global").variables)
-    #print("Tabla de variables: ", directorioFunciones.get("media").variables)
+    print("Tabla de variables: ", directorioFunciones.get("promedio").variables)
     for index, i in enumerate(lista_cuadruplos):
         print(str(index+1)+".-", i.get())
 
@@ -136,8 +144,15 @@ def p_multiple_funcs(p):
     '''
 def p_main_body(p):
     '''
-    main_body : MAIN PARENOPEN PARENCLOSE gotoMain body 
+    main_body : MAIN crearTablaMain PARENOPEN PARENCLOSE gotoMain body 
     '''
+def p_crearTablaMain(p):
+    '''
+    crearTablaMain : empty
+    '''
+    contexto.append("main")
+    directorioFunciones.add("main")
+
 def p_gotoMain(p):
     '''
     gotoMain : empty
@@ -162,13 +177,19 @@ def p_vars(p):
 
 def p_varss(p):
     '''
-    varss : type mvar SEMICOLON varss
-    | type mvar SEMICOLON
+    varss : type guardarTipo mvar SEMICOLON varss
+    | type guardarTipo mvar SEMICOLON
     '''
-    ##print(p[:])
-    tipos.append(p[1])
-    tablaGlobal.add(operandos.pop(), tipos.pop())
+    #print(p[:])
+    tipos.pop()
 
+def p_guardarTipo(p):
+    '''
+    guardarTipo : empty
+    '''
+    #print(p[-1])
+    tipos.append(p[-1])
+    #tablaGlobal.add(operandos.pop(), tipos.pop())
 
 def p_mvar(p):
     '''
@@ -179,21 +200,46 @@ def p_mvar(p):
     | ID BRACEOPEN CTEINT BRACECLOSE 
     | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
     '''
-   ## print(p[:])
+    #print(p[:])
     operandos.append(p[1])
+    tipo = tipos[-1]
+    tipos.append(tipo)
+    variable = operandos.pop()
+    if tablaGlobal.verify(variable):
+        raise Error("NOMBRES DE VARIABLES REPETIDOS DENTRO DE LA MISMA FUNCION")
+    else:
+        tablaGlobal.add(variable, tipos.pop())
     print("Llevo estos operandos (mvar): ", operandos)
 
 def p_dec_func(p):
     '''
-    dec_func : FUNCTION type ID PARENOPEN param PARENCLOSE body
-    | FUNCTION VOID ID PARENOPEN param PARENCLOSE body
+    dec_func : FUNCTION type ID crearSymbolTable PARENOPEN param PARENCLOSE body exitFunc
+    | FUNCTION VOID ID crearSymbolTable PARENOPEN param PARENCLOSE body exitFunc
     '''
-    ##print(p[:])
+    #print(p[:])
     #tipos.append(p[2])
     #operandos.append(p[3])
     print("Llevo estos operandos (dec_func): ", operandos)
-    directorioFunciones.add(p[3])
 
+def p_crearSymbolTable(p):
+    '''
+    crearSymbolTable : empty
+    '''
+    #print(p[-1])
+    contexto.append(p[-1])
+    #print(contexto)
+    if directorioFunciones.verify(p[-1]) == 1:
+        print("HAY UN ERROR")
+        raise Error("NOMBRE DE FUNCION REPETIDO")
+    else:
+        directorioFunciones.add(p[-1])
+    #tablaVariables = directorioFunciones.get(p[-1])
+
+def p_exitFunc(p):
+    '''
+    exitFunc : empty
+    '''
+    contexto.pop()
 
 def p_param(p):
     '''
@@ -252,11 +298,12 @@ def p_dec_variables(p):
 
 def p_dec_variabless(p):
     '''
-    dec_variabless : type dec_mvar SEMICOLON dec_variabless
-    | type dec_mvar SEMICOLON
+    dec_variabless : type guardarTipo dec_mvar SEMICOLON dec_variabless
+    | type guardarTipo dec_mvar SEMICOLON
     '''
-    ##print(p[:])
-    tipos.append(p[1])
+    #print(p[:])
+    #print(p[:])
+    tipos.pop()
     ##tabla_Variables.add(operandos.pop(), tipos.pop())
 
 def p_dec_mvar(p):
@@ -268,10 +315,23 @@ def p_dec_mvar(p):
     | ID BRACEOPEN CTEINT BRACECLOSE 
     | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
     '''
-   ## print(p[:])
-   # operandos.append(p[1])
-    print("Llevo estos operandos (dec_mvar): ", operandos)
-    lista_cuadruplos.append(Cuadruplos("dec_var","","", p[1]))
+    #print("AAAAAAAAAAAAA",p[:])
+    operandos.append(p[1])
+    tipo = tipos[-1]
+    tipos.append(tipo)
+    tablaVar = directorioFunciones.get(contexto[-1])
+    variable = operandos.pop()
+    if tablaVar.verify(variable):
+        raise Error("NOMBRES DE VARIABLES REPETIDOS DENTRO DE LA MISMA FUNCION")
+    else:
+        if directorioFunciones.verify(variable):
+            raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
+        else:
+            tablaVar.add(variable, tipos.pop())
+
+    #print("Llevo estos operandos (dec_mvar): ", operandos)
+    #tablaGlobal.ad
+    #lista_cuadruplos.append(Cuadruplos("dec_var","","", p[1]))
 
 def p_assignment(p):
     '''
@@ -641,14 +701,26 @@ def p_whileEnd(p):
 
 def p_for_loop(p):
     '''
-    for_loop : FOR PARENOPEN for_assignment SEMICOLON exp SEMICOLON for_assignment PARENCLOSE body
-       
+    for_loop : FOR PARENOPEN variable EQUAL exp guardarValorFor TO exp PARENCLOSE body forEnd
+
     '''
-def p_for_assignment(p):
+
+def p_guardarValorFor(p):
     '''
-    for_assignment : variable EQUAL exp
-       
+    guardarValorFor : empty
+
     '''
+    exp = operandos.pop()
+    #vcontrol = operandos.top()
+    print(exp)
+    #print(vcontrol)
+
+def p_forEnd(p):
+    '''
+    forEnd : empty
+
+    '''
+
 def p_return(p):
     '''
     return : RETURN exp SEMICOLON
@@ -702,14 +774,14 @@ def p_empty(p):
     p[0] = None
 
 def p_error(p):
-   print("HAY UN ERROR")
+   raise Error("HAY UN ERROR")
 
 
 parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test2.txt','r')
+        archivo = open('test6.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

@@ -1,0 +1,11 @@
+program test1;
+var float soyvariable; int entero;
+function void media(){
+ int acum;
+ print("hola");
+}
+main(){
+    for(casa = 4 to 90){
+        print("for");
+    }
+}
