@@ -357,7 +357,7 @@ def p_dec_mvar(p):
 
 def p_assignment(p):
     '''
-    assignment : variable EQUAL exp SEMICOLON
+    assignment : variableAssignment EQUAL exp SEMICOLON
     '''
     #print("Entré en Assignment y la pila de operandos va: ",p[-1])
     #print("Entré en Assignment y la pila de operadores va ",operadores)
@@ -512,12 +512,15 @@ def p_f(p):
     if len(p) == 2:
         declarada = False
         tablaVar = directorioFunciones.get(contexto[-1])
+        #print(contexto)
         #variable = operandos.pop()
         if tablaVar.verify(p[1]):
             declarada = True
+            print(p[1], "es local")
         else:
-            if directorioFunciones.get("global").verify(p[1]):
+            if tablaGlobal.verify(p[1]):
                 declarada = True
+                print(p[1], "es global")
             else:
                 print("No declarada")
                 raise Error("VARIABLE NO DECLARADA")
@@ -546,6 +549,44 @@ def p_variable(p):
     #print("Entré de variable y la pila de operadores va ",operadores)
     if len(p) >= 2 and p[1]:
         operandos.append(p[1])
+    #print("Salí de variable y la pila de operandos va: ",operandos)
+    #print("Salí de variable y la pila de operadores va ",operadores)
+
+def p_variableAssignment(p):
+    '''
+    variableAssignment : ID 
+    | ID BRACEOPEN exp BRACECLOSE 
+    | ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
+    '''
+    #print(p[:])
+    #print("Entré de variable y la pila de operandos va: ",operandos)
+    #print("Entré de variable y la pila de operadores va ",operadores)
+    if len(p) >= 2 and p[1]:
+        declarada = False
+        tablaVar = directorioFunciones.get(contexto[-1])
+        #print(contexto)
+        #variable = operandos.pop()
+        if tablaVar.verify(p[1]):
+            declarada = True
+            print(p[1], "es local")
+        else:
+            if tablaGlobal.verify(p[1]):
+                declarada = True
+                print(p[1], "es global")
+            else:
+                print("No declarada")
+                raise Error("VARIABLE NO DECLARADA")
+        
+        if declarada:
+            operandos.append(p[1])
+            if(len(operadores) > 0 and (operadores[len(operadores)-1] == "*" or operadores[len(operadores)-1] == "/")):
+                operador = operadores.pop()
+                operandoDer = operandos.pop()
+                operandoIzq = operandos.pop()
+                global temporal
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
+                operandos.append("t"+str(temporal))
+                temporal = temporal + 1
     #print("Salí de variable y la pila de operandos va: ",operandos)
     #print("Salí de variable y la pila de operadores va ",operadores)
 

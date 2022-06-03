@@ -8,6 +8,7 @@ function void promedio(int omniman, char paso){
     int hola;
     char casa;
     int valor;
+    hola = casa;
 }
 function int hola(float casa){
     int bye;
@@ -15,9 +16,9 @@ function int hola(float casa){
     bye = ca;
 }
 main(){
-    char soyGlobal;
+    char soyGlobal, omniman;
     if(A + B > C * D){
-        A = B + D;
+        omniman = B + D;
         print("Estoy en el if");
         print("Estoy en el if");
         print("Estoy en el if", "chau");
