@@ -1,10 +1,17 @@
-program test1;
-var float soyvariable; int entero;
-function void media(){
- int acum;
- print("hola");
+program test8;
+function void promedio(int omniman, char paso){
+    int hola;
+    char casa;
+    int valor;
+    hola = casa;
+}
+function int hola(float casa){
+    int bye;
+    char ca;
+    bye = ca;
 }
 main(){
+    int casa;
     for(casa = 4 to 90){
         print("for");
     }

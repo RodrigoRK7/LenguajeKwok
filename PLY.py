@@ -4,6 +4,7 @@ import ply.yacc as yacc
 from DirectorioFunciones import DirectorioFunciones
 from Cuadruplos import Cuadruplos
 from SymbolTable import Constantes
+from CuboSemantico import CuboSemantico
 
 class Error(Exception):
     def __init__(self, message):
@@ -101,6 +102,7 @@ lista_cuadruplos = []
 saltos = []
 operandos_verificar = []
 contexto = ["global"]
+cubo = CuboSemantico()
 directorioFunciones = DirectorioFunciones()
 tablaConstantes = Constantes()
 directorioFunciones.add("global")
@@ -338,7 +340,6 @@ def p_dec_mvar(p):
     | ID BRACEOPEN CTEINT BRACECLOSE 
     | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
     '''
-    #print("AAAAAAAAAAAAA",p[:])
     operandos.append(p[1])
     tipo = tipos[-1]
     tipos.append(tipo)
@@ -352,27 +353,17 @@ def p_dec_mvar(p):
         else:
             tablaVar.add(variable, tipos.pop())
 
-    #print("Llevo estos operandos (dec_mvar): ", operandos)
-    #tablaGlobal.ad
-    #lista_cuadruplos.append(Cuadruplos("dec_var","","", p[1]))
-
 def p_assignment(p):
     '''
     assignment : variableAssignment EQUAL exp SEMICOLON
     '''
-    #print("Entré en Assignment y la pila de operandos va: ",p[-1])
-    #print("Entré en Assignment y la pila de operadores va ",operadores)
-    #print(p[:])
     if p[2] and len(p) > 4:
         operadores.append(p[2])
         operador = operadores.pop()
-        print(operandos)
         operandoIzq = operandos.pop()
         operandoDer = operandos.pop()
         
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
-    #print("Salí de Assignment y la pila de operandos va: ",operandos)
-    #print("Salí de Assignment y la pila de operadores va ",operadores)
 
 def p_call_func(p):
     '''
@@ -404,9 +395,6 @@ def p_exp(p):
     | exp OR expp
     
     '''
-    #print(p[:])
-    #print("Entré en exp y la pila de operandos va: ",operandos)
-    #print("Entré en exp y la pila de operadores va ",operadores)
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -416,8 +404,6 @@ def p_exp(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de exp y la pila de operandos va: ",operandos)
-    #print("Salí de exp y la pila de operadores va ",operadores)
 
 def p_expp(p):
     '''
@@ -429,9 +415,6 @@ def p_expp(p):
     | expp DIFFERENT m_exp 
     | expp SAME m_exp
     '''
-    #print(p[:])
-    #print("Entré en expp y la pila de operandos va: ",operandos)
-    #print("Entré en expp y la pila de operadores va ",operadores)
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -441,8 +424,6 @@ def p_expp(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de expp y la pila de operandos va: ",operandos)
-    #print("Salí de expp y la pila de operadores va ",operadores)
 
 def p_m_exp(p):
     '''
@@ -450,9 +431,6 @@ def p_m_exp(p):
     | m_exp PLUS termino
     | m_exp MINUS termino
     '''
-    #print(p[:])
-    #print("Entré en m_exp y la pila de operandos va: ",operandos)
-    #print("Entré en m_exp y la pila de operadores va ",operadores)
     if len(p) > 2:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -462,8 +440,6 @@ def p_m_exp(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de m_exp y la pila de operandos va: ",operandos)
-    #print("Salí de m_exp y la pila de operadores va ",operadores)
    
 def p_termino(p):
     '''
@@ -471,10 +447,6 @@ def p_termino(p):
     | termino MULTIPLY factor
     | termino DIVIDE factor 
     '''
-    #print(p[:])
-    #print(p[-1])
-    #print("Entré en termino y la pila de operandos va: ",operandos)
-    #print("Entré en t y la pila de operadores va ",operadores)
     if len(p) > 2:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -484,8 +456,6 @@ def p_termino(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de t y la pila de operandos va: ",operandos)
-    #print("Salí de t y la pila de operadores va ",operadores)
 
 def p_factor(p):
     '''
@@ -496,12 +466,6 @@ def p_factor(p):
     | call_func
     | PARENOPEN exp PARENCLOSE
     '''
-    #print("Toy en Factor", p[:])
-    #print(operandos)
-    #print(operadores)
-    #print(p[-1])
-    #print("Entré de factor y la pila de operandos va: ",operandos)
-    #print("Entré de factor y la pila de operadores va ",operadores)
     if p[1] == "(":
         pass
     else:
@@ -530,8 +494,6 @@ def p_factor(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
                 operandos.append("t"+str(temporal))
                 temporal = temporal + 1
-    #print("Salí de f y la pila de operandos va: ",operandos)
-    #print("Salí de f y la pila de operadores va ",operadores)
 
 def p_guardarConstante(p):
     '''
@@ -549,13 +511,8 @@ def p_variable(p):
     | ID BRACEOPEN exp BRACECLOSE 
     | ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     '''
-    #print(p[:])
-    #print("Entré de variable y la pila de operandos va: ",operandos)
-    #print("Entré de variable y la pila de operadores va ",operadores)
     if len(p) >= 2 and p[1]:
         operandos.append(p[1])
-    #print("Salí de variable y la pila de operandos va: ",operandos)
-    #print("Salí de variable y la pila de operadores va ",operadores)
 
 def p_variableAssignment(p):
     '''
@@ -563,9 +520,7 @@ def p_variableAssignment(p):
     | ID BRACEOPEN exp BRACECLOSE 
     | ID BRACEOPEN exp BRACECLOSE BRACEOPEN exp BRACECLOSE
     '''
-    #print(p[:])
-    #print("Entré de variable y la pila de operandos va: ",operandos)
-    #print("Entré de variable y la pila de operadores va ",operadores)
+
     if len(p) >= 2 and p[1]:
         declarada = False
         tablaVar = directorioFunciones.get(contexto[-1])
@@ -592,8 +547,6 @@ def p_variableAssignment(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
                 operandos.append("t"+str(temporal))
                 temporal = temporal + 1
-    #print("Salí de variable y la pila de operandos va: ",operandos)
-    #print("Salí de variable y la pila de operadores va ",operadores)
 
 def p_condition(p):
     '''
@@ -782,9 +735,27 @@ def p_whileEnd(p):
 
 def p_for_loop(p):
     '''
-    for_loop : FOR PARENOPEN variable EQUAL exp guardarValorFor TO exp PARENCLOSE body forEnd
+    for_loop : FOR PARENOPEN ID EQUAL exp guardarValorFor TO exp PARENCLOSE body forEnd
 
     '''
+    print(p[:])
+    declarada = False
+    tablaVar = directorioFunciones.get(contexto[-1])
+    #print(contexto)
+    #variable = operandos.pop()
+    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+        declarada = True
+        #print(p[1], "es local")
+    else:
+        if tablaGlobal.verify(p[3]):
+            declarada = True
+            #print(p[1], "es global")
+        else:
+            print(p[3], "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada:
+        operandos.append(p[3])
 
 def p_guardarValorFor(p):
     '''
@@ -792,9 +763,9 @@ def p_guardarValorFor(p):
 
     '''
     exp = operandos.pop()
-    #vcontrol = operandos.top()
+    print(operandos)
     print(exp)
-    #print(vcontrol)
+   # print(vcontrol)
 
 def p_forEnd(p):
     '''
@@ -862,7 +833,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test6.txt','r')
+        archivo = open('test7.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
