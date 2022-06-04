@@ -1,10 +1,9 @@
 import sys
-from turtle import goto
 import ply.lex as lex
 import ply.yacc as yacc
 from DirectorioFunciones import DirectorioFunciones
-from SymbolTable import DirectorioGlobal
 from Cuadruplos import Cuadruplos
+from SymbolTable import Constantes
 
 class Error(Exception):
     def __init__(self, message):
@@ -103,6 +102,7 @@ saltos = []
 operandos_verificar = []
 contexto = ["global"]
 directorioFunciones = DirectorioFunciones()
+tablaConstantes = Constantes()
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
 temporal = 1
@@ -122,6 +122,7 @@ def p_start_program(p):
     print("Pila de operadores: ",operadores)
     print("Pila de saltos: ", saltos)
     print("Directorio Global: ", directorioFunciones.get("global").variables)
+    print("Tabla de constantes: ", tablaConstantes.constantes)
     print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
     print("Tabla de hola: ", directorioFunciones.get("hola").variables)
     print("Tabla de main: ", directorioFunciones.get("main").variables)
@@ -500,21 +501,21 @@ def p_f(p):
     '''
     f : PARENOPEN exp PARENCLOSE 
     | ID
-    | CTEINT
-    | CTFLOAT 
+    | CTEINT guardarConstante
+    | CTFLOAT guardarConstante
     | variable
     | call_func
     '''
-    #print(p[:])
+    print("Toy en F", p[:])
     #print(p[-1])
     #print("Entré de f y la pila de operandos va: ",operandos)
     #print("Entré de f y la pila de operadores va ",operadores)
-    if len(p) == 2:
+    if len(p) >= 2:
         declarada = False
         tablaVar = directorioFunciones.get(contexto[-1])
         #print(contexto)
         #variable = operandos.pop()
-        if tablaVar.verify(p[1]):
+        if tablaVar.verify(p[1]) or tablaConstantes.verify(p[1]):
             declarada = True
             print(p[1], "es local")
         else:
@@ -537,6 +538,16 @@ def p_f(p):
                 temporal = temporal + 1
     #print("Salí de f y la pila de operandos va: ",operandos)
     #print("Salí de f y la pila de operadores va ",operadores)
+
+def p_guardarConstante(p):
+    '''
+    guardarConstante : empty
+    '''
+    print(p[-1])
+    if tablaConstantes.verify(p[-1]):
+        pass
+    else:
+        tablaConstantes.add(p[-1])
 
 def p_variable(p):
     '''

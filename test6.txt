@@ -17,8 +17,8 @@ function int hola(float casa){
 }
 main(){
     char soyGlobal, omniman;
-    if(A + B > C * D){
-        omniman = B + D;
+    if(10 + B > C * D){
+        omniman = 9 + 8;
         print("Estoy en el if");
         print("Estoy en el if");
         print("Estoy en el if", "chau");

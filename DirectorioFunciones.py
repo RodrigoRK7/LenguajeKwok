@@ -18,9 +18,10 @@ class DirectorioFunciones(metaclass=Singleton):
     
     def verify(self, moduleName):
         if(moduleName in self.funciones):
-            return 1
+            return True
         else:
-            return 0
+            return False
 
     def add(self, moduleName):
+        #self.funciones[moduleName] = [type, SymbolTable()]
         self.funciones[moduleName] = SymbolTable()

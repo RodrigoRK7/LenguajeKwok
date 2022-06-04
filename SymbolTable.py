@@ -1,5 +1,3 @@
-import logging
-
 class SymbolTable:
     def __init__(self):
         self.variables = {}
@@ -9,25 +7,20 @@ class SymbolTable:
 
     def verify(self, name):
         if(name in self.variables):
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def search (self, name):
-        if(name in self.variables):
-            return self.variables[name]
-        DirectorioGlobal.getGlobal(name)
+class Constantes:
+    def __init__(self):
+        self.constantes = {}
+        
+    def add (self, name):
+        self.constantes[name] = 1000
 
-class DirectorioGlobal:
+    def verify(self, name):
+        if(name in self.constantes):
+            return True
+        else:
+            return False
 
-    @staticmethod
-    def getGlobal(name):
-        from DirectorioFunciones import DirectorioFunciones
-
-        symbolTableGlobal = DirectorioFunciones()
-
-        symbolTableGlobal= symbolTableGlobal.get("global")
-        if(symbolTableGlobal.search(name)):
-            print("ESTA EN EL SCOPE GLOBAL")
-        else:    
-            logging.warning("NO EXISTE ESA VARIABLE")
