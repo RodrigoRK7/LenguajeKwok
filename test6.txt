@@ -18,8 +18,7 @@ function int hola(float casa){
 main(){
     char soyGlobal, omniman;
     if(10 + B > C * D){
-        promedio(5+5, 7)
-        omniman = -9 + 8;
+        omniman = -9.89 + 8;
         print("Estoy en el if");
         print("Estoy en el if");
         print("Estoy en el if", "chau");
