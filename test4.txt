@@ -1,8 +1,11 @@
 program test1;
-var float soyvariable;
-function void media(){
- int acum;
+function int promedio(){
+
+}
+function void hola(){
+  
 }
 main(){
+  int A, B, C, D, E;
   A = B + C * D - E;
 }

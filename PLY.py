@@ -74,12 +74,12 @@ def t_ID(t):
     return t
 
 def t_CTEINT(t):
-    r'\d+'
+    r'-?\d+'
     t.value = int(t.value)
     return t
 
 def t_CTFLOAT(t):
-    r'\d+\.\d+'
+    r'-?\d+?\.\d+'
     t.value = float(t.value)
     return t
 
@@ -123,8 +123,8 @@ def p_start_program(p):
     print("Pila de saltos: ", saltos)
     print("Directorio Global: ", directorioFunciones.get("global").variables)
     print("Tabla de constantes: ", tablaConstantes.constantes)
-    print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
-    print("Tabla de hola: ", directorioFunciones.get("hola").variables)
+    #print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
+    #print("Tabla de hola: ", directorioFunciones.get("hola").variables)
     print("Tabla de main: ", directorioFunciones.get("main").variables)
     
     for index, i in enumerate(lista_cuadruplos):
@@ -160,7 +160,7 @@ def p_gotoMain(p):
     gotoMain : empty
     '''
     saltos.append(len(lista_cuadruplos)+1)
-    print(saltos)
+    #print(saltos)
     #Cambiar el GOTOF incompleto por el completo
     goto = saltos.pop()
     
@@ -211,7 +211,7 @@ def p_mvar(p):
         raise Error("NOMBRES DE VARIABLES REPETIDOS DENTRO DE LA MISMA FUNCION")
     else:
         tablaGlobal.add(variable, tipos.pop())
-    print("Llevo estos operandos (mvar): ", operandos)
+    #print("Llevo estos operandos (mvar): ", operandos)
 
 def p_dec_func(p):
     '''
@@ -221,7 +221,7 @@ def p_dec_func(p):
     #print(p[:])
     #tipos.append(p[2])
     #operandos.append(p[3])
-    print("Llevo estos operandos (dec_func): ", operandos)
+    #print("Llevo estos operandos (dec_func): ", operandos)
 
 def p_crearSymbolTable(p):
     '''
@@ -230,8 +230,8 @@ def p_crearSymbolTable(p):
     #print(p[-1])
     contexto.append(p[-1])
     #print(contexto)
-    if directorioFunciones.verify(p[-1]) == 1:
-        print("HAY UN ERROR")
+    if directorioFunciones.verify(p[-1]):
+        #print("HAY UN ERROR")
         raise Error("NOMBRE DE FUNCION REPETIDO")
     else:
         directorioFunciones.add(p[-1])
@@ -362,13 +362,14 @@ def p_assignment(p):
     '''
     #print("Entré en Assignment y la pila de operandos va: ",p[-1])
     #print("Entré en Assignment y la pila de operadores va ",operadores)
-   # print(p[:])
+    print(p[:])
     if p[2] and len(p) > 4:
         operadores.append(p[2])
         operador = operadores.pop()
+        print(operandos)
         operandoIzq = operandos.pop()
         operandoDer = operandos.pop()
-        global temporal
+        
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
     #print("Salí de Assignment y la pila de operandos va: ",operandos)
     #print("Salí de Assignment y la pila de operadores va ",operadores)
@@ -377,6 +378,14 @@ def p_call_func(p):
     '''
     call_func : ID PARENOPEN call_funcc PARENCLOSE
     '''
+    print(p[:])
+    if directorioFunciones.verify(p[1]):
+        print("Si existe")
+        lista_cuadruplos.append(Cuadruplos("ERA", "", "", p[1]))
+        
+    else:
+        raise Error("NO EXISTE FUNCION CON ESE NOMBRE")
+
 def p_call_funcc(p):
     '''
     call_funcc : exp 
@@ -390,19 +399,14 @@ def p_graph(p):
     '''
 def p_exp(p):
     '''
-    exp : exp GREATHERTHAN exp 
-    | exp LESSTHAN exp 
-    | exp GREATHEREQUAL exp 
-    | exp LESSEQUAL exp 
-    | exp DIFFERENT exp 
-    | exp SAME exp
-    | exp AND exp
-    | exp OR exp
-    | m_exp
+    exp : expp
+    | exp AND expp
+    | exp OR expp
+    
     '''
-    #print(p[:])
-    #print("Entré en exp y la pila de operandos va: ",operandos)
-    #print("Entré en exp y la pila de operadores va ",operadores)
+    print(p[:])
+    print("Entré en exp y la pila de operandos va: ",operandos)
+    print("Entré en exp y la pila de operadores va ",operadores)
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -412,67 +416,24 @@ def p_exp(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de exp y la pila de operandos va: ",operandos)
-    #print("Salí de exp y la pila de operadores va ",operadores)
+    print("Salí de exp y la pila de operandos va: ",operandos)
+    print("Salí de exp y la pila de operadores va ",operadores)
 
-
-def p_m_exp(p):
+def p_expp(p):
     '''
-    m_exp : t m_expp 
+    expp : m_exp
+    | expp GREATHERTHAN m_exp 
+    | expp LESSTHAN m_exp 
+    | expp GREATHEREQUAL m_exp 
+    | expp LESSEQUAL m_exp 
+    | expp DIFFERENT m_exp 
+    | expp SAME m_exp
     '''
-    #print("Entré en m_exp y la pila de operandos va: ",operandos)
-    #print("Entré en m_exp y la pila de operadores va ",operadores)
-    #print(p[:])
-    
-    #print("Salí de m_exp y la pila de operandos va: ",operandos)
-    #print("Salí de m_exp y la pila de operadores va ",operadores)
-
-def p_m_expp(p):
-    '''
-    m_expp : PLUS appendPLUS m_exp
-        | MINUS appendMINUS m_exp
-        | empty
-    '''
-    #print(p[:])
-    #print("Entré en m_expp y la pila de operandos va: ",operandos)
-    #print("Entré en m_expp y la pila de operadores va ",operadores)
-    #if p[1] and len(p) > 2:
-    #print("Salí de m_expp y la pila de operandos va: ",operandos)
-    #print("Salí de m_expp y la pila de operadores va ",operadores)
-
-def p_appendPLUS(p):
-    '''
-    appendPLUS : empty
-    '''
-    operadores.append("+")
-
-def p_appendMINUS(p):
-    '''
-    appendMINUS : empty
-    '''
-    operadores.append("-")
-
-def p_appendMULTIPLY(p):
-    '''
-    appendMULTIPLY : empty
-    '''
-    operadores.append("*")
-
-def p_appendDIVIDE(p):
-    '''
-    appendDIVIDE : empty
-    '''
-    operadores.append("/")
-
-def p_t(p):
-    '''
-    t : f termino
-    '''
-    #print(p[:])
-    #print(p[-1])
-    #print("Entré en t y la pila de operandos va: ",operandos)
-    #print("Entré en t y la pila de operadores va ",operadores)
-    if(len(operadores) > 0 and (operadores[len(operadores)-1] == "+" or operadores[len(operadores)-1] == "-")):
+    print(p[:])
+    print("Entré en expp y la pila de operandos va: ",operandos)
+    print("Entré en expp y la pila de operadores va ",operadores)
+    if len(p) >= 3 and p[2]:
+        operadores.append(p[2])
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
@@ -480,50 +441,79 @@ def p_t(p):
         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
         operandos.append("t"+str(temporal))
         temporal = temporal + 1
-    #print("Salí de t y la pila de operandos va: ",operandos)
-    #print("Salí de t y la pila de operadores va ",operadores)
-    
+    print("Salí de expp y la pila de operandos va: ",operandos)
+    print("Salí de expp y la pila de operadores va ",operadores)
 
+def p_m_exp(p):
+    '''
+    m_exp : termino
+    | m_exp PLUS termino
+    | m_exp MINUS termino
+    '''
+    print(p[:])
+    print("Entré en m_exp y la pila de operandos va: ",operandos)
+    print("Entré en m_exp y la pila de operadores va ",operadores)
+    if len(p) > 2:
+        operadores.append(p[2])
+        operador = operadores.pop()
+        operandoDer = operandos.pop()
+        operandoIzq = operandos.pop()
+        global temporal
+        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
+        operandos.append("t"+str(temporal))
+        temporal = temporal + 1
+    print("Salí de m_exp y la pila de operandos va: ",operandos)
+    print("Salí de m_exp y la pila de operadores va ",operadores)
+   
 def p_termino(p):
     '''
-    termino : MULTIPLY appendMULTIPLY t 
-        | DIVIDE appendDIVIDE t 
-        | empty
+    termino : factor
+    | termino MULTIPLY factor
+    | termino DIVIDE factor 
     '''
-    #print("termino", p[:])
-    #print("Entré en termino y la pila de operandos va: ",operandos)
-    #print("Entré en termino y la pila de operadores va ",operadores)
-    #if p[1] and len(p) > 2:
-    #print("Salí de termino y la pila de operandos va: ",operandos)
-    #print("Salí de termino y la pila de operadores va ",operadores)
+    print(p[:])
+    #print(p[-1])
+    print("Entré en termino y la pila de operandos va: ",operandos)
+    print("Entré en t y la pila de operadores va ",operadores)
+    if len(p) > 2:
+        operadores.append(p[2])
+        operador = operadores.pop()
+        operandoDer = operandos.pop()
+        operandoIzq = operandos.pop()
+        global temporal
+        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
+        operandos.append("t"+str(temporal))
+        temporal = temporal + 1
+    print("Salí de t y la pila de operandos va: ",operandos)
+    print("Salí de t y la pila de operadores va ",operadores)
 
-def p_f(p):
+def p_factor(p):
     '''
-    f : PARENOPEN exp PARENCLOSE 
-    | ID
+    factor : ID 
+    | PARENOPEN exp PARENCLOSE
     | CTEINT guardarConstante
     | CTFLOAT guardarConstante
     | variable
     | call_func
     '''
-    print("Toy en F", p[:])
+    print("Toy en Factor", p[:])
     #print(p[-1])
-    #print("Entré de f y la pila de operandos va: ",operandos)
-    #print("Entré de f y la pila de operadores va ",operadores)
-    if len(p) >= 2:
+    print("Entré de factor y la pila de operandos va: ",operandos)
+    print("Entré de factor y la pila de operadores va ",operadores)
+    if len(p) == 2:
         declarada = False
         tablaVar = directorioFunciones.get(contexto[-1])
         #print(contexto)
         #variable = operandos.pop()
         if tablaVar.verify(p[1]) or tablaConstantes.verify(p[1]):
             declarada = True
-            print(p[1], "es local")
+            #print(p[1], "es local")
         else:
             if tablaGlobal.verify(p[1]):
                 declarada = True
-                print(p[1], "es global")
+                #print(p[1], "es global")
             else:
-                print("No declarada")
+                print(p[1], "No declarada")
                 raise Error("VARIABLE NO DECLARADA")
         
         if declarada:
@@ -536,14 +526,14 @@ def p_f(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
                 operandos.append("t"+str(temporal))
                 temporal = temporal + 1
-    #print("Salí de f y la pila de operandos va: ",operandos)
-    #print("Salí de f y la pila de operadores va ",operadores)
+    print("Salí de f y la pila de operandos va: ",operandos)
+    print("Salí de f y la pila de operadores va ",operadores)
 
 def p_guardarConstante(p):
     '''
     guardarConstante : empty
     '''
-    print(p[-1])
+    #print(p[-1])
     if tablaConstantes.verify(p[-1]):
         pass
     else:
@@ -579,13 +569,13 @@ def p_variableAssignment(p):
         #variable = operandos.pop()
         if tablaVar.verify(p[1]):
             declarada = True
-            print(p[1], "es local")
+            #print(p[1], "es local")
         else:
             if tablaGlobal.verify(p[1]):
                 declarada = True
-                print(p[1], "es global")
+               #print(p[1], "es global")
             else:
-                print("No declarada")
+                #print("No declarada")
                 raise Error("VARIABLE NO DECLARADA")
         
         if declarada:
@@ -868,7 +858,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test6.txt','r')
+        archivo = open('test3.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
