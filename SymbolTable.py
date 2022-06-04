@@ -11,6 +11,9 @@ class SymbolTable:
         else:
             return False
 
+    def getType(self, name):
+        return self.variables[name]
+
 class Constantes:
     def __init__(self):
         self.constantes = []

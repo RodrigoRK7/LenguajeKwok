@@ -107,7 +107,10 @@ directorioFunciones = DirectorioFunciones()
 tablaConstantes = Constantes()
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
-temporal = 1
+temporal_int = 1
+temporal_bool = 1
+temporal_float = 1
+temporal_char = 1
 
 
 def p_start_program(p):
@@ -129,6 +132,8 @@ def p_start_program(p):
     print("Tabla de hola: ", directorioFunciones.get("hola").variables)
     print("Tabla de main: ", directorioFunciones.get("main").variables)
     
+    #print(directorioFunciones.get("main").getType("A"))
+
     for index, i in enumerate(lista_cuadruplos):
         print(str(index+1)+".-", i.get())
 
@@ -363,7 +368,39 @@ def p_assignment(p):
         operandoIzq = operandos.pop()
         operandoDer = operandos.pop()
         
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo del operandoIzq
+        if tablaVar.verify(operandoIzq): #Ver si es local
+            tipoIzq = tablaVar.getType(operandoIzq)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operandoIzq)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoIzq = tipos.pop()
+
+        #Obtener el tipo del operandoDer
+        if tablaVar.verify(operandoDer): #Ver si es local
+            tipoDer = tablaVar.getType(operandoDer)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoDer): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaGlobal.getType(operandoDer)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoDer = tipos.pop()
+
+        if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+            raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+        else:
+            tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
 
 def p_call_func(p):
     '''
@@ -401,9 +438,60 @@ def p_exp(p):
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
         global temporal
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-        operandos.append("t"+str(temporal))
-        temporal = temporal + 1
+        
+        tablaVar = directorioFunciones.get(contexto[-1])
+    
+       #Obtener el tipo del operandoIzq
+        if tablaVar.verify(operandoIzq): #Ver si es local
+            tipoIzq = tablaVar.getType(operandoIzq)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operandoIzq)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoIzq = tipos.pop()
+
+        #Obtener el tipo del operandoDer
+        if tablaVar.verify(operandoDer): #Ver si es local
+            tipoDer = tablaVar.getType(operandoDer)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoDer): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaGlobal.getType(operandoDer)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoDer = tipos.pop()
+
+        if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+            raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+        else:
+            tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+            if tipo_temporal == "int":
+                global temporal_int
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                operandos.append("Ti"+str(temporal_int))
+                temporal_int = temporal_int + 1
+            elif tipo_temporal == "float":
+                global temporal_float
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                operandos.append("Tf"+str(temporal_float))
+                temporal_float = temporal_float + 1
+            elif tipo_temporal == "char":
+                global temporal_char
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                operandos.append("Tc"+str(temporal_char))
+                temporal_char = temporal_char + 1
+            else:
+                global temporal_bool
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                operandos.append("Tb"+str(temporal_bool))
+                temporal_bool = temporal_bool + 1
 
 def p_expp(p):
     '''
@@ -420,10 +508,60 @@ def p_expp(p):
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
-        global temporal
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-        operandos.append("t"+str(temporal))
-        temporal = temporal + 1
+        
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo del operandoIzq
+        if tablaVar.verify(operandoIzq): #Ver si es local
+            tipoIzq = tablaVar.getType(operandoIzq)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operandoIzq)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoIzq = tipos.pop()
+
+        #Obtener el tipo del operandoDer
+        if tablaVar.verify(operandoDer): #Ver si es local
+            tipoDer = tablaVar.getType(operandoDer)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoDer): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaGlobal.getType(operandoDer)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoDer = tipos.pop()
+
+        if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+            raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+        else:
+            tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+            if tipo_temporal == "int":
+                global temporal_int
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                operandos.append("Ti"+str(temporal_int))
+                temporal_int = temporal_int + 1
+            elif tipo_temporal == "float":
+                global temporal_float
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                operandos.append("Tf"+str(temporal_float))
+                temporal_float = temporal_float + 1
+            elif tipo_temporal == "char":
+                global temporal_char
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                operandos.append("Tc"+str(temporal_char))
+                temporal_char = temporal_char + 1
+            else:
+                global temporal_bool
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                operandos.append("Tb"+str(temporal_bool))
+                temporal_bool = temporal_bool + 1
 
 def p_m_exp(p):
     '''
@@ -436,10 +574,60 @@ def p_m_exp(p):
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
-        global temporal
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-        operandos.append("t"+str(temporal))
-        temporal = temporal + 1
+        
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo del operandoIzq
+        if tablaVar.verify(operandoIzq): #Ver si es local
+            tipoIzq = tablaVar.getType(operandoIzq)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operandoIzq)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoIzq = tipos.pop()
+
+        #Obtener el tipo del operandoDer
+        if tablaVar.verify(operandoDer): #Ver si es local
+            tipoDer = tablaVar.getType(operandoDer)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoDer): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaGlobal.getType(operandoDer)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoDer = tipos.pop()
+
+        if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+            raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+        else:
+            tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+            if tipo_temporal == "int":
+                global temporal_int
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                operandos.append("Ti"+str(temporal_int))
+                temporal_int = temporal_int + 1
+            elif tipo_temporal == "float":
+                global temporal_float
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                operandos.append("Tf"+str(temporal_float))
+                temporal_float = temporal_float + 1
+            elif tipo_temporal == "char":
+                global temporal_char
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                operandos.append("Tc"+str(temporal_char))
+                temporal_char = temporal_char + 1
+            else:
+                global temporal_bool
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                operandos.append("Tb"+str(temporal_bool))
+                temporal_bool = temporal_bool + 1
    
 def p_termino(p):
     '''
@@ -452,10 +640,60 @@ def p_termino(p):
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
-        global temporal
-        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-        operandos.append("t"+str(temporal))
-        temporal = temporal + 1
+        
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo del operandoIzq
+        if tablaVar.verify(operandoIzq): #Ver si es local
+            tipoIzq = tablaVar.getType(operandoIzq)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operandoIzq)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoIzq = tipos.pop()
+
+        #Obtener el tipo del operandoDer
+        if tablaVar.verify(operandoDer): #Ver si es local
+            tipoDer = tablaVar.getType(operandoDer)
+            #print(p[1], "es local")
+        elif tablaConstantes.verify(operandoDer): #Ver si es constante
+            pass
+        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaGlobal.getType(operandoDer)
+            #print(p[1], "es global")
+        else: #es temporal
+            print("Estemporal")
+            tipoDer = tipos.pop()
+
+        if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+            raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+        else:
+            tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+            if tipo_temporal == "int":
+                global temporal_int
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                operandos.append("Ti"+str(temporal_int))
+                temporal_int = temporal_int + 1
+            elif tipo_temporal == "float":
+                global temporal_float
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                operandos.append("Tf"+str(temporal_float))
+                temporal_float = temporal_float + 1
+            elif tipo_temporal == "char":
+                global temporal_char
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                operandos.append("Tc"+str(temporal_char))
+                temporal_char = temporal_char + 1
+            else:
+                global temporal_bool
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                operandos.append("Tb"+str(temporal_bool))
+                temporal_bool = temporal_bool + 1
 
 def p_factor(p):
     '''
@@ -490,10 +728,61 @@ def p_factor(p):
                 operador = operadores.pop()
                 operandoDer = operandos.pop()
                 operandoIzq = operandos.pop()
-                global temporal
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-                operandos.append("t"+str(temporal))
-                temporal = temporal + 1
+
+                tablaVar = directorioFunciones.get(contexto[-1])
+       
+                #Obtener el tipo del operandoIzq
+                if tablaVar.verify(operandoIzq): #Ver si es local
+                    tipoIzq = tablaVar.getType(operandoIzq)
+                    #print(p[1], "es local")
+                elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+                    pass
+                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoIzq = tablaGlobal.getType(operandoIzq)
+                    #print(p[1], "es global")
+                else: #es temporal
+                    print("Estemporal")
+                    tipoIzq = tipos.pop()
+
+                #Obtener el tipo del operandoDer
+                if tablaVar.verify(operandoDer): #Ver si es local
+                    tipoDer = tablaVar.getType(operandoDer)
+                    #print(p[1], "es local")
+                elif tablaConstantes.verify(operandoDer): #Ver si es constante
+                    pass
+                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoDer = tablaGlobal.getType(operandoDer)
+                    #print(p[1], "es global")
+                else: #es temporal
+                    print("Estemporal")
+                    tipoDer = tipos.pop()
+
+                if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+                    raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+                else:
+                    tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+                    tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+                    if tipo_temporal == "int":
+                        global temporal_int
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                        operandos.append("Ti"+str(temporal_int))
+                        temporal_int = temporal_int + 1
+                    elif tipo_temporal == "float":
+                        global temporal_float
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                        operandos.append("Tf"+str(temporal_float))
+                        temporal_float = temporal_float + 1
+                    elif tipo_temporal == "char":
+                        global temporal_char
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                        operandos.append("Tc"+str(temporal_char))
+                        temporal_char = temporal_char + 1
+                    else:
+                        global temporal_bool
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                        operandos.append("Tb"+str(temporal_bool))
+                        temporal_bool = temporal_bool + 1
+                    
 
 def p_guardarConstante(p):
     '''
@@ -543,10 +832,59 @@ def p_variableAssignment(p):
                 operador = operadores.pop()
                 operandoDer = operandos.pop()
                 operandoIzq = operandos.pop()
-                global temporal
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "t"+str(temporal)))
-                operandos.append("t"+str(temporal))
-                temporal = temporal + 1
+                tablaVar = directorioFunciones.get(contexto[-1])
+       
+                #Obtener el tipo del operandoIzq
+                if tablaVar.verify(operandoIzq): #Ver si es local
+                    tipoIzq = tablaVar.getType(operandoIzq)
+                    #print(p[1], "es local")
+                elif tablaConstantes.verify(operandoIzq): #Ver si es constante
+                    pass
+                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoIzq = tablaGlobal.getType(operandoIzq)
+                    #print(p[1], "es global")
+                else: #es temporal
+                    print("Estemporal")
+                    tipoIzq = tipos.pop()
+
+                #Obtener el tipo del operandoDer
+                if tablaVar.verify(operandoDer): #Ver si es local
+                    tipoDer = tablaVar.getType(operandoDer)
+                    #print(p[1], "es local")
+                elif tablaConstantes.verify(operandoDer): #Ver si es constante
+                    pass
+                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoDer = tablaGlobal.getType(operandoDer)
+                    #print(p[1], "es global")
+                else: #es temporal
+                    print("Estemporal")
+                    tipoDer = tipos.pop()
+
+                if cubo.get(tipoIzq, tipoDer, operador) == "Error":
+                    raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
+                else:
+                    tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+                    tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
+                    if tipo_temporal == "int":
+                        global temporal_int
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
+                        operandos.append("Ti"+str(temporal_int))
+                        temporal_int = temporal_int + 1
+                    elif tipo_temporal == "float":
+                        global temporal_float
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
+                        operandos.append("Tf"+str(temporal_float))
+                        temporal_float = temporal_float + 1
+                    elif tipo_temporal == "char":
+                        global temporal_char
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
+                        operandos.append("Tc"+str(temporal_char))
+                        temporal_char = temporal_char + 1
+                    else:
+                        global temporal_bool
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
+                        operandos.append("Tb"+str(temporal_bool))
+                        temporal_bool = temporal_bool + 1
 
 def p_condition(p):
     '''
