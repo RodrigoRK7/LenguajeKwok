@@ -5,6 +5,7 @@ from DirectorioFunciones import DirectorioFunciones
 from Cuadruplos import Cuadruplos
 from SymbolTable import Constantes
 from CuboSemantico import CuboSemantico
+from MaquinaVirtual import MaquinaVirtual
 
 class Error(Exception):
     def __init__(self, message):
@@ -40,7 +41,7 @@ reserverdWords = {
 tokens = [
     'ID', 'CTFLOAT','CTEINT', 'PARENOPEN', 'PARENCLOSE', 'SEMICOLON', 'BRACEOPEN', 
     'BRACECLOSE', 'GREATHERTHAN', 'LESSTHAN', 'DIFFERENT', 'CTESTRING', 'EQUAL', 'DIVIDE', 'MULTIPLY', 'PLUS', 'MINUS',
-    'BRACKETOPEN', 'BRACKETCLOSE', 'COLON', 'SAME', "GREATHEREQUAL", "LESSEQUAL", "AND", "OR"
+    'BRACKETOPEN', 'BRACKETCLOSE', 'COLON', 'SAME', "GREATHEREQUAL", "LESSEQUAL", "AND", "OR", "CTECHAR"
 ] + list(reserverdWords.values())
 
 t_SEMICOLON = r'\;'
@@ -89,6 +90,11 @@ def t_CTESTRING(t):
     t.value = str(t.value)
     return t
 
+def t_CTECHAR(t):
+    r"'.'"
+    t.value = str(t.value)
+    return t
+
 def t_error(t):
     print("HAY UN ERROR")
     t.lexer.skip(1)
@@ -105,9 +111,16 @@ contexto = ["global"]
 cubo = CuboSemantico()
 directorioFunciones = DirectorioFunciones()
 tablaConstantes = Constantes()
+maquinaVirtual = MaquinaVirtual(lista_cuadruplos, directorioFunciones, tablaConstantes)
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
+tablaGlobal.setFuncType("np")
+
 contador_parametros = 0
+contador_parametros_call = 0
+tipos_param = []
+validar_tipos_param = []
+
 temporal_int = 1
 temporal_bool = 1
 temporal_float = 1
@@ -144,21 +157,38 @@ def p_start_program(p):
     print("Pila de operandos: ",operandos)
     print("Pila de operadores: ",operadores)
     print("Pila de saltos: ", saltos)
+    print("//////////////////////////////////////////")
     print("Directorio Global: ", directorioFunciones.get("global").variables)
     print("Memoria global: ", directorioFunciones.get("global").memoria)
+    print("Tipo de Global: ", directorioFunciones.get("global").type)
+    print("//////////////////////////////////////////")
     print("Tabla de constantes: ", tablaConstantes.constantes)
     print("Memoria constantes: ", tablaConstantes.memoria)
+    print("//////////////////////////////////////////")
     print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
     print("Memoria promedio: ", directorioFunciones.get("promedio").memoria)
+    print("Tipo de promedio: ", directorioFunciones.get("promedio").type)
+    print("NumParam de promedio: ", directorioFunciones.get("promedio").numParam)
+    print("TiposParam de promedio: ", directorioFunciones.get("promedio").tipos_Param)
+    print("Inicia en el cuadruplo: ", directorioFunciones.get("promedio").dirV)
+    print("//////////////////////////////////////////")
     print("Tabla de hola: ", directorioFunciones.get("hola").variables)
     print("Memoria hola: ", directorioFunciones.get("hola").memoria)
+    print("Tipo de hola: ", directorioFunciones.get("hola").type)
+    print("NumParam de hola: ", directorioFunciones.get("hola").numParam)
+    print("TiposParam de hola: ", directorioFunciones.get("hola").tipos_Param)
+    print("Inicia en el cuadruplo: ", directorioFunciones.get("hola").dirV)
+    print("//////////////////////////////////////////")
     print("Tabla de main: ", directorioFunciones.get("main").variables)
     print("Memoria main: ", directorioFunciones.get("main").memoria)
+    print("Tipo de main: ", directorioFunciones.get("main").type)
+    print("NumParam de main: ", directorioFunciones.get("main").numParam)
+    print("//////////////////////////////////////////")
     
     #print(directorioFunciones.get("main").getType("A"))
 
-    for index, i in enumerate(lista_cuadruplos):
-        print(str(index+1)+".-", i.get())
+    '''for index, i in enumerate(lista_cuadruplos):
+        print(str(index+1)+".-", i.get())'''
 
 def p_cuadruploMain(p):
     '''
@@ -184,6 +214,8 @@ def p_crearTablaMain(p):
     '''
     contexto.append("main")
     directorioFunciones.add("main")
+    tablaMain = directorioFunciones.get("main")
+    tablaMain.setFuncType("void")
 
 def p_gotoMain(p):
     '''
@@ -193,13 +225,15 @@ def p_gotoMain(p):
     #print(saltos)
     #Cambiar el GOTOF incompleto por el completo
     goto = saltos.pop()
-    
+    tablaMain = directorioFunciones.get("main")
+    tablaMain.setDirV(goto)
+
     #Index del GOTOF incompleto
     index = saltos.pop()
 
     #Cambiar el GOTOF incompleto por el completo
     lista_cuadruplos.pop(index)
-    lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "", goto))
+    lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "", directorioFunciones.get("main").dirV))
 
 def p_end(p):
     '''
@@ -251,8 +285,8 @@ def p_mvar(p):
 
 def p_dec_func(p):
     '''
-    dec_func : FUNCTION type ID crearSymbolTable PARENOPEN param PARENCLOSE body exitFunc
-    | FUNCTION VOID ID crearSymbolTable PARENOPEN param PARENCLOSE body exitFunc
+    dec_func : FUNCTION type ID crearSymbolTable PARENOPEN param numeroParam PARENCLOSE startFunc body exitFunc
+    | FUNCTION VOID ID crearSymbolTable PARENOPEN param numeroParam PARENCLOSE startFunc body exitFunc
     '''
     #print(p[:])
     #tipos.append(p[2])
@@ -263,7 +297,7 @@ def p_crearSymbolTable(p):
     '''
     crearSymbolTable : empty
     '''
-    #print(p[-1])
+    #print(p[-2])
     contexto.append(p[-1])
     #print(contexto)
     if directorioFunciones.verify(p[-1]):
@@ -271,13 +305,33 @@ def p_crearSymbolTable(p):
         raise Error("NOMBRE DE FUNCION REPETIDO")
     else:
         directorioFunciones.add(p[-1])
-    #tablaVariables = directorioFunciones.get(p[-1])
+        tablaVariables = directorioFunciones.get(p[-1])
+        tablaVariables.setFuncType(p[-2])
 
 def p_exitFunc(p):
     '''
     exitFunc : empty
     '''
+    lista_cuadruplos.append(Cuadruplos("ENDFUNC", "", "", ""))
     contexto.pop()
+    global temporal_int
+    temporal_int = 1
+    
+    global temporal_bool
+    temporal_bool = 1
+    
+    global temporal_float
+    temporal_float = 1
+    
+    global temporal_char
+    temporal_char = 1
+    
+    global contador_parametros
+    contador_parametros = 0
+
+    global tipos_param
+    tipos_param = []
+
 
 def p_param(p):
     '''
@@ -287,6 +341,8 @@ def p_param(p):
     '''
     #print(p[:])
     if len(p) > 2:
+        global contador_parametros
+        contador_parametros = contador_parametros + 1
         operandos.append(p[2])
         tablaVar = directorioFunciones.get(contexto[-1])
         variable = operandos.pop()
@@ -298,6 +354,16 @@ def p_param(p):
             else:
                 tablaVar.add(variable, tipos.pop())
     
+def p_numeroParam(p):
+    '''
+    numeroParam : empty
+    '''
+    global contador_parametros
+    print("Llevo ", contador_parametros, "parametros")
+    tablaVar = directorioFunciones.get(contexto[-1])
+    tablaVar.setNumParam(contador_parametros)
+    tablaVar.setTiposParam(tipos_param)
+    print(tipos_param)
 
 def p_typeParam(p):
     '''
@@ -308,6 +374,7 @@ def p_typeParam(p):
     #print(p[:])
     if p[1]:
         tipos.append(p[1])
+        tipos_param.append(p[1])
 
 def p_type(p):
     '''
@@ -316,6 +383,14 @@ def p_type(p):
     | CHAR
     '''
     p[0] = p[1]
+
+def p_startFunc(p):
+    '''
+    startFunc : empty
+    '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    tablaVar.setDirV(len(lista_cuadruplos)+1)
+
 
 def p_body(p):
     '''
@@ -386,7 +461,7 @@ def p_dec_mvar(p):
             raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
         else:
             tablaVar.add(variable, tipos.pop())
-    print("Saliendo de dec_mvar", tipos)
+    ##print("Saliendo de dec_mvar", tipos)
 
 
 def p_assignment(p):
@@ -433,7 +508,7 @@ def p_assignment(p):
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
-            print("Saliendo de assignment", tipos)
+            #print("Saliendo de assignment", tipos)
             lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
             tipos.pop()
 
@@ -442,15 +517,25 @@ def p_call_func(p):
     call_func : ID generarERA PARENOPEN call_funcc PARENCLOSE
     '''
     print(p[:])
-    if directorioFunciones.verify(p[1]):
-        print("Si existe")
+    global contador_parametros_call
+    global validar_tipos_param
+    if contador_parametros_call != directorioFunciones.get(p[1]).numParam:
+        raise Error("ERROR CON EL NUMERO DE PARAMETROS")
+    elif directorioFunciones.get(p[1]).tipos_Param != validar_tipos_param:
+        raise Error("ERROR EN LOS TIPOS DE LOS ARGUMENTOS")
     else:
-        raise Error("NO EXISTE FUNCION CON ESE NOMBRE")
+        lista_cuadruplos.append(Cuadruplos("GOSUB", "", "", directorioFunciones.get(p[1]).dirV))
+        contador_parametros_call = 0
+        validar_tipos_param = []
 
 def p_generarERA(p):
     '''
     generarERA : empty
     '''
+    if directorioFunciones.verify(p[-1]):
+        print("Si existe")
+    else:
+        raise Error("NO EXISTE FUNCION CON ESE NOMBRE")
     lista_cuadruplos.append(Cuadruplos("ERA", "", "", p[-1]))
 
 def p_call_funcc(p):
@@ -459,10 +544,6 @@ def p_call_funcc(p):
     | exp mandarParam COLON call_funcc
     | empty
     '''
-    print(p[:])
-    global contador_parametros
-    contador_parametros = contador_parametros + 1
-    print("Llevo ", contador_parametros, "parametros")
 
 def p_mandarParam(p):
     '''
@@ -470,7 +551,27 @@ def p_mandarParam(p):
     '''
     print(p[:])
     param = operandos.pop()
-    lista_cuadruplos.append(Cuadruplos("PARAM", param, "", "PARAM"+str(contador_parametros)))
+    
+    #Obtener el tipo del parametro
+    tablaVar = directorioFunciones.get(contexto[-1])
+    if tablaVar.verify(param): #Ver si es local
+        tipo_Validar = tablaVar.getType(param)
+        #print(p[1], "es local")
+    elif tablaConstantes.verify(param): #Ver si es constante
+        tipo_Validar = tablaConstantes.getType(param)
+    elif tablaGlobal.verify(param): #Ver si es global
+        tipo_Validar = tablaGlobal.getType(param)
+        #print(p[1], "es global")
+    else: #es temporal
+        print("Estemporal")
+        tipo_Validar = tipos.pop()
+
+    global validar_tipos_param
+    validar_tipos_param.append(tipo_Validar)
+    
+    global contador_parametros_call
+    contador_parametros_call = contador_parametros_call + 1
+    lista_cuadruplos.append(Cuadruplos("PARAM", param, "", "PARAM"+str(contador_parametros_call)))
 
 def p_graph(p):
     '''
@@ -544,7 +645,7 @@ def p_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            print("Saliendo de exp", tipos)
+            #print("Saliendo de exp", tipos)
 
 def p_expp(p):
     '''
@@ -615,7 +716,7 @@ def p_expp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            print("Saliendo de expp", tipos)
+            #print("Saliendo de expp", tipos)
 
 def p_m_exp(p):
     '''
@@ -682,7 +783,7 @@ def p_m_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            print("Saliendo de m_exp", tipos)
+            #print("Saliendo de m_exp", tipos)
            
 def p_termino(p):
     '''
@@ -749,13 +850,14 @@ def p_termino(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            print("Saliendo de termino", tipos)
+            #print("Saliendo de termino", tipos)
 
 def p_factor(p):
     '''
     factor : ID 
     | CTEINT guardarConstanteInt
     | CTFLOAT guardarConstanteFloat
+    | CTECHAR guardarConstanteChar
     | variable
     | call_func
     | PARENOPEN exp PARENCLOSE
@@ -838,7 +940,7 @@ def p_factor(p):
                         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
-                    print("Saliendo de factor", tipos)
+                    #print("Saliendo de factor", tipos)
                     
 
 def p_guardarConstanteInt(p):
@@ -862,6 +964,16 @@ def p_guardarConstanteFloat(p):
         pass
     else:
         tablaConstantes.add(p[-1], "float")
+
+def p_guardarConstanteChar(p):
+    '''
+    guardarConstanteChar : empty
+    '''
+    #print(p[-1])
+    if tablaConstantes.verify(p[-1]):
+        pass
+    else:
+        tablaConstantes.add(p[-1], "char")
 
 def p_variable(p):
     '''
@@ -955,7 +1067,7 @@ def p_variableAssignment(p):
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
                     tipos.pop()
-                    print("Saliendo de variableAssignment", tipos)
+                    #print("Saliendo de variableAssignment", tipos)
 
 def p_condition(p):
     '''
@@ -1191,6 +1303,13 @@ def p_return(p):
     return : RETURN exp SEMICOLON
        
     '''
+    print(p[:])
+    if directorioFunciones.get(contexto[-1]).type == "void" and contexto[-1] != "main":
+        raise Error("LAS FUNCIONES VOID NO DEBEN RETORNAR")
+    else:
+        valor = operandos.pop()
+        lista_cuadruplos.append(Cuadruplos("RET","" , "", valor))
+
 def p_max(p):
     '''
     max : MAX PARENOPEN exp PARENCLOSE SEMICOLON
@@ -1250,6 +1369,7 @@ if __name__ == '__main__':
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
+            maquinaVirtual.start()
             print("\nAPROPIADO: ANALISIS CONCLUIDO SIN ERRORES")
         else:
             print("SE PRODUJO UN ERROR DURANTE EL ANALISIS")

@@ -8,6 +8,16 @@ class Cuadruplos:
     def get(self):
         return [self.operador, self.operandoIzq, self.operandoDer, self.temporal]
     
-    def editTemporal(self, temporal):
-        self.temporal = temporal
+    def getOperador(self):
+        return self.operador
+    
+    def getOperandoIzq(self):
+        return self.operandoIzq
+    
+    def getOperandoDer(self):
+        return self.operandoDer
+    
+    def getTemporal(self):
+        return self.temporal
+    
 

@@ -1,29 +1,40 @@
 program test8;
 var int casa; char cr9;
-function void promedio(int omniman, int paso){
+function void promedio(int omniman, float paso){
     int hola;
     int casa;
     int valor;
-    hola = casa;
+    hola = casa + 9;
 }
-function int hola(int casa){
+function float hola(int casa){
     char bye;
     char ca;
-    bye = ca;
+    bye = 'p';
     casa = 3 + 9;
+    return 9;
 }
 main(){
     int playa;
     float gol;
     char cr7;
-    casa = 8;
+    casa = 8+6;
     while(playa != playa){
         if(playa > gol){
         print("SSIUUUUUUU");
         playa = 8+8;
         while(5 > 9){
             print("hambre");
+            if(4 < 9){
+                print("es menor");
+            }else{
+                print("es mayor");
+            }
         }
     }
     }
+    promedio(8, 6.9)
+    int di;
+
+    print(" ");
+    return 0;
 }

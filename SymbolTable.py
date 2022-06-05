@@ -2,6 +2,10 @@ class SymbolTable:
     def __init__(self):
         self.variables = {}
         self.memoria = {}
+        self.type = ""
+        self.numParam = 0
+        self.tipos_Param = []
+        self.dirV = 0
 
         self.global_int = 0
         self.global_float = 1001
@@ -48,6 +52,18 @@ class SymbolTable:
     
     def getType(self, name):
         return self.variables[name]
+    
+    def setFuncType(self, type):
+        self.type = type
+
+    def setNumParam(self, num):
+        self.numParam = num
+    
+    def setTiposParam(self, tipos_Param):
+        self.tipos_Param = tipos_Param
+    
+    def setDirV(self, dirV):
+        self.dirV = dirV
 
 class Constantes:
     def __init__(self):
