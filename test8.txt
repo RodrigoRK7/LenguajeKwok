@@ -1,5 +1,5 @@
 program test8;
-var int casa; char cr9;
+var int casa, pato, conejo; char cr9;
 function void promedio(int omniman, float paso){
     int hola;
     int casa;
@@ -16,7 +16,7 @@ function float hola(int casa){
     return 9;
 }
 main(){
-    int playa;
+    int playa, variable;
     float gol;
     char cr7;
     casa = 8+6;
@@ -36,7 +36,7 @@ main(){
     }
     promedio(8+8, 6.9)
     int di;
-
+    read variable;
     print(" ");
     return 0;
 }

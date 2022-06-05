@@ -253,15 +253,20 @@ def p_guardarTipo(p):
 
 def p_mvar(p):
     '''
-    mvar : ID COLON mvar
-    | ID BRACEOPEN CTEINT BRACECLOSE COLON mvar
-    | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar
-    | ID 
-    | ID BRACEOPEN CTEINT BRACECLOSE 
-    | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
+    mvar : ID guardarIDvar COLON mvar
+    | ID guardarIDvar BRACEOPEN CTEINT BRACECLOSE COLON mvar
+    | ID guardarIDvar BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON mvar
+    | ID guardarIDvar
+    | ID guardarIDvar BRACEOPEN CTEINT BRACECLOSE 
+    | ID guardarIDvar BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
     '''
-    #print(p[:])
-    operandos.append(p[1])
+
+def p_guardarIDvar(p):
+    '''
+    guardarIDvar : empty
+    '''
+     #print(p[:])
+    operandos.append(p[-1])
     tipo = tipos[-1]
     tipos.append(tipo)
     variable = operandos.pop()
@@ -430,14 +435,22 @@ def p_dec_variabless(p):
 
 def p_dec_mvar(p):
     '''
-    dec_mvar : ID COLON dec_mvar
-    | ID BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
-    | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
-    | ID 
-    | ID BRACEOPEN CTEINT BRACECLOSE 
-    | ID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
+    dec_mvar : ID guardarID COLON dec_mvar
+    | ID guardarID BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
+    | ID guardarID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE COLON dec_mvar
+    | ID guardarID
+    | ID guardarID BRACEOPEN CTEINT BRACECLOSE 
+    | ID guardarID BRACEOPEN CTEINT BRACECLOSE BRACEOPEN CTEINT BRACECLOSE 
     '''
-    operandos.append(p[1])
+    #print(p[:])
+    ##print("Saliendo de dec_mvar", tipos)
+
+def p_guardarID(p):
+    '''
+    guardarID : empty
+    '''
+    print(p[-1])
+    operandos.append(p[-1])
     tipo = tipos[-1]
     tipos.append(tipo)
     tablaVar = directorioFunciones.get(contexto[-1])
@@ -449,8 +462,6 @@ def p_dec_mvar(p):
             raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
         else:
             tablaVar.add(variable, tipos.pop())
-    ##print("Saliendo de dec_mvar", tipos)
-
 
 def p_assignment(p):
     '''
@@ -1530,7 +1541,18 @@ def p_multivariables(p):
     operadores.append("read")
     operador = operadores.pop()
     operandoDer = operandos.pop()
-    lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
+    tablaVar = directorioFunciones.get(contexto[-1])
+    if tablaVar.verify(operandoDer) or tablaConstantes.verify(operandoDer):
+        memory = tablaVar.getMemory(operandoDer)
+    else:
+        if tablaGlobal.verify(operandoDer):
+            memory = tablaVar.getMemory(operandoDer)
+        else:
+            print(p[1], "No declarada")
+            print(contexto[-1])
+            raise Error("VARIABLE NO DECLARADA")
+
+    lista_cuadruplos.append(Cuadruplos(operador, "", "", memory))
 
 def p_while_loop(p):
     '''
