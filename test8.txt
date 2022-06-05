@@ -10,13 +10,20 @@ function int hola(int casa){
     char bye;
     char ca;
     bye = ca;
+    casa = 3 + 9;
 }
 main(){
-    int playa, gol;
+    int playa;
+    float gol;
     char cr7;
     casa = 8;
-    if(playa > gol){
+    while(playa != playa){
+        if(playa > gol){
         print("SSIUUUUUUU");
+        playa = 8+8;
+        while(5 > 9){
+            print("hambre");
+        }
     }
-    promedio(4+8.8, 25.8)
+    }
 }

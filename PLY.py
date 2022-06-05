@@ -133,10 +133,10 @@ constantes_char = 12001
 
 def p_start_program(p):
     '''
-    start_program : cuadruploMain PROGRAM ID SEMICOLON vars multiple_funcs main_body
-    | cuadruploMain PROGRAM ID SEMICOLON vars main_body
-    | cuadruploMain PROGRAM ID SEMICOLON multiple_funcs main_body
-    | cuadruploMain PROGRAM ID SEMICOLON main_body
+    start_program : cuadruploMain PROGRAM ID SEMICOLON vars multiple_funcs main_body end
+    | cuadruploMain PROGRAM ID SEMICOLON vars main_body end
+    | cuadruploMain PROGRAM ID SEMICOLON multiple_funcs main_body end
+    | cuadruploMain PROGRAM ID SEMICOLON main_body end
     '''
     p[0] = "COMPILED"
 
@@ -200,6 +200,12 @@ def p_gotoMain(p):
     #Cambiar el GOTOF incompleto por el completo
     lista_cuadruplos.pop(index)
     lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "", goto))
+
+def p_end(p):
+    '''
+    end : empty
+    '''
+    lista_cuadruplos.append(Cuadruplos("END","" , "", ""))
 
 def p_vars(p):
     '''
@@ -380,7 +386,7 @@ def p_dec_mvar(p):
             raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
         else:
             tablaVar.add(variable, tipos.pop())
-    #print("Saliendo de dec_mvar", tipos)
+    print("Saliendo de dec_mvar", tipos)
 
 
 def p_assignment(p):
@@ -396,6 +402,7 @@ def p_assignment(p):
         tablaVar = directorioFunciones.get(contexto[-1])
        
         print(operandoIzq, operandoDer)
+        print(tipos)
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
@@ -406,7 +413,7 @@ def p_assignment(p):
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print("Estemporal")
+            print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
 
         #Obtener el tipo del operandoDer
@@ -426,7 +433,7 @@ def p_assignment(p):
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
-            #print("Saliendo de assignment", tipos)
+            print("Saliendo de assignment", tipos)
             lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
             tipos.pop()
 
@@ -537,8 +544,7 @@ def p_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            #print("Saliendo de exp", tipos)
-            tipos.pop()
+            print("Saliendo de exp", tipos)
 
 def p_expp(p):
     '''
@@ -609,8 +615,7 @@ def p_expp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            #print("Saliendo de expp", tipos)
-            tipos.pop()
+            print("Saliendo de expp", tipos)
 
 def p_m_exp(p):
     '''
@@ -677,9 +682,8 @@ def p_m_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            #print("Saliendo de m_exp", tipos)
-            tipos.pop()
-   
+            print("Saliendo de m_exp", tipos)
+           
 def p_termino(p):
     '''
     termino : factor
@@ -745,8 +749,7 @@ def p_termino(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
-            #print("Saliendo de termino", tipos)
-            tipos.pop()
+            print("Saliendo de termino", tipos)
 
 def p_factor(p):
     '''
@@ -796,7 +799,6 @@ def p_factor(p):
                     #print(p[1], "es global")
                 else: #es temporal
                     print("Estemporal")
-                    tipoIzq = tipos.pop()
 
                 #Obtener el tipo del operandoDer
                 if tablaVar.verify(operandoDer): #Ver si es local
@@ -836,8 +838,7 @@ def p_factor(p):
                         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
-                    #print("Saliendo de factor", tipos)
-                    tipos.pop()
+                    print("Saliendo de factor", tipos)
                     
 
 def p_guardarConstanteInt(p):
@@ -954,7 +955,7 @@ def p_variableAssignment(p):
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
                     tipos.pop()
-                    #print("Saliendo de variableAssignment", tipos)
+                    print("Saliendo de variableAssignment", tipos)
 
 def p_condition(p):
     '''
@@ -967,6 +968,10 @@ def p_cuadruploIF(p):
     '''
     #Obtener la expresion a evaluar
     resultado = operandos.pop()
+
+    tipo = tipos.pop()
+    if tipo != "bool":
+        raise Error("LA EXPRESION NO ES BOOLEANA")
     #Posicion para insertar el GotoF
     lista_cuadruplos.append(Cuadruplos("GOTOF",resultado , "", ""))
     
@@ -1101,7 +1106,9 @@ def p_whileEval(p):
     '''
     #Obtenemos la expresion a estar evaluando
     resultado = operandos.pop()
-    
+    tipo = tipos.pop()
+    if tipo != "bool":
+        raise Error("LA EXPRESION NO ES BOOLEANA")
     #Reservamos el espacio para el GOTOF
     lista_cuadruplos.append(Cuadruplos("GOTOF",resultado , "", ""))
     
