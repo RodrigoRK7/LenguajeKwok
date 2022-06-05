@@ -12,6 +12,6 @@ class MaquinaVirtual:
         for index, i in enumerate(self.cuadruplos):
             print(str(index+1)+".-", i.get())
             if i.getOperador() == "+":
-                print("ES UNA SUMA WUJUU")
+                print("ES UNA SUMA WUJUUU")
         
 

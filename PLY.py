@@ -121,27 +121,15 @@ contador_parametros_call = 0
 tipos_param = []
 validar_tipos_param = []
 
-temporal_int = 1
-temporal_bool = 1
-temporal_float = 1
-temporal_char = 1
-
-global_int = 0
-global_float = 1001
-global_char = 2001
-
-local_int = 3001
-local_float = 4001
-local_char = 5001
+temporal_int = -1
+temporal_bool = -1
+temporal_float = -1
+temporal_char = -1
 
 espacio_temp_i = 6000
-espacio_temp_f = 7001
-espacio_temp_c = 8001
-espacio_temp_b = 9001
-
-constantes_int = 10000
-constantes_float = 11001
-constantes_char = 12001
+espacio_temp_f = 7000
+espacio_temp_c = 8000
+espacio_temp_b = 9000
 
 
 def p_start_program(p):
@@ -315,16 +303,16 @@ def p_exitFunc(p):
     lista_cuadruplos.append(Cuadruplos("ENDFUNC", "", "", ""))
     contexto.pop()
     global temporal_int
-    temporal_int = 1
+    temporal_int = -1
     
     global temporal_bool
-    temporal_bool = 1
+    temporal_bool = -1
     
     global temporal_float
-    temporal_float = 1
+    temporal_float = -1
     
     global temporal_char
-    temporal_char = 1
+    temporal_char = -1
     
     global contador_parametros
     contador_parametros = 0
@@ -476,40 +464,87 @@ def p_assignment(p):
         
         tablaVar = directorioFunciones.get(contexto[-1])
        
-        print(operandoIzq, operandoDer)
-        print(tipos)
+        #print(operandoIzq, operandoDer)
+        #print(tipos)
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
+            memoriaI = tablaVar.getMemory(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
+            memoriaI = tablaConstantes.getMemory(operandoIzq)
         elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
+            memoriaI = tablaGlobal.getMemory(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
+            if tipoIzq == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_int + espacio_temp_i
+            elif tipoIzq == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_float + espacio_temp_f
+            elif tipoIzq == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
 
         #Obtener el tipo del operandoDer
         if tablaVar.verify(operandoDer): #Ver si es local
             tipoDer = tablaVar.getType(operandoDer)
+            memoriaD = tablaVar.getMemory(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
             tipoDer = tablaConstantes.getType(operandoDer)
+            memoriaD = tablaConstantes.getMemory(operandoDer)
         elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
+            memoriaD = tablaGlobal.getMemory(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
+            if tipoDer == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_int + espacio_temp_i
+            elif tipoDer == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_float + espacio_temp_f
+            elif tipoDer == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+            elif tipoDer == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
 
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
             #print("Saliendo de assignment", tipos)
-            lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
+            #lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
+            lista_cuadruplos.append(Cuadruplos(operador, memoriaI, "", memoriaD))
             tipos.pop()
 
 def p_call_func(p):
@@ -556,22 +591,46 @@ def p_mandarParam(p):
     tablaVar = directorioFunciones.get(contexto[-1])
     if tablaVar.verify(param): #Ver si es local
         tipo_Validar = tablaVar.getType(param)
+        memoria = tablaVar.getMemory(param)
         #print(p[1], "es local")
     elif tablaConstantes.verify(param): #Ver si es constante
         tipo_Validar = tablaConstantes.getType(param)
+        memoria = tablaConstantes.getMemory(param)
     elif tablaGlobal.verify(param): #Ver si es global
         tipo_Validar = tablaGlobal.getType(param)
+        memoria = tablaGlobal.getMemory(param)
         #print(p[1], "es global")
     else: #es temporal
         print("Estemporal")
         tipo_Validar = tipos.pop()
+        if tipo_Validar == "int":
+            if temporal_int + espacio_temp_i >= 7000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_int + espacio_temp_i
+        elif tipo_Validar == "float":
+            if temporal_float + espacio_temp_f >= 8000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_float + espacio_temp_f
+        elif tipo_Validar == "char":
+            if temporal_float + espacio_temp_c >= 9000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_char + espacio_temp_c
+        elif tipo_Validar == "bool":
+            if temporal_bool + espacio_temp_b >= 10000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_char + espacio_temp_c
+
 
     global validar_tipos_param
     validar_tipos_param.append(tipo_Validar)
     
     global contador_parametros_call
     contador_parametros_call = contador_parametros_call + 1
-    lista_cuadruplos.append(Cuadruplos("PARAM", param, "", "PARAM"+str(contador_parametros_call)))
+    lista_cuadruplos.append(Cuadruplos("PARAM", memoria, "", "PARAM"+str(contador_parametros_call)))
 
 def p_graph(p):
     '''
@@ -585,40 +644,89 @@ def p_exp(p):
     | exp OR expp
     
     '''
+    global temporal_int
+    global temporal_float
+    global temporal_char
+    global temporal_bool
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
         operandoDer = operandos.pop()
         operandoIzq = operandos.pop()
-        global temporal
         
         tablaVar = directorioFunciones.get(contexto[-1])
     
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
+            memoriaI = tablaVar.getMemory(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
+            memoriaI = tablaConstantes.getMemory(operandoIzq)
         elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
+            memoriaI = tablaGlobal.getMemory(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print("Estemporal")
+            print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
+            if tipoIzq == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_int + espacio_temp_i
+            elif tipoIzq == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_float + espacio_temp_f
+            elif tipoIzq == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
 
         #Obtener el tipo del operandoDer
         if tablaVar.verify(operandoDer): #Ver si es local
             tipoDer = tablaVar.getType(operandoDer)
+            memoriaD = tablaVar.getMemory(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
             tipoDer = tablaConstantes.getType(operandoDer)
+            memoriaD = tablaConstantes.getMemory(operandoDer)
         elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
+            memoriaD = tablaGlobal.getMemory(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
+            if tipoDer == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_int + espacio_temp_i
+            elif tipoDer == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_float + espacio_temp_f
+            elif tipoDer == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+            elif tipoDer == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
 
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
@@ -626,25 +734,22 @@ def p_exp(p):
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
-                global temporal_int
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                operandos.append("Ti"+str(temporal_int))
                 temporal_int = temporal_int + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                operandos.append(str(temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
-                global temporal_float
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                operandos.append("Tf"+str(temporal_float))
                 temporal_float = temporal_float + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                operandos.append(str(temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
-                global temporal_char
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                operandos.append("Tc"+str(temporal_char))
                 temporal_char = temporal_char + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                operandos.append(str(temporal_char+espacio_temp_c))
             else:
-                global temporal_bool
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                operandos.append(str(temporal_bool+espacio_temp_b))
+                
             #print("Saliendo de exp", tipos)
 
 def p_expp(p):
@@ -657,6 +762,11 @@ def p_expp(p):
     | expp DIFFERENT m_exp 
     | expp SAME m_exp
     '''
+    global temporal_int
+    global temporal_float
+    global temporal_char
+    global temporal_bool
+
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -668,28 +778,74 @@ def p_expp(p):
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
+            memoriaI = tablaVar.getMemory(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
+            memoriaI = tablaConstantes.getMemory(operandoIzq)
         elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
+            memoriaI = tablaGlobal.getMemory(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print("Estemporal")
+            print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
+            if tipoIzq == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_int + espacio_temp_i
+            elif tipoIzq == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_float + espacio_temp_f
+            elif tipoIzq == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
 
         #Obtener el tipo del operandoDer
         if tablaVar.verify(operandoDer): #Ver si es local
             tipoDer = tablaVar.getType(operandoDer)
+            memoriaD = tablaVar.getMemory(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
             tipoDer = tablaConstantes.getType(operandoDer)
+            memoriaD = tablaConstantes.getMemory(operandoDer)
         elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
+            memoriaD = tablaGlobal.getMemory(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
+            if tipoDer == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_int + espacio_temp_i
+            elif tipoDer == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_float + espacio_temp_f
+            elif tipoDer == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+            elif tipoDer == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
 
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
@@ -697,25 +853,21 @@ def p_expp(p):
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
-                global temporal_int
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                operandos.append("Ti"+str(temporal_int))
                 temporal_int = temporal_int + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                operandos.append(str(temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
-                global temporal_float
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                operandos.append("Tf"+str(temporal_float))
                 temporal_float = temporal_float + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                operandos.append(str(temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
-                global temporal_char
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                operandos.append("Tc"+str(temporal_char))
                 temporal_char = temporal_char + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                operandos.append(str(temporal_char+espacio_temp_c))
             else:
-                global temporal_bool
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                operandos.append(str(temporal_bool+espacio_temp_b))
             #print("Saliendo de expp", tipos)
 
 def p_m_exp(p):
@@ -724,6 +876,11 @@ def p_m_exp(p):
     | m_exp PLUS termino
     | m_exp MINUS termino
     '''
+    global temporal_int
+    global temporal_float
+    global temporal_char
+    global temporal_bool
+
     if len(p) > 2:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -735,54 +892,96 @@ def p_m_exp(p):
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
+            memoriaI = tablaVar.getMemory(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
+            memoriaI = tablaConstantes.getMemory(operandoIzq)
         elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
+            memoriaI = tablaGlobal.getMemory(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print(operandoIzq)
+            print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
+            if tipoIzq == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_int + espacio_temp_i
+            elif tipoIzq == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_float + espacio_temp_f
+            elif tipoIzq == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
 
         #Obtener el tipo del operandoDer
         if tablaVar.verify(operandoDer): #Ver si es local
             tipoDer = tablaVar.getType(operandoDer)
+            memoriaD = tablaVar.getMemory(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
             tipoDer = tablaConstantes.getType(operandoDer)
+            memoriaD = tablaConstantes.getMemory(operandoDer)
         elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
+            memoriaD = tablaGlobal.getMemory(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
-        print(tipoIzq, tipoDer, operador)
+            if tipoDer == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_int + espacio_temp_i
+            elif tipoDer == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_float + espacio_temp_f
+            elif tipoDer == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+            elif tipoDer == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
-                global temporal_int
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                operandos.append("Ti"+str(temporal_int))
                 temporal_int = temporal_int + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                operandos.append(str(temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
-                global temporal_float
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                operandos.append("Tf"+str(temporal_float))
                 temporal_float = temporal_float + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                operandos.append(str(temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
-                global temporal_char
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                operandos.append("Tc"+str(temporal_char))
                 temporal_char = temporal_char + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                operandos.append(str(temporal_char+espacio_temp_c))
             else:
-                global temporal_bool
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                operandos.append(str(temporal_bool+espacio_temp_b))
             #print("Saliendo de m_exp", tipos)
            
 def p_termino(p):
@@ -791,6 +990,11 @@ def p_termino(p):
     | termino MULTIPLY factor
     | termino DIVIDE factor 
     '''
+    global temporal_int
+    global temporal_float
+    global temporal_char
+    global temporal_bool
+
     if len(p) > 2:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -802,28 +1006,74 @@ def p_termino(p):
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
+            memoriaI = tablaVar.getMemory(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
+            memoriaI = tablaConstantes.getMemory(operandoIzq)
         elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
+            memoriaI = tablaGlobal.getMemory(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print("Estemporal")
+            print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
+            if tipoIzq == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_int + espacio_temp_i
+            elif tipoIzq == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_float + espacio_temp_f
+            elif tipoIzq == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaI = temporal_char + espacio_temp_c
 
         #Obtener el tipo del operandoDer
         if tablaVar.verify(operandoDer): #Ver si es local
             tipoDer = tablaVar.getType(operandoDer)
+            memoriaD = tablaVar.getMemory(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
             tipoDer = tablaConstantes.getType(operandoDer)
+            memoriaD = tablaConstantes.getMemory(operandoDer)
         elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
+            memoriaD = tablaGlobal.getMemory(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
+            if tipoDer == "int":
+                if temporal_int + espacio_temp_i >= 7000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_int + espacio_temp_i
+            elif tipoDer == "float":
+                if temporal_float + espacio_temp_f >= 8000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_float + espacio_temp_f
+            elif tipoDer == "char":
+                if temporal_float + espacio_temp_c >= 9000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
+            elif tipoDer == "bool":
+                if temporal_bool + espacio_temp_b >= 10000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoriaD = temporal_char + espacio_temp_c
 
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
@@ -831,25 +1081,21 @@ def p_termino(p):
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
-                global temporal_int
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                operandos.append("Ti"+str(temporal_int))
                 temporal_int = temporal_int + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                operandos.append(str(temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
-                global temporal_float
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                operandos.append("Tf"+str(temporal_float))
                 temporal_float = temporal_float + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                operandos.append(str(temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
-                global temporal_char
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                operandos.append("Tc"+str(temporal_char))
                 temporal_char = temporal_char + 1
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                operandos.append(str(temporal_char+espacio_temp_c))
             else:
-                global temporal_bool
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                operandos.append(str(temporal_bool+espacio_temp_b))
             #print("Saliendo de termino", tipos)
 
 def p_factor(p):
@@ -862,6 +1108,11 @@ def p_factor(p):
     | call_func
     | PARENOPEN exp PARENCLOSE
     '''
+    global temporal_int
+    global temporal_float
+    global temporal_char
+    global temporal_bool
+    
     if p[1] == "(":
         pass
     else:
@@ -893,27 +1144,74 @@ def p_factor(p):
                 #Obtener el tipo del operandoIzq
                 if tablaVar.verify(operandoIzq): #Ver si es local
                     tipoIzq = tablaVar.getType(operandoIzq)
+                    memoriaI = tablaVar.getMemory(operandoIzq)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoIzq): #Ver si es constante
                     tipoIzq = tablaConstantes.getType(operandoIzq)
+                    memoriaI = tablaConstantes.getMemory(operandoIzq)
                 elif tablaGlobal.verify(operandoIzq): #Ver si es global
                     tipoIzq = tablaGlobal.getType(operandoIzq)
+                    memoriaI = tablaGlobal.getMemory(operandoIzq)
                     #print(p[1], "es global")
                 else: #es temporal
-                    print("Estemporal")
+                    print("Estemporal", operandoIzq)
+                    tipoIzq = tipos.pop()
+                    if tipoIzq == "int":
+                        if temporal_int + espacio_temp_i >= 7000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_int + espacio_temp_i
+                    elif tipoIzq == "float":
+                        if temporal_float + espacio_temp_f >= 8000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_float + espacio_temp_f
+                    elif tipoIzq == "char":
+                        if temporal_float + espacio_temp_c >= 9000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_char + espacio_temp_c
+                    elif tipoIzq == "bool":
+                        if temporal_bool + espacio_temp_b >= 10000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_char + espacio_temp_c
 
                 #Obtener el tipo del operandoDer
                 if tablaVar.verify(operandoDer): #Ver si es local
                     tipoDer = tablaVar.getType(operandoDer)
+                    memoriaD = tablaVar.getMemory(operandoDer)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoDer): #Ver si es constante
                     tipoDer = tablaConstantes.getType(operandoDer)
+                    memoriaD = tablaConstantes.getMemory(operandoDer)
                 elif tablaGlobal.verify(operandoDer): #Ver si es global
                     tipoDer = tablaGlobal.getType(operandoDer)
+                    memoriaD = tablaGlobal.getMemory(operandoDer)
                     #print(p[1], "es global")
                 else: #es temporal
                     print("Estemporal")
                     tipoDer = tipos.pop()
+                    if tipoDer == "int":
+                        if temporal_int + espacio_temp_i >= 7000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_int + espacio_temp_i
+                    elif tipoDer == "float":
+                        if temporal_float + espacio_temp_f >= 8000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_float + espacio_temp_f
+                    elif tipoDer == "char":
+                        if temporal_float + espacio_temp_c >= 9000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_char + espacio_temp_c
+                    elif tipoDer == "bool":
+                        if temporal_bool + espacio_temp_b >= 10000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_char + espacio_temp_c
 
                 if cubo.get(tipoIzq, tipoDer, operador) == "Error":
                     raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
@@ -921,25 +1219,21 @@ def p_factor(p):
                     tipos.append(cubo.get(tipoIzq, tipoDer, operador))
                     tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
                     if tipo_temporal == "int":
-                        global temporal_int
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                        operandos.append("Ti"+str(temporal_int))
                         temporal_int = temporal_int + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                        operandos.append(str(temporal_int+espacio_temp_i))
                     elif tipo_temporal == "float":
-                        global temporal_float
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                        operandos.append("Tf"+str(temporal_float))
                         temporal_float = temporal_float + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                        operandos.append(str(temporal_float+espacio_temp_f))
                     elif tipo_temporal == "char":
-                        global temporal_char
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                        operandos.append("Tc"+str(temporal_char))
                         temporal_char = temporal_char + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                        operandos.append(str(temporal_char+espacio_temp_c))
                     else:
-                        global temporal_bool
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                        operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                        operandos.append(str(temporal_bool+espacio_temp_b))
                     #print("Saliendo de factor", tipos)
                     
 
@@ -953,7 +1247,6 @@ def p_guardarConstanteInt(p):
     else:
         global constantes_int
         tablaConstantes.add(p[-1], "int")
-        constantes_int = constantes_int + 1
 
 def p_guardarConstanteFloat(p):
     '''
@@ -1018,28 +1311,74 @@ def p_variableAssignment(p):
                 #Obtener el tipo del operandoIzq
                 if tablaVar.verify(operandoIzq): #Ver si es local
                     tipoIzq = tablaVar.getType(operandoIzq)
+                    memoriaI = tablaVar.getMemory(operandoIzq)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoIzq): #Ver si es constante
                     tipoIzq = tablaConstantes.getType(operandoIzq)
+                    memoriaI = tablaConstantes.getMemory(operandoIzq)
                 elif tablaGlobal.verify(operandoIzq): #Ver si es global
                     tipoIzq = tablaGlobal.getType(operandoIzq)
+                    memoriaI = tablaGlobal.getMemory(operandoIzq)
                     #print(p[1], "es global")
                 else: #es temporal
-                    print("Estemporal")
+                    print("Estemporal", operandoIzq)
                     tipoIzq = tipos.pop()
+                    if tipoIzq == "int":
+                        if temporal_int + espacio_temp_i >= 7000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_int + espacio_temp_i
+                    elif tipoIzq == "float":
+                        if temporal_float + espacio_temp_f >= 8000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_float + espacio_temp_f
+                    elif tipoIzq == "char":
+                        if temporal_float + espacio_temp_c >= 9000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_char + espacio_temp_c
+                    elif tipoIzq == "bool":
+                        if temporal_bool + espacio_temp_b >= 10000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaI = temporal_char + espacio_temp_c
 
                 #Obtener el tipo del operandoDer
                 if tablaVar.verify(operandoDer): #Ver si es local
                     tipoDer = tablaVar.getType(operandoDer)
+                    memoriaD = tablaVar.getMemory(operandoDer)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoDer): #Ver si es constante
                     tipoDer = tablaConstantes.getType(operandoDer)
+                    memoriaD = tablaConstantes.getMemory(operandoDer)
                 elif tablaGlobal.verify(operandoDer): #Ver si es global
                     tipoDer = tablaGlobal.getType(operandoDer)
+                    memoriaD = tablaGlobal.getMemory(operandoDer)
                     #print(p[1], "es global")
                 else: #es temporal
                     print("Estemporal")
                     tipoDer = tipos.pop()
+                    if tipoDer == "int":
+                        if temporal_int + espacio_temp_i >= 7000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_int + espacio_temp_i
+                    elif tipoDer == "float":
+                        if temporal_float + espacio_temp_f >= 8000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_float + espacio_temp_f
+                    elif tipoDer == "char":
+                        if temporal_float + espacio_temp_c >= 9000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_char + espacio_temp_c
+                    elif tipoDer == "bool":
+                        if temporal_bool + espacio_temp_b >= 10000:
+                            raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                        else:
+                            memoriaD = temporal_char + espacio_temp_c
 
                 if cubo.get(tipoIzq, tipoDer, operador) == "Error":
                     raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
@@ -1047,26 +1386,21 @@ def p_variableAssignment(p):
                     tipos.append(cubo.get(tipoIzq, tipoDer, operador))
                     tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
                     if tipo_temporal == "int":
-                        global temporal_int
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Ti"+str(temporal_int)))
-                        operandos.append("Ti"+str(temporal_int))
                         temporal_int = temporal_int + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
+                        operandos.append(str(temporal_int+espacio_temp_i))
                     elif tipo_temporal == "float":
-                        global temporal_float
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tf"+str(temporal_float)))
-                        operandos.append("Tf"+str(temporal_float))
                         temporal_float = temporal_float + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
+                        operandos.append(str(temporal_float+espacio_temp_f))
                     elif tipo_temporal == "char":
-                        global temporal_char
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tc"+str(temporal_char)))
-                        operandos.append("Tc"+str(temporal_char))
                         temporal_char = temporal_char + 1
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
+                        operandos.append(str(temporal_char+espacio_temp_c))
                     else:
-                        global temporal_bool
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
-                        operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
-                    tipos.pop()
+                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
+                        operandos.append(str(temporal_bool+espacio_temp_b))
                     #print("Saliendo de variableAssignment", tipos)
 
 def p_condition(p):

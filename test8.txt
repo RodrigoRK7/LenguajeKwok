@@ -5,6 +5,8 @@ function void promedio(int omniman, float paso){
     int casa;
     int valor;
     hola = casa + 9;
+    hola = 9 + casa;
+    casa = 9*7;
 }
 function float hola(int casa){
     char bye;
@@ -32,7 +34,7 @@ main(){
         }
     }
     }
-    promedio(8, 6.9)
+    promedio(8+8, 6.9)
     int di;
 
     print(" ");

@@ -8,17 +8,13 @@ class SymbolTable:
         self.dirV = 0
 
         self.global_int = 0
-        self.global_float = 1001
-        self.global_char = 2001
+        self.global_float = 1000
+        self.global_char = 2000
 
-        self.local_int = 3001
-        self.local_float = 4001
-        self.local_char = 5001
+        self.local_int = 3000
+        self.local_float = 4000
+        self.local_char = 5000
 
-        self.espacio_temp_i = 6000
-        self.espacio_temp_f = 7001
-        self.espacio_temp_c = 8001
-        self.espacio_temp_b = 9001
 
     def add(self, name, type):
         self.variables[name] = type
@@ -64,6 +60,9 @@ class SymbolTable:
     
     def setDirV(self, dirV):
         self.dirV = dirV
+    
+    def getMemory(self, name):
+        return self.memoria[name]
 
 class Constantes:
     def __init__(self):
@@ -93,3 +92,6 @@ class Constantes:
     
     def getType(self, name):
         return self.constantes[name]
+    
+    def getMemory(self, name):
+        return self.memoria[name]
