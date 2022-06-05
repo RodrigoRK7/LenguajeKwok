@@ -1,18 +1,22 @@
 program test8;
-function void promedio(int omniman, char paso){
+var int casa; char cr9;
+function void promedio(int omniman, int paso){
     int hola;
-    char casa;
+    int casa;
     int valor;
     hola = casa;
 }
-function int hola(float casa){
-    int bye;
+function int hola(int casa){
+    char bye;
     char ca;
     bye = ca;
 }
 main(){
-    int casa;
-    for(casa = 4 to 90){
-        print("for");
+    int playa, gol;
+    char cr7;
+    casa = 8;
+    if(playa > gol){
+        print("SSIUUUUUUU");
     }
+    promedio(4+8.8, 25.8)
 }

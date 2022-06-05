@@ -107,10 +107,28 @@ directorioFunciones = DirectorioFunciones()
 tablaConstantes = Constantes()
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
+contador_parametros = 0
 temporal_int = 1
 temporal_bool = 1
 temporal_float = 1
 temporal_char = 1
+
+global_int = 0
+global_float = 1001
+global_char = 2001
+
+local_int = 3001
+local_float = 4001
+local_char = 5001
+
+espacio_temp_i = 6000
+espacio_temp_f = 7001
+espacio_temp_c = 8001
+espacio_temp_b = 9001
+
+constantes_int = 10000
+constantes_float = 11001
+constantes_char = 12001
 
 
 def p_start_program(p):
@@ -127,10 +145,15 @@ def p_start_program(p):
     print("Pila de operadores: ",operadores)
     print("Pila de saltos: ", saltos)
     print("Directorio Global: ", directorioFunciones.get("global").variables)
+    print("Memoria global: ", directorioFunciones.get("global").memoria)
     print("Tabla de constantes: ", tablaConstantes.constantes)
+    print("Memoria constantes: ", tablaConstantes.memoria)
     print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
+    print("Memoria promedio: ", directorioFunciones.get("promedio").memoria)
     print("Tabla de hola: ", directorioFunciones.get("hola").variables)
+    print("Memoria hola: ", directorioFunciones.get("hola").memoria)
     print("Tabla de main: ", directorioFunciones.get("main").variables)
+    print("Memoria main: ", directorioFunciones.get("main").memoria)
     
     #print(directorioFunciones.get("main").getType("A"))
 
@@ -217,7 +240,7 @@ def p_mvar(p):
     if tablaGlobal.verify(variable):
         raise Error("NOMBRES DE VARIABLES REPETIDOS DENTRO DE LA MISMA FUNCION")
     else:
-        tablaGlobal.add(variable, tipos.pop())
+        tablaGlobal.addGlobal(variable, tipos.pop())
     #print("Llevo estos operandos (mvar): ", operandos)
 
 def p_dec_func(p):
@@ -357,6 +380,8 @@ def p_dec_mvar(p):
             raise Error("NOMBRES DE VARIABLES-FUNCIONES REPETIDOS")
         else:
             tablaVar.add(variable, tipos.pop())
+    #print("Saliendo de dec_mvar", tipos)
+
 
 def p_assignment(p):
     '''
@@ -370,13 +395,14 @@ def p_assignment(p):
         
         tablaVar = directorioFunciones.get(contexto[-1])
        
+        print(operandoIzq, operandoDer)
        #Obtener el tipo del operandoIzq
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaConstantes.getType(operandoIzq)
+        elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
@@ -388,8 +414,8 @@ def p_assignment(p):
             tipoDer = tablaVar.getType(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaConstantes.getType(operandoDer)
+        elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
@@ -400,26 +426,45 @@ def p_assignment(p):
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
             tipos.append(cubo.get(tipoIzq, tipoDer, operador))
+            #print("Saliendo de assignment", tipos)
             lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, "", operandoDer))
+            tipos.pop()
 
 def p_call_func(p):
     '''
-    call_func : ID PARENOPEN call_funcc PARENCLOSE
+    call_func : ID generarERA PARENOPEN call_funcc PARENCLOSE
     '''
     print(p[:])
     if directorioFunciones.verify(p[1]):
         print("Si existe")
-        lista_cuadruplos.append(Cuadruplos("ERA", "", "", p[1]))
-        
     else:
         raise Error("NO EXISTE FUNCION CON ESE NOMBRE")
 
+def p_generarERA(p):
+    '''
+    generarERA : empty
+    '''
+    lista_cuadruplos.append(Cuadruplos("ERA", "", "", p[-1]))
+
 def p_call_funcc(p):
     '''
-    call_funcc : exp 
-    | exp COLON call_funcc
+    call_funcc : exp mandarParam
+    | exp mandarParam COLON call_funcc
     | empty
     '''
+    print(p[:])
+    global contador_parametros
+    contador_parametros = contador_parametros + 1
+    print("Llevo ", contador_parametros, "parametros")
+
+def p_mandarParam(p):
+    '''
+    mandarParam : empty
+    '''
+    print(p[:])
+    param = operandos.pop()
+    lista_cuadruplos.append(Cuadruplos("PARAM", param, "", "PARAM"+str(contador_parametros)))
+
 def p_graph(p):
     '''
     graph : PLOT PARENOPEN exp PARENCLOSE SEMICOLON
@@ -446,8 +491,8 @@ def p_exp(p):
             tipoIzq = tablaVar.getType(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaConstantes.getType(operandoIzq)
+        elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
@@ -459,8 +504,8 @@ def p_exp(p):
             tipoDer = tablaVar.getType(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaConstantes.getType(operandoDer)
+        elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
@@ -492,6 +537,8 @@ def p_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+            #print("Saliendo de exp", tipos)
+            tipos.pop()
 
 def p_expp(p):
     '''
@@ -516,8 +563,8 @@ def p_expp(p):
             tipoIzq = tablaVar.getType(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaConstantes.getType(operandoIzq)
+        elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
@@ -529,8 +576,8 @@ def p_expp(p):
             tipoDer = tablaVar.getType(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaConstantes.getType(operandoDer)
+        elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
@@ -562,6 +609,8 @@ def p_expp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+            #print("Saliendo de expp", tipos)
+            tipos.pop()
 
 def p_m_exp(p):
     '''
@@ -582,12 +631,12 @@ def p_m_exp(p):
             tipoIzq = tablaVar.getType(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaConstantes.getType(operandoIzq)
+        elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
-            print("Estemporal")
+            print(operandoIzq)
             tipoIzq = tipos.pop()
 
         #Obtener el tipo del operandoDer
@@ -595,14 +644,14 @@ def p_m_exp(p):
             tipoDer = tablaVar.getType(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaConstantes.getType(operandoDer)
+        elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
             print("Estemporal")
             tipoDer = tipos.pop()
-
+        print(tipoIzq, tipoDer, operador)
         if cubo.get(tipoIzq, tipoDer, operador) == "Error":
             raise Error("LOS TIPOS DE LAS VARIABLES NO SON COMPATIBLES")
         else:
@@ -628,6 +677,8 @@ def p_m_exp(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+            #print("Saliendo de m_exp", tipos)
+            tipos.pop()
    
 def p_termino(p):
     '''
@@ -648,8 +699,8 @@ def p_termino(p):
             tipoIzq = tablaVar.getType(operandoIzq)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoIzq = tablaConstantes.getType(operandoIzq)
+        elif tablaGlobal.verify(operandoIzq): #Ver si es global
             tipoIzq = tablaGlobal.getType(operandoIzq)
             #print(p[1], "es global")
         else: #es temporal
@@ -661,8 +712,8 @@ def p_termino(p):
             tipoDer = tablaVar.getType(operandoDer)
             #print(p[1], "es local")
         elif tablaConstantes.verify(operandoDer): #Ver si es constante
-            pass
-        elif tablaGlobal.verify(p[1]): #Ver si es global
+            tipoDer = tablaConstantes.getType(operandoDer)
+        elif tablaGlobal.verify(operandoDer): #Ver si es global
             tipoDer = tablaGlobal.getType(operandoDer)
             #print(p[1], "es global")
         else: #es temporal
@@ -694,12 +745,14 @@ def p_termino(p):
                 lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                 operandos.append("Tb"+str(temporal_bool))
                 temporal_bool = temporal_bool + 1
+            #print("Saliendo de termino", tipos)
+            tipos.pop()
 
 def p_factor(p):
     '''
     factor : ID 
-    | CTEINT guardarConstante
-    | CTFLOAT guardarConstante
+    | CTEINT guardarConstanteInt
+    | CTFLOAT guardarConstanteFloat
     | variable
     | call_func
     | PARENOPEN exp PARENCLOSE
@@ -709,7 +762,7 @@ def p_factor(p):
     else:
         declarada = False
         tablaVar = directorioFunciones.get(contexto[-1])
-        #print(contexto)
+        print(contexto)
         #variable = operandos.pop()
         if tablaVar.verify(p[1]) or tablaConstantes.verify(p[1]):
             declarada = True
@@ -720,6 +773,7 @@ def p_factor(p):
                 #print(p[1], "es global")
             else:
                 print(p[1], "No declarada")
+                print(contexto[-1])
                 raise Error("VARIABLE NO DECLARADA")
         
         if declarada:
@@ -736,8 +790,8 @@ def p_factor(p):
                     tipoIzq = tablaVar.getType(operandoIzq)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-                    pass
-                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoIzq = tablaConstantes.getType(operandoIzq)
+                elif tablaGlobal.verify(operandoIzq): #Ver si es global
                     tipoIzq = tablaGlobal.getType(operandoIzq)
                     #print(p[1], "es global")
                 else: #es temporal
@@ -749,8 +803,8 @@ def p_factor(p):
                     tipoDer = tablaVar.getType(operandoDer)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoDer): #Ver si es constante
-                    pass
-                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoDer = tablaConstantes.getType(operandoDer)
+                elif tablaGlobal.verify(operandoDer): #Ver si es global
                     tipoDer = tablaGlobal.getType(operandoDer)
                     #print(p[1], "es global")
                 else: #es temporal
@@ -782,17 +836,31 @@ def p_factor(p):
                         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
+                    #print("Saliendo de factor", tipos)
+                    tipos.pop()
                     
 
-def p_guardarConstante(p):
+def p_guardarConstanteInt(p):
     '''
-    guardarConstante : empty
+    guardarConstanteInt : empty
     '''
     #print(p[-1])
     if tablaConstantes.verify(p[-1]):
         pass
     else:
-        tablaConstantes.add(p[-1])
+        global constantes_int
+        tablaConstantes.add(p[-1], "int")
+        constantes_int = constantes_int + 1
+
+def p_guardarConstanteFloat(p):
+    '''
+    guardarConstanteFloat : empty
+    '''
+    #print(p[-1])
+    if tablaConstantes.verify(p[-1]):
+        pass
+    else:
+        tablaConstantes.add(p[-1], "float")
 
 def p_variable(p):
     '''
@@ -823,7 +891,7 @@ def p_variableAssignment(p):
                 declarada = True
                #print(p[1], "es global")
             else:
-                #print("No declarada")
+                print(p[1])
                 raise Error("VARIABLE NO DECLARADA")
         
         if declarada:
@@ -839,8 +907,8 @@ def p_variableAssignment(p):
                     tipoIzq = tablaVar.getType(operandoIzq)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoIzq): #Ver si es constante
-                    pass
-                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoIzq = tablaConstantes.getType(operandoIzq)
+                elif tablaGlobal.verify(operandoIzq): #Ver si es global
                     tipoIzq = tablaGlobal.getType(operandoIzq)
                     #print(p[1], "es global")
                 else: #es temporal
@@ -852,8 +920,8 @@ def p_variableAssignment(p):
                     tipoDer = tablaVar.getType(operandoDer)
                     #print(p[1], "es local")
                 elif tablaConstantes.verify(operandoDer): #Ver si es constante
-                    pass
-                elif tablaGlobal.verify(p[1]): #Ver si es global
+                    tipoDer = tablaConstantes.getType(operandoDer)
+                elif tablaGlobal.verify(operandoDer): #Ver si es global
                     tipoDer = tablaGlobal.getType(operandoDer)
                     #print(p[1], "es global")
                 else: #es temporal
@@ -885,6 +953,8 @@ def p_variableAssignment(p):
                         lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, "Tb"+str(temporal_bool)))
                         operandos.append("Tb"+str(temporal_bool))
                         temporal_bool = temporal_bool + 1
+                    tipos.pop()
+                    #print("Saliendo de variableAssignment", tipos)
 
 def p_condition(p):
     '''
@@ -983,7 +1053,6 @@ def p_writingg(p):
     #print(operandos)
     operador = operadores.pop()
     operandoDer = operandos.pop(0)
-    global temporal
     lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
     #print(operandos)
 
@@ -1010,7 +1079,6 @@ def p_multivariables(p):
     operadores.append("read")
     operador = operadores.pop()
     operandoDer = operandos.pop()
-    global temporal
     lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
 
 def p_while_loop(p):
@@ -1171,7 +1239,7 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test7.txt','r')
+        archivo = open('test8.txt','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):

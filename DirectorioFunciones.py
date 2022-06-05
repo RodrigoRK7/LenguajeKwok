@@ -1,3 +1,4 @@
+from tarfile import SYMTYPE
 from SymbolTable import SymbolTable
 
 class Singleton(type):
@@ -15,13 +16,23 @@ class DirectorioFunciones(metaclass=Singleton):
     def get(self, moduleName):
         if(moduleName in self.funciones):
             return self.funciones[moduleName]
-    
-    def verify(self, moduleName):
-        if(moduleName in self.funciones):
+                 
+    def verify(self, name):
+        if(name in self.funciones.keys()):
             return True
         else:
             return False
-
+    
     def add(self, moduleName):
-        #self.funciones[moduleName] = [type, SymbolTable()]
         self.funciones[moduleName] = SymbolTable()
+        ''' self.funciones = {
+            moduleName:{
+                "Type": type, 
+                "Direction": direction, 
+                "Parameters": [],
+                "NumberParameters": 0,
+                "SymbolTable": SymbolTable()
+                }
+            }
+            '''
+        

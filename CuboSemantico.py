@@ -30,7 +30,7 @@ class CuboSemantico:
                     "!=": 'bool',
                     "&&": 'Error',
                     "||": 'Error',
-                    "=": 'int'
+                    "=": 'Error'
                 },
                 'char': {
                     "+": 'Error',
@@ -62,7 +62,7 @@ class CuboSemantico:
                     "!=": 'bool',
                     "&&": 'Error',
                     "||": 'Error',
-                    "=": 'float'
+                    "=": 'Error'
                 },
                 'float': {
                     "+": 'float',
