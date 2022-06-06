@@ -7,13 +7,13 @@ class SymbolTable:
         self.tipos_Param = []
         self.dirV = 0
 
-        self.global_int = 0
-        self.global_float = 1000
-        self.global_char = 2000
+        self.global_int = 10000
+        self.global_float = 20000
+        self.global_char = 30000
 
-        self.local_int = 3000
-        self.local_float = 4000
-        self.local_char = 5000
+        self.local_int = 40000
+        self.local_float = 50000
+        self.local_char = 60000
 
 
     def add(self, name, type):
@@ -64,13 +64,17 @@ class SymbolTable:
     def getMemory(self, name):
         return self.memoria[name]
 
+    def getName(self,direction):
+     return [key for key in self.memoria if (self.memoria[key] == direction)]
+
 class Constantes:
     def __init__(self):
         self.constantes = {}
         self.memoria = {}
         self.constantes_int = 10000
-        self.constantes_float = 11001
-        self.constantes_char = 12001
+        self.constantes_float = 11000
+        self.constantes_char = 12000
+        self.constantes_print = 13000
         
     def add(self, name, type):
         self.constantes[name] = type
@@ -83,6 +87,9 @@ class Constantes:
         elif type == "char":
             self.memoria[name] = self.constantes_char
             self.constantes_char = self.constantes_char + 1
+        elif type == "print":
+            self.memoria[name] = self.constantes_print
+            self.constantes_print = self.constantes_print + 1
             
     def verify(self, name):
         if(name in self.constantes.keys()):
@@ -95,3 +102,6 @@ class Constantes:
     
     def getMemory(self, name):
         return self.memoria[name]
+    
+    def getName(self,direction):
+     return [key for key in self.memoria if (self.memoria[key] == direction)]

@@ -137,8 +137,8 @@ class CuboSemantico:
                     "<=": 'Error',
                     "==": 'bool',
                     "!=": 'bool',
-                    "&&": 'bool',
-                    "||": 'bool',
+                    "&&": 'Error',
+                    "||": 'Error',
                     "=": 'char'
                 }
             }

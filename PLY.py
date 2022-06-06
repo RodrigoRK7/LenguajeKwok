@@ -6,10 +6,7 @@ from Cuadruplos import Cuadruplos
 from SymbolTable import Constantes
 from CuboSemantico import CuboSemantico
 from MaquinaVirtual import MaquinaVirtual
-
-class Error(Exception):
-    def __init__(self, message):
-        self.message = message
+from Error import Error
 
 reserverdWords = {
     'program' : 'PROGRAM',
@@ -115,7 +112,6 @@ maquinaVirtual = MaquinaVirtual(lista_cuadruplos, directorioFunciones, tablaCons
 directorioFunciones.add("global")
 tablaGlobal = directorioFunciones.get("global")
 tablaGlobal.setFuncType("np")
-
 contador_parametros = 0
 contador_parametros_call = 0
 tipos_param = []
@@ -126,10 +122,10 @@ temporal_bool = -1
 temporal_float = -1
 temporal_char = -1
 
-espacio_temp_i = 6000
-espacio_temp_f = 7000
-espacio_temp_c = 8000
-espacio_temp_b = 9000
+espacio_temp_i = 15000
+espacio_temp_f = 16000
+espacio_temp_c = 17000
+espacio_temp_b = 18000
 
 
 def p_start_program(p):
@@ -221,7 +217,7 @@ def p_gotoMain(p):
 
     #Cambiar el GOTOF incompleto por el completo
     lista_cuadruplos.pop(index)
-    lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "", directorioFunciones.get("main").dirV))
+    lista_cuadruplos.insert(index, Cuadruplos("GOTO","" , "main", directorioFunciones.get("main").dirV))
 
 def p_end(p):
     '''
@@ -493,22 +489,22 @@ def p_assignment(p):
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -529,22 +525,22 @@ def p_assignment(p):
             print("Estemporal")
             tipoDer = tipos.pop()
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -615,22 +611,22 @@ def p_mandarParam(p):
         print("Estemporal")
         tipo_Validar = tipos.pop()
         if tipo_Validar == "int":
-            if temporal_int + espacio_temp_i >= 7000:
+            if temporal_int + espacio_temp_i >= 16000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_int + espacio_temp_i
         elif tipo_Validar == "float":
-            if temporal_float + espacio_temp_f >= 8000:
+            if temporal_float + espacio_temp_f >= 17000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_float + espacio_temp_f
         elif tipo_Validar == "char":
-            if temporal_float + espacio_temp_c >= 9000:
+            if temporal_float + espacio_temp_c >= 18000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_char + espacio_temp_c
         elif tipo_Validar == "bool":
-            if temporal_bool + espacio_temp_b >= 10000:
+            if temporal_bool + espacio_temp_b >= 1:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_char + espacio_temp_c
@@ -683,22 +679,22 @@ def p_exp(p):
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -719,22 +715,22 @@ def p_exp(p):
             print("Estemporal")
             tipoDer = tipos.pop()
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -802,22 +798,22 @@ def p_expp(p):
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -838,22 +834,22 @@ def p_expp(p):
             print("Estemporal")
             tipoDer = tipos.pop()
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -916,22 +912,22 @@ def p_m_exp(p):
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -952,22 +948,22 @@ def p_m_exp(p):
             print("Estemporal")
             tipoDer = tipos.pop()
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -1030,22 +1026,22 @@ def p_termino(p):
             print("Estemporal", operandoIzq)
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -1066,22 +1062,22 @@ def p_termino(p):
             print("Estemporal")
             tipoDer = tipos.pop()
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 7000:
+                if temporal_int + espacio_temp_i >= 16000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 8000:
+                if temporal_float + espacio_temp_f >= 17000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 9000:
+                if temporal_float + espacio_temp_c >= 18000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 10000:
+                if temporal_bool + espacio_temp_b >= 1:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -1168,22 +1164,22 @@ def p_factor(p):
                     print("Estemporal", operandoIzq)
                     tipoIzq = tipos.pop()
                     if tipoIzq == "int":
-                        if temporal_int + espacio_temp_i >= 7000:
+                        if temporal_int + espacio_temp_i >= 16000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_int + espacio_temp_i
                     elif tipoIzq == "float":
-                        if temporal_float + espacio_temp_f >= 8000:
+                        if temporal_float + espacio_temp_f >= 17000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_float + espacio_temp_f
                     elif tipoIzq == "char":
-                        if temporal_float + espacio_temp_c >= 9000:
+                        if temporal_float + espacio_temp_c >= 18000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
                     elif tipoIzq == "bool":
-                        if temporal_bool + espacio_temp_b >= 10000:
+                        if temporal_bool + espacio_temp_b >= 1:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
@@ -1204,22 +1200,22 @@ def p_factor(p):
                     print("Estemporal")
                     tipoDer = tipos.pop()
                     if tipoDer == "int":
-                        if temporal_int + espacio_temp_i >= 7000:
+                        if temporal_int + espacio_temp_i >= 16000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_int + espacio_temp_i
                     elif tipoDer == "float":
-                        if temporal_float + espacio_temp_f >= 8000:
+                        if temporal_float + espacio_temp_f >= 17000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_float + espacio_temp_f
                     elif tipoDer == "char":
-                        if temporal_float + espacio_temp_c >= 9000:
+                        if temporal_float + espacio_temp_c >= 18000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
                     elif tipoDer == "bool":
-                        if temporal_bool + espacio_temp_b >= 10000:
+                        if temporal_bool + espacio_temp_b >= 1:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
@@ -1256,7 +1252,6 @@ def p_guardarConstanteInt(p):
     if tablaConstantes.verify(p[-1]):
         pass
     else:
-        global constantes_int
         tablaConstantes.add(p[-1], "int")
 
 def p_guardarConstanteFloat(p):
@@ -1335,22 +1330,22 @@ def p_variableAssignment(p):
                     print("Estemporal", operandoIzq)
                     tipoIzq = tipos.pop()
                     if tipoIzq == "int":
-                        if temporal_int + espacio_temp_i >= 7000:
+                        if temporal_int + espacio_temp_i >= 16000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_int + espacio_temp_i
                     elif tipoIzq == "float":
-                        if temporal_float + espacio_temp_f >= 8000:
+                        if temporal_float + espacio_temp_f >= 17000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_float + espacio_temp_f
                     elif tipoIzq == "char":
-                        if temporal_float + espacio_temp_c >= 9000:
+                        if temporal_float + espacio_temp_c >= 18000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
                     elif tipoIzq == "bool":
-                        if temporal_bool + espacio_temp_b >= 10000:
+                        if temporal_bool + espacio_temp_b >= 1:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
@@ -1371,22 +1366,22 @@ def p_variableAssignment(p):
                     print("Estemporal")
                     tipoDer = tipos.pop()
                     if tipoDer == "int":
-                        if temporal_int + espacio_temp_i >= 7000:
+                        if temporal_int + espacio_temp_i >= 16000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_int + espacio_temp_i
                     elif tipoDer == "float":
-                        if temporal_float + espacio_temp_f >= 8000:
+                        if temporal_float + espacio_temp_f >= 17000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_float + espacio_temp_f
                     elif tipoDer == "char":
-                        if temporal_float + espacio_temp_c >= 9000:
+                        if temporal_float + espacio_temp_c >= 18000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
                     elif tipoDer == "bool":
-                        if temporal_bool + espacio_temp_b >= 10000:
+                        if temporal_bool + espacio_temp_b >= 1:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
@@ -1525,6 +1520,10 @@ def p_auxString(p):
     '''
     if(p[1]):
         operandos.append(p[1])
+        if tablaConstantes.verify(p[1]):
+            pass
+        else:
+            tablaConstantes.add(p[1], "print")
 
 def p_reading(p):
     '''

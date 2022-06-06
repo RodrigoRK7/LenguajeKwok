@@ -4,7 +4,7 @@ function void promedio(int omniman, float paso){
     int hola;
     int casa;
     int valor;
-    hola = casa + 9;
+    casa = 7;
     hola = 9 + casa;
     casa = 9*7;
 }
