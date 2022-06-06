@@ -1,3 +1,12 @@
+'''
+Rodrigo de Jesús Ruíz Kwok A00824488
+
+Clase Singleton:
+
+Clase utilizada para la implementación del patrón de diseño Singleton para generar solo 
+una instancia de una clase.
+
+'''
 from SymbolTable import SymbolTable
 
 class Singleton(type):
@@ -8,6 +17,16 @@ class Singleton(type):
             clase._instances[clase] = instance
         return clase._instances[clase]
 
+'''
+Rodrigo de Jesús Ruíz Kwok A00824488
+
+Clase DirectorioFunciones:
+
+Clase que implementa el patron de diseño Singleton para que solo exista un directorio de funciones.
+Se implementa un metodo get para obtener el nombre de una función, verify para validar si existe una función
+y add para agregar una instancia de SymbolTable a cada función.
+
+'''
 class DirectorioFunciones(metaclass=Singleton):
     def __init__(self):
         self.funciones = {}

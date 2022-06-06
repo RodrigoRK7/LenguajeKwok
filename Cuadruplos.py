@@ -1,3 +1,13 @@
+'''
+Rodrigo de Jesús Ruíz Kwok A00824488
+
+Clase Cuadruplos:
+
+Clase utilizada para la generación de cuadruplos (init). Tiene un get para retornar
+cada valor del cuadruplo o todo junto.
+
+'''
+
 class Cuadruplos:
     def __init__(self, operador, operandoIzq, operandoDer, temporal):
         self.operador = operador

@@ -1,3 +1,12 @@
+'''
+Rodrigo de Jesús Ruíz Kwok A00824488
+
+Clase CuboSemantico:
+
+Clase que implementa un diccionario de diccionarios de diccionarios para 
+hacer las validaciones entre las relaciones de los tipos de datos dependiendo del operador.
+
+'''
 class CuboSemantico:
     def __init__(self):
         self.cuboSemantico = {
