@@ -1,7 +1,5 @@
-program holaMundo;
-var int a;
+program test;
 main(){
 int b;
-    normal(4,1,90);
-plot(8);
+read b;
 }
