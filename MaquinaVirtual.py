@@ -102,7 +102,8 @@ class MaquinaVirtual:
                 x = input()
             elif i.getOperador() == "print":
                 valor = i.getOperandoIzq()
-                variable = i.getTemporal()                
+                variable = i.getTemporal()
+                print(i.getTemporal())               
             elif i.getOperador() == "GOTO":
                 valor = i.getOperandoIzq()
                 variable = i.getTemporal()                
@@ -132,7 +133,7 @@ class MaquinaVirtual:
                 print(np.random.normal(i.getOperandoIzq(), i.getOperandoDer(), i.getTemporal()))
             elif i.getOperador() == "POISSON":
                 print(np.random.poisson(i.getOperandoIzq(), i.getOperandoDer()))
-            elif i.getOperador() == "NORMAL":
+            elif i.getOperador() == "UNIFORME":
                 print(np.random.normal(i.getOperandoIzq(), i.getOperandoDer(), i.getTemporal()))
 
 

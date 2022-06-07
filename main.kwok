@@ -1,9 +1,7 @@
 program holaMundo;
 var int a;
 main(){
-    int b;
-    while(15 > b){
-        print("Estoy estresado");
-    }
-    poisson(4,1);
+int b;
+    normal(4,1,90);
+plot(8);
 }
