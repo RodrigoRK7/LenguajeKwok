@@ -1,9 +1,0 @@
-program test1;
-var float soyvariable;
-function void media(){
- int acum;
- print("hola");
-}
-main(){
-    casa = ((A * B - C * D ) > C + D * E / F) && (G * H - J > L - A) && B + C > D * F;
-}

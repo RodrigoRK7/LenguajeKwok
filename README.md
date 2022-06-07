@@ -39,8 +39,7 @@ Como podemos ver en el ejemplo anterior Kwok nos permite declarar variables del 
 2.3 Declaración de funciones
 Para declarar funciones en Kwok debemos indicar con la palabra function que se va a declarar una función. Las funciones siguen la siguiente estructura:
 
-function tipo nombreFuncion(tipo nombreParametro1, tipo nombreParametro2){            código de la función 
-}
+function tipo nombreFuncion(tipo nombreParametro1, tipo nombreParametro2){            código de la función}
 
 Para las funciones podemos tener el tipo void, el cual nos indica que la función no retorna ningún valor. En Kwok las funciones pueden tener cualquier cantidad de parámetros siempre y cuando se define el tipo, su nombre y se separe por comas.
 2.4 Declaración de variables locales
@@ -51,11 +50,7 @@ La declaración de variables locales puede hacerse en cualquier sección del có
 A continuación se presentan las expresiones aritméticas que se pueden usar en Kwok con su respectiva prioridad. Cabe mencionar que la asociatividad en Kwok es de izquierda a derecha y es de suma importancia que los operandos hayan sido declarados previamente a su uso, esto porque no todos los tipos de operandos son compatibles entre sí.
 
 Operadores de mayor a menor precedencia
-( )
-*        /
-+        -
-==    <     >     >=    <=    !=      =
-&&     ||
+( )   *   /   +   -   ==    <     >     >=    <=    !=   =     &&     ||
 
 2.5.2 Read
 Para la lectura de variables debemos usar la palabra read antes de la variable a usar. Recuerda declarar la variable a usar previamente a su uso y de ingresar valores que coincidan con el tipo de dato que se declaró la variable.
@@ -68,7 +63,7 @@ print(“Esto es un ejemplo de print”);
 2.6 Llamadas a funciones
 Las llamadas a funciones tienen una estructura sencilla, debemos colocar el nombre de la función que queremos mandar a llamar y dentro de paréntesis mandar los parámetros que queremos que la función use. Debemos tener en cuenta que los tipos de datos de las funciones y la cantidad de los parámetros tienen mucha importancia, ya que si la función está declarada con dos parámetros enteros y al mandarla a llamar le mandamos uno entero y uno flotante se producirá un error.
 
-nombreDeFuncion(parametro
+nombreDeFuncion(parámetro)
 2.7 Condicionales
 Para el manejo de condicionales en Kwok se implementa un estatuto If, el cuál lleva la siguiente forma:
 
@@ -113,3 +108,27 @@ main(){
 }
 
 El código anterior va a estar ejecutando lo que está dentro del while siempre y cuando la variable b siga siendo mayor a 9.
+
+2.9 Funciones especiales
+2.9.1 Plot 
+Kwok maneja la función Plot que genera una gráfica lineal dado una variable, para poder graficar lo único que debemos hacer es usar la palabra plot seguido de la variable a graficar.
+
+plot(calificaciones);
+2.9.2 Distribución Normal
+Kwok permite obtener la distribución normal dados los parámetros n, p y size. Para usarla solo se debe usar normal seguido de los tres valores a usar para dichos parámetros.
+
+normal(9, 0.1, 20000);
+
+2.9.3 Distribución Poisson
+Kwok permite obtener la distribución poisson dados los parámetros lambda y size. Para usarla solo se debe usar poisson seguido de los dos valores a usar para dichos parámetros.
+
+poisson(5, 1000);
+2.9.4 Distribución Binomial
+Kwok de igual forma permite obtener la distribución binomial dado los parámetros n, p y size. Para usarla solo se debe usar binomial seguido de los tres valores a usar para dichos parámetros.
+
+binomial(9, 0.1, 20000);
+
+2.9.5 Distribución Uniforme
+Y la última distribución que Kwok nos permite obtener es la distribución uniforme con los parámetros low, high y size. Para usarla solo se debe usar uniforme seguido de los tres valores a usar para dichos parámetros.
+
+uniforme(-1, 0, 1000);

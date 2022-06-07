@@ -7,7 +7,6 @@ En este archivo se lleva acabo el lexer y parser de python que nos genera el có
 en la máquina virtual.
 
 '''
-from lib2to3.pgen2.grammar import opmap_raw
 import sys
 import ply.lex as lex
 import ply.yacc as yacc

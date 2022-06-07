@@ -1,3 +1,11 @@
+'''
+Rodrigo de Jesús Ruíz Kwok A00824488
+
+MaquinaVirtual.py:
+
+En este archivo se lleva acabo el manejo de codigo intermedio e implementación de la máquina virtual.
+
+'''
 from Error import Error
 import matplotlib.pyplot as plt
 import ply.lex as lex
