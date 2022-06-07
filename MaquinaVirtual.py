@@ -2,7 +2,10 @@ from Error import Error
 import matplotlib.pyplot as plt
 import ply.lex as lex
 import ply.yacc as yacc
+import matplotlib.pyplot as plt
+import numpy as np
 
+#Clase maquina virtual que lee los cuadruplos y dependiendo del operador realiza una operacion
 class MaquinaVirtual:
     def __init__(self, cuadruplos, directorioFunciones, constantes):
         self.cuadruplos = cuadruplos
@@ -10,15 +13,16 @@ class MaquinaVirtual:
         self.constantes = constantes
         self.datos = {}
 
+    #Metodo para obtener el nombre
     def getName(self, contexto, name):
         tablaVar = self.directorioFunciones.get(contexto[0])
-        print(contexto)
+        #print(contexto)
         data = 0
         if tablaVar.getName(name):
             data = tablaVar.getName(name)
         elif self.constantes.getName(name):
             data = self.constantes.getName(name)
-            #self.datos[data] = data
+            self.datos[data] = data
         else:
             name = int(name)
             if name >= 15000 and name < 16000:
@@ -40,64 +44,88 @@ class MaquinaVirtual:
         contexto = []
         for index, i in enumerate(self.directorioFunciones.funciones):
             contexto.append(i)
-        print(contexto)
+        
         contexto.pop(0)
         for index, i in enumerate(self.cuadruplos):
             index = index + 1
-            print(str(index)+".-", i.get())
+            #print(str(index)+".-", i.get())
             if i.getOperador() == "+":
                 operandoIzq = i.getOperandoIzq()
                 operandoDer = i.getOperandoDer()
                 resultado = i.getTemporal()
-                
-                print(operandoIzq, operandoDer, resultado)
-                
                 izq = self.getName(contexto, operandoIzq)
                 der = self.getName(contexto, operandoDer)
                 resul = self.getName(contexto, resultado)
-                print(resul, "=", izq, "+", der)
 
             elif i.getOperador() == "-":
-                print("Resta")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "&&":
-                print("And")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "||":
-                print("Or")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == ">":
-                print("Mayor que")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "<":
-                print("Menor que")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "==":
-                print("Igual a")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "!=":
-                print("Diferente que")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "<=":
-                print("Menor igual")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == ">=":
-                print("Mayor igual")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "*":
-                print("Multiplica")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "/":
-                print("Divide")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "read":
                 x = input()
             elif i.getOperador() == "print":
-                print(i.getTemporal())
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "GOTO":
-                print("goto")
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                
             elif i.getOperador() == "ENDFUNC":
                 contexto.pop(0)
             elif i.getOperador() == "=":
-                print("Es un igual")
                 valor = i.getOperandoIzq()
                 variable = i.getTemporal()
-
-                print(variable, valor)
-                
-                izq = self.getName(contexto, variable)
-                der = self.getName(contexto, valor)
-                
-                print(izq, "=", der)
+            elif i.getOperador() == "GOSUB":
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()  
+            elif i.getOperador() == "GOTOF":
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()  
+            elif i.getOperador() == "PARAM":
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()
+            elif i.getOperador() == "":
+                valor = i.getOperandoIzq()
+                variable = i.getTemporal()                    
+            elif i.getOperador() == "PLOT":
+                plt.plot(i.getTemporal())
+                plt.show()
+            elif i.getOperador() == "BINOMIAL":
+                print(np.random.binomial(i.getOperandoIzq(), i.getOperandoDer(), i.getTemporal()))
+            elif i.getOperador() == "NORMAL":
+                print(np.random.normal(i.getOperandoIzq(), i.getOperandoDer(), i.getTemporal()))
+            elif i.getOperador() == "POISSON":
+                print(np.random.poisson(i.getOperandoIzq(), i.getOperandoDer()))
+            elif i.getOperador() == "NORMAL":
+                print(np.random.normal(i.getOperandoIzq(), i.getOperandoDer(), i.getTemporal()))
 
 
         

@@ -12,10 +12,10 @@ class Constantes:
         self.memoria = {}
 
         #Direcciones para las constantes
-        self.constantes_int = 10000
-        self.constantes_float = 11000
-        self.constantes_char = 12000
-        self.constantes_print = 13000
+        self.constantes_int = 25000
+        self.constantes_float = 26000
+        self.constantes_char = 27000
+        self.constantes_print = 28000
         
     #Se agrega una constante al diccionario con su tipo y en otro diccionario con su dirección de memoria
     def add(self, name, type):

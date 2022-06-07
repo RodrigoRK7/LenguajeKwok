@@ -7,8 +7,8 @@ En este archivo se lleva acabo el lexer y parser de python que nos genera el có
 en la máquina virtual.
 
 '''
+from lib2to3.pgen2.grammar import opmap_raw
 import sys
-from numpy import char
 import ply.lex as lex
 import ply.yacc as yacc
 from DirectorioFunciones import DirectorioFunciones
@@ -109,7 +109,7 @@ def t_CTECHAR(t):
 
 #Definicion de lo que es un error y el mensaje que imprime
 def t_error(t):
-    print("HAY UN ERROR")
+    raise Error("HAY UN ERROR")
     t.lexer.skip(1)
 
 #Se genera el lexer
@@ -161,43 +161,21 @@ def p_start_program(p):
     | cuadruploMain PROGRAM ID SEMICOLON main_body end
     '''
     p[0] = "COMPILED"
-
-    print("Pila de tipos: ", tipos)
-    print("Pila de operandos: ",operandos)
-    print("Pila de operadores: ",operadores)
-    print("Pila de saltos: ", saltos)
-    print("//////////////////////////////////////////")
-    print("Directorio Global: ", directorioFunciones.get("global").variables)
-    print("Memoria global: ", directorioFunciones.get("global").memoria)
-    print("Tipo de Global: ", directorioFunciones.get("global").type)
-    print("//////////////////////////////////////////")
+    '''imprimirFunciones = []
+    for index, i in enumerate(directorioFunciones.funciones):
+        imprimirFunciones.append(i)
+    for index, i in enumerate(imprimirFunciones):
+        print("Tabla de ", i)
+        print("Tabla de variables: ", directorioFunciones.get(i).variables)
+        print("Tabla de memoria: ", directorioFunciones.get(i).memoria)
+        print("Tipo: ", directorioFunciones.get(i).type)
+        print("DirV: ", directorioFunciones.get(i).dirV)
     print("Tabla de constantes: ", tablaConstantes.constantes)
-    print("Memoria constantes: ", tablaConstantes.memoria)
-    print("//////////////////////////////////////////")
-    print("Tabla de promedio: ", directorioFunciones.get("promedio").variables)
-    print("Memoria promedio: ", directorioFunciones.get("promedio").memoria)
-    print("Tipo de promedio: ", directorioFunciones.get("promedio").type)
-    print("NumParam de promedio: ", directorioFunciones.get("promedio").numParam)
-    print("TiposParam de promedio: ", directorioFunciones.get("promedio").tipos_Param)
-    print("Inicia en el cuadruplo: ", directorioFunciones.get("promedio").dirV)
-    print("//////////////////////////////////////////")
-    print("Tabla de hola: ", directorioFunciones.get("hola").variables)
-    print("Memoria hola: ", directorioFunciones.get("hola").memoria)
-    print("Tipo de hola: ", directorioFunciones.get("hola").type)
-    print("NumParam de hola: ", directorioFunciones.get("hola").numParam)
-    print("TiposParam de hola: ", directorioFunciones.get("hola").tipos_Param)
-    print("Inicia en el cuadruplo: ", directorioFunciones.get("hola").dirV)
-    print("//////////////////////////////////////////")
-    print("Tabla de main: ", directorioFunciones.get("main").variables)
-    print("Memoria main: ", directorioFunciones.get("main").memoria)
-    print("Tipo de main: ", directorioFunciones.get("main").type)
-    print("NumParam de main: ", directorioFunciones.get("main").numParam)
-    print("//////////////////////////////////////////")
-    
+    print("Memoria constantes: ", tablaConstantes.memoria)'''
     #print(directorioFunciones.get("main").getType("A"))
 
-    '''for index, i in enumerate(lista_cuadruplos):
-        print(str(index+1)+".-", i.get())'''
+    #for index, i in enumerate(lista_cuadruplos):
+     #   print(str(index+1)+".-", i.get())
 
 #Se genera el primer cuadruplo para posteriormente insertar la dirección de inicio del main
 def p_cuadruploMain(p):
@@ -446,7 +424,6 @@ def p_statement(p):
     | graph
     | return
     | while_loop
-    | for_loop
     | max
     | min
     | sum
@@ -709,7 +686,6 @@ def p_exp(p):
         if tablaVar.verify(operandoIzq): #Ver si es local
             tipoIzq = tablaVar.getType(operandoIzq)
             memoriaI = tablaVar.getMemory(operandoIzq)
-            #print(p[1], "es local")
         elif tablaConstantes.verify(operandoIzq): #Ver si es constante
             tipoIzq = tablaConstantes.getType(operandoIzq)
             memoriaI = tablaConstantes.getMemory(operandoIzq)
@@ -785,20 +761,20 @@ def p_exp(p):
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                operandos.append(str(temporal_int+espacio_temp_i))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                operandos.append(str(temporal_float+espacio_temp_f))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                operandos.append(str(temporal_char+espacio_temp_c))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                operandos.append(str(temporal_bool+espacio_temp_b))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                operandos.append((temporal_bool+espacio_temp_b))
 
 #Trabajo de expresiones > < >= <= != ==
 def p_expp(p):
@@ -904,20 +880,20 @@ def p_expp(p):
             #Dependiendo del tipo se incrementa el contador y se genera el cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                operandos.append(str(temporal_int+espacio_temp_i))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                operandos.append(str(temporal_float+espacio_temp_f))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                operandos.append(str(temporal_char+espacio_temp_c))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                operandos.append(str(temporal_bool+espacio_temp_b))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                operandos.append((temporal_bool+espacio_temp_b))
 
 #Manejo de sumas y restas
 def p_m_exp(p):
@@ -1018,20 +994,20 @@ def p_m_exp(p):
             #Dependiendo del tipo incremental el temporal y generar cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                operandos.append(str(temporal_int+espacio_temp_i))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                operandos.append(str(temporal_float+espacio_temp_f))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                operandos.append(str(temporal_char+espacio_temp_c))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                operandos.append(str(temporal_bool+espacio_temp_b))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                operandos.append((temporal_bool+espacio_temp_b))
 
 #Manejo de multiplicaciones y divisiones          
 def p_termino(p):
@@ -1130,20 +1106,20 @@ def p_termino(p):
             #Dependiendo del tipo incremental el temporal y generar cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                operandos.append(str(temporal_int+espacio_temp_i))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                operandos.append(str(temporal_float+espacio_temp_f))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
-                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                operandos.append(str(temporal_char+espacio_temp_c))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
-                lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                operandos.append(str(temporal_bool+espacio_temp_b))
+                lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                operandos.append((temporal_bool+espacio_temp_b))
 
 #Manejo de factores
 def p_factor(p):
@@ -1265,20 +1241,20 @@ def p_factor(p):
                     tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
                     if tipo_temporal == "int":
                         temporal_int = temporal_int + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                        operandos.append(str(temporal_int+espacio_temp_i))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                        operandos.append((temporal_int+espacio_temp_i))
                     elif tipo_temporal == "float":
                         temporal_float = temporal_float + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                        operandos.append(str(temporal_float+espacio_temp_f))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                        operandos.append((temporal_float+espacio_temp_f))
                     elif tipo_temporal == "char":
                         temporal_char = temporal_char + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                        operandos.append(str(temporal_char+espacio_temp_c))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                        operandos.append((temporal_char+espacio_temp_c))
                     else:
                         temporal_bool = temporal_bool + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                        operandos.append(str(temporal_bool+espacio_temp_b))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                        operandos.append((temporal_bool+espacio_temp_b))
                     
 #Guardar la constante entera en la tabla de constantes (si no ha sido guardada antes)
 def p_guardarConstanteInt(p):
@@ -1426,20 +1402,20 @@ def p_variableAssignment(p):
                     tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
                     if tipo_temporal == "int":
                         temporal_int = temporal_int + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_int+espacio_temp_i)))
-                        operandos.append(str(temporal_int+espacio_temp_i))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
+                        operandos.append((temporal_int+espacio_temp_i))
                     elif tipo_temporal == "float":
                         temporal_float = temporal_float + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, str(temporal_float+espacio_temp_f)))
-                        operandos.append(str(temporal_float+espacio_temp_f))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
+                        operandos.append((temporal_float+espacio_temp_f))
                     elif tipo_temporal == "char":
                         temporal_char = temporal_char + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, operandoDer, str(temporal_char+espacio_temp_c)))
-                        operandos.append(str(temporal_char+espacio_temp_c))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
+                        operandos.append((temporal_char+espacio_temp_c))
                     else:
                         temporal_bool = temporal_bool + 1
-                        lista_cuadruplos.append(Cuadruplos(operador, operandoIzq, operandoDer, str(temporal_bool+espacio_temp_b)))
-                        operandos.append(str(temporal_bool+espacio_temp_b))
+                        lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
+                        operandos.append((temporal_bool+espacio_temp_b))
 
 #Estatuto condicional
 def p_condition(p):
@@ -1652,45 +1628,6 @@ def p_whileEnd(p):
     #saltos.append(len(lista_cuadruplos)+1)
     #gotof = saltos.pop(0)
 
-def p_for_loop(p):
-    '''
-    for_loop : FOR PARENOPEN ID EQUAL exp guardarValorFor TO exp PARENCLOSE body forEnd
-
-    '''
-    print(p[:])
-    declarada = False
-    tablaVar = directorioFunciones.get(contexto[-1])
-    #print(contexto)
-    #variable = operandos.pop()
-    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
-        declarada = True
-        #print(p[1], "es local")
-    else:
-        if tablaGlobal.verify(p[3]):
-            declarada = True
-            #print(p[1], "es global")
-        else:
-            print(p[3], "No declarada")
-            raise Error("VARIABLE NO DECLARADA")
-    
-    if declarada:
-        operandos.append(p[3])
-
-def p_guardarValorFor(p):
-    '''
-    guardarValorFor : empty
-
-    '''
-    exp = operandos.pop()
-    print(operandos)
-    print(exp)
-   # print(vcontrol)
-
-def p_forEnd(p):
-    '''
-    forEnd : empty
-
-    '''
 #Regresar una expresion
 def p_return(p):
     '''
@@ -1704,53 +1641,223 @@ def p_return(p):
         valor = operandos.pop()
         lista_cuadruplos.append(Cuadruplos("RET","" , "", valor))
 
+#Funcion que grafica una expresion
 def p_graph(p):
     '''
     graph : PLOT PARENOPEN exp PARENCLOSE SEMICOLON
     
     '''
+    if p[1]:
+        valor = operandos.pop()
+        lista_cuadruplos.append(Cuadruplos("PLOT","" , "", valor))
 
+#Funcion que regresa el maximo de un arreglo
 def p_max(p):
     '''
-    max : MAX PARENOPEN exp PARENCLOSE SEMICOLON
+    max : MAX PARENOPEN ID PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+        declarada = True
+    else:
+        if tablaGlobal.verify(p[3]):
+            declarada = True
+        else:
+            print(p[3], "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada:
+        lista_cuadruplos.append(Cuadruplos("MAX","" , "", p[3]))
+
+#Funcion que regresa el minimo de un arreglo
 def p_min(p):
     '''
-    min : MIN PARENOPEN exp PARENCLOSE SEMICOLON
+    min : MIN PARENOPEN ID PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+        declarada = True
+    else:
+        if tablaGlobal.verify(p[3]):
+            declarada = True
+        else:
+            print(p[3], "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada:
+        lista_cuadruplos.append(Cuadruplos("MIN","" , "", p[3]))
+
+#Funcion que regresa la suma de un arreglo
 def p_sum(p):
     '''
-    sum : SUM PARENOPEN exp PARENCLOSE SEMICOLON
+    sum : SUM PARENOPEN ID PARENCLOSE SEMICOLON
        
     '''
-def p_param_dist(p):
-    '''
-    param_dist : variable
-    | variable COLON param_dist
-       
-    '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+        declarada = True
+    else:
+        if tablaGlobal.verify(p[3]):
+            declarada = True
+        else:
+            print(p[3], "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada:
+        lista_cuadruplos.append(Cuadruplos("SUM","" , "", p[3]))
+
 def p_binomial(p):
     '''
-    binomial : BINOMIAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    binomial : BINOMIAL PARENOPEN exp COLON exp COLON exp PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    operando3 = operandos.pop()
+    operando2 = operandos.pop()
+    operando1 = operandos.pop()
+
+    if tablaVar.verify(operando1) or tablaConstantes.verify(operando1):
+        declarada1 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada1 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando2) or tablaConstantes.verify(operando2):
+        declarada2 = True
+    else:
+        if tablaGlobal.verify(operando2):
+            declarada2 = True
+        else:
+            print(operando2, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando3) or tablaConstantes.verify(operando3):
+        declarada3 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada3 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada1 and declarada2 and declarada3:
+        lista_cuadruplos.append(Cuadruplos("BINOMIAL",operando1, operando2, operando3))
+
 def p_poisson(p):
     '''
-    poisson : POISSON PARENOPEN param_dist PARENCLOSE SEMICOLON
+    poisson : POISSON PARENOPEN exp COLON exp PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    operando2 = operandos.pop()
+    operando1 = operandos.pop()
+
+    if tablaVar.verify(operando1) or tablaConstantes.verify(operando1):
+        declarada1 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada1 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando2) or tablaConstantes.verify(operando2):
+        declarada2 = True
+    else:
+        if tablaGlobal.verify(operando2):
+            declarada2 = True
+        else:
+            print(operando2, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada1 and declarada2:
+        lista_cuadruplos.append(Cuadruplos("POISSON",operando1, operando2, ""))
+
 def p_uniforme(p):
     '''
-    uniforme : UNIFORME PARENOPEN param_dist PARENCLOSE SEMICOLON
+    uniforme : UNIFORME PARENOPEN exp COLON exp COLON exp PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    operando3 = operandos.pop()
+    operando2 = operandos.pop()
+    operando1 = operandos.pop()
+
+    if tablaVar.verify(operando1) or tablaConstantes.verify(operando1):
+        declarada1 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada1 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando2) or tablaConstantes.verify(operando2):
+        declarada2 = True
+    else:
+        if tablaGlobal.verify(operando2):
+            declarada2 = True
+        else:
+            print(operando2, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando3) or tablaConstantes.verify(operando3):
+        declarada3 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada3 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada1 and declarada2 and declarada3:
+        lista_cuadruplos.append(Cuadruplos("UNIFORME",operando1, operando2, operando3))
+
 def p_normal(p):
     '''
-    normal : NORMAL PARENOPEN param_dist PARENCLOSE SEMICOLON
+    normal : NORMAL PARENOPEN exp COLON exp COLON exp PARENCLOSE SEMICOLON
        
     '''
+    tablaVar = directorioFunciones.get(contexto[-1])
+    operando3 = operandos.pop()
+    operando2 = operandos.pop()
+    operando1 = operandos.pop()
+
+    if tablaVar.verify(operando1) or tablaConstantes.verify(operando1):
+        declarada1 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada1 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando2) or tablaConstantes.verify(operando2):
+        declarada2 = True
+    else:
+        if tablaGlobal.verify(operando2):
+            declarada2 = True
+        else:
+            print(operando2, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando3) or tablaConstantes.verify(operando3):
+        declarada3 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada3 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada1 and declarada2 and declarada3:
+        lista_cuadruplos.append(Cuadruplos("NORMAL",operando1, operando2, operando3))
+
 #Estatuto vacío
 def p_empty(p):
     '''
@@ -1770,14 +1877,13 @@ parser = yacc.yacc()
 
 if __name__ == '__main__':
     try:
-        archivo = open('test8.txt','r')
+        archivo = open('main.kwok','r')
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
             
             #Iniciar la máquina
             maquinaVirtual.start()
-            print("\nAPROPIADO: ANALISIS CONCLUIDO SIN ERRORES")
         else:
             print("SE PRODUJO UN ERROR DURANTE EL ANALISIS")
     except EOFError:
