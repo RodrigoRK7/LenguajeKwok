@@ -45,11 +45,11 @@ class SymbolTable:
         elif type == "float":
             self.memoria[self.local_float] = name
             self.local_float = self.local_float + 1
-            self.contador_global_float = self.contador_local_float + 1
+            self.contador_local_float = self.contador_local_float + 1
         elif type == "char":
             self.memoria[self.local_char] = name
             self.local_char = self.local_char + 1
-            self.contador_global_char = self.contador_local_char + 1
+            self.contador_local_char = self.contador_local_char + 1
 
     #Se agrega una variable global a un diccionario de memoria y a otro de tipos
     def addGlobal(self, name, type):

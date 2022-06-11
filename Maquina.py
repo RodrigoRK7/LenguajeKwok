@@ -76,7 +76,6 @@ class Maquina:
     #Funcion para inicializar la maquina
     def start(self):
         print("Inicializando maquina...")
-
         #Reservar los espacios en los arreglos de cada tipo
         self.globales_int = [None] * self.vars[0]
         self.globales_float = [None] * self.vars[1]

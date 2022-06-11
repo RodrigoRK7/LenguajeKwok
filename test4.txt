@@ -1,0 +1,29 @@
+program test;
+var int edad;
+function void imprime(){
+    print("ESTOY EN LA FUNCION");
+}
+main(){
+int a,b, c;
+edad = 9;
+c = 7;
+a = c;
+print("Ingresa tu edad: ");
+read edad;
+a = a + c;
+read b;
+b = b*b;
+print(b);
+imprime()
+while(b < 9){
+    print(b);
+    b = b+1;
+}
+if(edad >= 18){
+    print("Wow! Eres un adulto");
+    a = a + 1;
+}
+print(edad);
+imprime()
+print(a);
+}

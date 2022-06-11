@@ -7,7 +7,6 @@ En este archivo se lleva acabo el lexer y parser de python que nos genera el có
 en la máquina virtual.
 
 '''
-import sys
 import ply.lex as lex
 import ply.yacc as yacc
 from DirectorioFunciones import DirectorioFunciones
@@ -172,10 +171,11 @@ def p_start_program(p):
     '''
     p[0] = "COMPILED"
     
+    #Descomentar para debuggear la creacion de tablas
     imprimirFunciones = []
     for index, i in enumerate(directorioFunciones.funciones):
         imprimirFunciones.append(i)
-    
+    '''
     for index, i in enumerate(imprimirFunciones):
         print("Tabla de ", i)
         print("Tabla de variables: ", directorioFunciones.get(i).variables)
@@ -183,7 +183,8 @@ def p_start_program(p):
         print("Tipo: ", directorioFunciones.get(i).type)
         print("DirV: ", directorioFunciones.get(i).dirV)
     print("Tabla de constantes: ", tablaConstantes.constantes)
-    print("Memoria constantes: ", tablaConstantes.memoria)
+    print("Memoria constantes: ", tablaConstantes.memoria) '''
+
     tablaMain = directorioFunciones.get("main")
     global contGI
     global contGF
@@ -197,12 +198,12 @@ def p_start_program(p):
     contGC = tablaGlobal.contador_global_char
     contLI = tablaMain.contador_local_int
     contLF = tablaMain.contador_local_float
-    contLC = tablaMain.contador_local_int
+    contLC = tablaMain.contador_local_char
     
-    #print(directorioFunciones.get("main").getType("A"))
-    
+    #Descomentar para debuggear la generación de cuadruplos
+    '''
     for index, i in enumerate(lista_cuadruplos):
-        print(str(index)+".-", i.get())
+        print(str(index)+".-", i.get()) '''
 
 #Se genera el primer cuadruplo para posteriormente insertar la dirección de inicio del main
 def p_cuadruploMain(p):

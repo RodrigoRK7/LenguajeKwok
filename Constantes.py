@@ -16,11 +16,6 @@ class Constantes:
         self.constantes_float = 7000
         self.constantes_char = 8000
         self.constantes_print = 9000
-
-        self.contador_int = 0
-        self.contador_float = 0
-        self.contador_char = 0
-        self.contador_prints = 0
         
     #Se agrega una constante al diccionario con su tipo y en otro diccionario con su dirección de memoria
     def add(self, name, type):
@@ -28,19 +23,15 @@ class Constantes:
         if type == "int":
             self.memoria[self.constantes_int] = name
             self.constantes_int = self.constantes_int + 1
-            self.contador_int = self.contador_int + 1
         elif type == "float":
             self.memoria[self.constantes_float] = name
             self.constantes_float = self.constantes_float + 1
-            self.contador_float = self.contador_float + 1
         elif type == "char":
             self.memoria[self.constantes_char] = name
             self.constantes_char = self.constantes_char + 1
-            self.contador_char = self.contador_char + 1
         elif type == "print":
             self.memoria[self.constantes_print] = name
             self.constantes_print = self.constantes_print + 1
-            self.contador_prints = self.contador_prints + 1
 
     #Verificar si una constante ya ha sido declarada o no    
     def verify(self, name):
