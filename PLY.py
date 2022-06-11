@@ -1899,11 +1899,10 @@ def p_max(p):
         if tablaGlobal.verify(valor):
             declarada = True
         else:
-            print(p[3], "No declarada")
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada:
-        lista_cuadruplos.append(Cuadruplos("MAX","" , "", p[3]))
+        lista_cuadruplos.append(Cuadruplos("MAX","" , "", valor))
 
 #Funcion que regresa el minimo de un arreglo
 def p_min(p):
@@ -1912,17 +1911,17 @@ def p_min(p):
        
     '''
     tablaVar = directorioFunciones.get(contexto[-1])
-    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+    valor = p[3]
+    if tablaVar.verify(valor) or tablaConstantes.verify(valor):
         declarada = True
     else:
-        if tablaGlobal.verify(p[3]):
+        if tablaGlobal.verify(valor):
             declarada = True
         else:
-            print(p[3], "No declarada")
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada:
-        lista_cuadruplos.append(Cuadruplos("MIN","" , "", p[3]))
+        lista_cuadruplos.append(Cuadruplos("MIN","" , "", valor))
 
 #Funcion que regresa la suma de un arreglo
 def p_sum(p):
@@ -1931,17 +1930,17 @@ def p_sum(p):
        
     '''
     tablaVar = directorioFunciones.get(contexto[-1])
-    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+    valor = p[3]
+    if tablaVar.verify(valor) or tablaConstantes.verify(valor):
         declarada = True
     else:
-        if tablaGlobal.verify(p[3]):
+        if tablaGlobal.verify(valor):
             declarada = True
         else:
-            print(p[3], "No declarada")
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada:
-        lista_cuadruplos.append(Cuadruplos("SUM","" , "", p[3]))
+        lista_cuadruplos.append(Cuadruplos("SUM","" , "", valor))
 
 def p_binomial(p):
     '''

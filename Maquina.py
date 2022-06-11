@@ -6,13 +6,15 @@ Maquina.py:
 En este archivo se lleva acabo el manejo de codigo intermedio e implementación de la máquina virtual.
 
 '''
-from tkinter.messagebox import NO
 from Error import Error
 import matplotlib.pyplot as plt
 import numpy as np
 
+#Creacion de pilas auxiliares
 saltos = []
 contexto = []
+
+#Definicion de la maquina virtual
 class Maquina:
     def __init__(self, cuadruplos, vars, constantes):
         self.cuadruplos = cuadruplos
@@ -32,64 +34,50 @@ class Maquina:
         self.temporal_char = [] #3,000 - 3,999
         self.temporal_bool = [] #4,000 - 4,999
     
+    #Funcion para obtener el valor de una direccion de memoria, para obtener el indice se resta la direccion que se recibe como parametro - la base del tipo
     def getValue(self, direction):
         if direction >= 1000 and direction <= 4999: #Temporales
-            #print("Es temporal")
             if direction >= 1000 and direction <= 1999: #Temporales Int
-                #print("Es temporal int")
                 valor = self.temporal_int[direction-1000]
             elif direction >= 2000 and direction <= 2999:#Temporales float
-                #print("Es temporal float")
                 valor = self.temporal_float[direction-2000]
             elif direction >= 3000 and direction <= 3999: #Temporales char
-                #print("Es temporal char")
                 valor = self.temporal_char[direction-3000]
             elif direction >= 4000 and direction <= 4999: #Temporales bool
-                #print("Es temporal bool")
                 valor = self.temporal_bool[direction-4000]
         elif direction >= 6000 and direction <= 9999: #Es constante
-            #print("Es constante")
             if direction >= 6000 and direction <= 6999: #Constante int
-                #print("Es constante int")
                 valor = self.constantes.getName(direction)
             elif direction >= 7000 and direction <= 7999: #Constante float
-                #print("Es constante flotante")
                 valor = self.constantes.getName(direction)
             elif direction >= 8000 and direction <= 8999: #Constante char
-                #print("Es constante char")
                 valor = self.constantes.getName(direction)
             elif direction >= 9000 and direction <= 9999: #Constante print
-                #print("Es constante print")
                 valor = self.constantes.getName(direction)
         elif direction >= 10000 and direction <= 39999: #Es global
-            #print("Es global")
             if direction >= 10000 and direction <= 19999: #Global int
-                #print("Es global entera")
                 valor = self.globales_int[direction-10000]
             elif direction >= 20000 and direction <= 29999: #Global float
-                #print("Es global float")
                 valor = self.globales_float[direction-20000]
             elif direction >= 30000 and direction <= 39999: #Global char
-                #print("Es global char")
                 valor = self.globales_char[direction-30000]
         elif direction >= 40000 and direction <= 69999: #Es local
-            #print("Es local")
             if direction >= 40000 and direction <= 49999: #Local int
-                #print("Es local entera")
                 valor = self.local_int[direction-40000]
             elif direction >= 50000 and direction <= 59999: #Local float
-                #print("Es local float")
                 valor = self.local_float[direction-50000]
             elif direction >= 60000 and direction <= 69999: #Local char
-                #print("Es local char")
                 valor = self.local_char[direction-60000]
         if valor == None:
             raise Error("DATO CON VALOR NONE")
         else:
             return valor
     
+    #Funcion para inicializar la maquina
     def start(self):
         print("Inicializando maquina...")
+
+        #Reservar los espacios en los arreglos de cada tipo
         self.globales_int = [None] * self.vars[0]
         self.globales_float = [None] * self.vars[1]
         self.globales_char = [None] * self.vars[2]
@@ -101,28 +89,33 @@ class Maquina:
         self.temporal_char = [None] * self.vars[8]
         self.temporal_bool = [None] * self.vars[9]
 
+        #Recorrer los cuadruplos hasta encontrar el END
         index = 0
         while self.cuadruplos[index].getOperador() != "END":
             #print(index, self.cuadruplos[index].get())
+            
+            #Flags para saber hacia donde irnos dirigiendo
             checked = False
             goto = False
             gotoF = False
             gosub = False
-        
+
+            #Si el operador es un PLOT
             if self.cuadruplos[index].getOperador() == "PLOT" and checked == False:
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
-                #print(valor1)
                 plt.plot(valor1, valor2)
                 plt.show()
                 checked = True
             
+            #Si el operador es un POISSON
             if self.cuadruplos[index].getOperador() == "POISSON" and checked == False:
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 print(np.random.poisson(valor1, valor2))
                 checked = True
 
+            #Si el operador es un BINOMIAL
             if self.cuadruplos[index].getOperador() == "BINOMIAL"and checked == False:
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
@@ -130,6 +123,7 @@ class Maquina:
                 print(np.random.binomial(valor1, valor2, valor3))
                 checked = True
 
+            #Si el operador es un UNIFORME
             if self.cuadruplos[index].getOperador() == "UNIFORME" and checked == False:
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
@@ -137,683 +131,484 @@ class Maquina:
                 print(np.random.uniform(valor1, valor2, valor3))
                 checked = True
             
+            #Si el operador es un NORMAL
             if self.cuadruplos[index].getOperador() == "NORMAL" and checked == False:
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor3 = self.getValue(self.cuadruplos[index].getTemporal())
                 print(np.random.normal(valor1, valor2, valor3))
                 checked = True
-                
+            
+            #Si el operador es un =
             if self.cuadruplos[index].getOperador() == "=" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor = self.getValue(self.cuadruplos[index].getOperandoIzq())
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR UNA CONSTANTE A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
-
                 checked = True
-                
+            
+            #Si el operador es un +
             if self.cuadruplos[index].getOperador() == "+" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 + valor2
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
-                elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
+                elif direction >= 6000 and direction <= 9999: #Es constante    
                     raise Error("NO PUEDES ASIGNAR UNA CONSTANTE A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
-                    elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
+                    elif direction >= 30000 and direction <= 39999: #Global char    
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
-                    elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
+                    elif direction >= 50000 and direction <= 59999: #Local float    
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
             
+            #Si el operador es un *
             if self.cuadruplos[index].getOperador() == "*" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 * valor2
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
-                    elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
+                    elif direction >= 4000 and direction <= 4999: #Temporales bool    
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR UNA CONSTANTE A UNA CONSTANTE")
-                elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
+                elif direction >= 10000 and direction <= 39999: #Es global    
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
-
                 checked = True
 
+            #Si el operador es un /
             if self.cuadruplos[index].getOperador() == "/" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 / valor2
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR UNA CONSTANTE A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
-
                 checked = True
 
+            #Si el operador es un -
             if self.cuadruplos[index].getOperador() == "-" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 - valor2
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR UNA CONSTANTE A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
-
                 checked = True
             
+            #Si el operador es un ||
             if self.cuadruplos[index].getOperador() == "||" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 or valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un &&
             if self.cuadruplos[index].getOperador() == "&&" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 and valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
-                
                 checked = True
 
+            #Si el operador es un !=
             if self.cuadruplos[index].getOperador() == "!=" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 != valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un ==
             if self.cuadruplos[index].getOperador() == "==" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 == valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un >=
             if self.cuadruplos[index].getOperador() == ">=" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 >= valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
-                    elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
+                    elif direction >= 4000 and direction <= 4999: #Temporales bool    
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
             
+            #Si el operador es un <=
             if self.cuadruplos[index].getOperador() == "<=" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 <= valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un <
             if self.cuadruplos[index].getOperador() == "<" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 < valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un >
             if self.cuadruplos[index].getOperador() == ">" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 valor1 = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 valor2 = self.getValue(self.cuadruplos[index].getOperandoDer())
                 valor = valor1 > valor2
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un print
             if self.cuadruplos[index].getOperador() == "print" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         print(self.temporal_int[direction-1000]) 
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         print(self.temporal_float[direction-2000]) 
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         print(self.temporal_char[direction-3000])
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         print(self.temporal_bool[direction-4000])
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     if direction >= 6000 and direction <= 6999: #Constante int
-                        #print("Es constante int")
                         print(self.constantes.getName(direction))
                     elif direction >= 7000 and direction <= 7999: #Constante float
-                        #print("Es constante flotante")
                         print(self.constantes.getName(direction))
                     elif direction >= 8000 and direction <= 8999: #Constante char
-                        #print("Es constante char")
                         print(self.constantes.getName(direction))
                     elif direction >= 9000 and direction <= 9999: #Constante print
-                        #print("Es constante print")
                         var = self.constantes.getName(direction)
-                        print(var[1:-1])
+                        print(var[1:-1]) #Eliminar comillas
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         print(self.globales_int[direction-10000])
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         print(self.globales_float[direction-20000])
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         print(self.globales_char[direction-30000])
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         print(self.local_int[direction-40000])
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         print(self.local_float[direction-50000])
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         print(self.local_char[direction-60000])
-
                 checked = True
 
+            #Si el operador es un read
             if self.cuadruplos[index].getOperador() == "read" and checked == False:
                 direction = self.cuadruplos[index].getTemporal()
-                #print(direction)
                 valor = input()
+                #Validar que sea un tipo de dato que se puede manejar
                 try:
                     valor = int(valor)
                 except ValueError:
@@ -825,53 +620,40 @@ class Maquina:
                         except ValueError:
                             raise Error("INPUT INVALIDO")
 
-                #print(valor)
                 if direction >= 1000 and direction <= 4999: #Temporales
-                    #print("Es temporal")
                     if direction >= 1000 and direction <= 1999: #Temporales Int
-                        #print("Es temporal int")
                         self.temporal_int[direction-1000] = valor
                     elif direction >= 2000 and direction <= 2999:#Temporales float
-                        #print("Es temporal float")
                         self.temporal_float[direction-2000] = valor
                     elif direction >= 3000 and direction <= 3999: #Temporales char
-                        #print("Es temporal char")
                         self.temporal_char[direction-3000] = valor
                     elif direction >= 4000 and direction <= 4999: #Temporales bool
-                        #print("Es temporal bool")
                         self.temporal_bool[direction-4000] = valor
                 elif direction >= 6000 and direction <= 9999: #Es constante
-                    #print("Es constante")
                     raise Error("NO PUEDES ASIGNAR A UNA CONSTANTE")
                 elif direction >= 10000 and direction <= 39999: #Es global
-                    #print("Es global")
                     if direction >= 10000 and direction <= 19999: #Global int
-                        #print("Es global entera")
                         self.globales_int[direction-10000] = valor
                     elif direction >= 20000 and direction <= 29999: #Global float
-                        #print("Es global float")
                         self.globales_float[direction-20000] = valor
                     elif direction >= 30000 and direction <= 39999: #Global char
-                        #print("Es global char")
                         self.globales_char[direction-30000] = valor
                 elif direction >= 40000 and direction <= 69999: #Es local
-                    #print("Es local")
                     if direction >= 40000 and direction <= 49999: #Local int
-                        #print("Es local entera")
                         self.local_int[direction-40000] = valor
                     elif direction >= 50000 and direction <= 59999: #Local float
-                        #print("Es local float")
                         self.local_float[direction-50000] = valor
                     elif direction >= 60000 and direction <= 69999: #Local char
-                        #print("Es local char")
                         self.local_char[direction-60000] = valor
                 checked = True
 
+            #Si el operador es un GOTO
             if self.cuadruplos[index].getOperador() == "GOTO" and checked == False:
                 index = self.cuadruplos[index].getTemporal()
                 goto = True
                 checked = True
             
+            #Si el operador es un GOTOF
             if self.cuadruplos[index].getOperador() == "GOTOF" and (checked == False or goto):
                 valor = self.getValue(self.cuadruplos[index].getOperandoIzq())
                 if valor == False:
@@ -880,20 +662,24 @@ class Maquina:
                 else:
                     pass
             
+            #Si el operador es un ERA
             if self.cuadruplos[index].getOperador() == "ERA" and checked == False:
                 saltos.append(self.cuadruplos[index].getTemporal())
                 checked = True
             
+            #Si el operador es un GOSUB
             if self.cuadruplos[index].getOperador() == "GOSUB" and checked == False:
                 saltos.append(index)
                 index = saltos.pop(-2)
                 checked = True
                 gosub = True
             
+            #Si el operador es un ENDFUNC
             if self.cuadruplos[index].getOperador() == "ENDFUNC" and checked == False:
                 index = saltos.pop()
                 checked = True
             
+            #Leer el siguiente cuadruplo en la lista
             if goto == False and gotoF == False and gosub == False:
                 index = index + 1
     
