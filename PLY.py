@@ -14,7 +14,7 @@ from DirectorioFunciones import DirectorioFunciones
 from Cuadruplos import Cuadruplos
 from Constantes import Constantes
 from CuboSemantico import CuboSemantico
-from MaquinaVirtual import MaquinaVirtual
+from Maquina import Maquina
 from Error import Error
 
 reserverdWords = {
@@ -32,7 +32,6 @@ reserverdWords = {
     'char' : 'CHAR',
     'main' : 'MAIN',
     'while' : 'WHILE',
-    'for' : 'FOR',
     'normal' : 'NORMAL',
     'binomial' : 'BINOMIAL',
     'min' : 'MIN',
@@ -40,8 +39,7 @@ reserverdWords = {
     'sum' : 'SUM',
     'uniforme' : 'UNIFORME',
     'poisson' : 'POISSON',
-    'return' : 'RETURN',
-    'to': 'TO'
+    'return' : 'RETURN'
 }
 
 tokens = [
@@ -109,7 +107,7 @@ def t_CTECHAR(t):
 #Definicion de lo que es un error y el mensaje que imprime
 def t_error(t):
     raise Error("HAY UN ERROR")
-    t.lexer.skip(1)
+    ##t.lexer.skip(1)
 
 #Se genera el lexer
 lexer = lex.lex()
@@ -145,11 +143,24 @@ temporal_bool = -1
 temporal_float = -1
 temporal_char = -1
 
+contador_temporal_int = 0
+contador_temporal_bool = 0
+contador_temporal_float = 0
+contador_temporal_char = 0
+
 #Inicialización de las direcciones virtuales de los temporales
-espacio_temp_i = 15000
-espacio_temp_f = 16000
-espacio_temp_c = 17000
-espacio_temp_b = 18000
+espacio_temp_i = 1000
+espacio_temp_f = 2000
+espacio_temp_c = 3000
+espacio_temp_b = 4000
+
+#Inicialización de contadores
+contGI = 0
+contGF = 0
+contGC = 0
+contLI = 0
+contLF = 0
+contLC = 0
 
 #Inicio del programa
 def p_start_program(p):
@@ -160,9 +171,11 @@ def p_start_program(p):
     | cuadruploMain PROGRAM ID SEMICOLON main_body end
     '''
     p[0] = "COMPILED"
-    '''imprimirFunciones = []
+    
+    imprimirFunciones = []
     for index, i in enumerate(directorioFunciones.funciones):
         imprimirFunciones.append(i)
+    
     for index, i in enumerate(imprimirFunciones):
         print("Tabla de ", i)
         print("Tabla de variables: ", directorioFunciones.get(i).variables)
@@ -170,11 +183,26 @@ def p_start_program(p):
         print("Tipo: ", directorioFunciones.get(i).type)
         print("DirV: ", directorioFunciones.get(i).dirV)
     print("Tabla de constantes: ", tablaConstantes.constantes)
-    print("Memoria constantes: ", tablaConstantes.memoria)'''
-    #print(directorioFunciones.get("main").getType("A"))
+    print("Memoria constantes: ", tablaConstantes.memoria)
+    tablaMain = directorioFunciones.get("main")
+    global contGI
+    global contGF
+    global contGC
+    global contLI
+    global contLF
+    global contLC
 
-    #for index, i in enumerate(lista_cuadruplos):
-     #   print(str(index+1)+".-", i.get())
+    contGI = tablaGlobal.contador_global_int
+    contGF = tablaGlobal.contador_global_float
+    contGC = tablaGlobal.contador_global_char
+    contLI = tablaMain.contador_local_int
+    contLF = tablaMain.contador_local_float
+    contLC = tablaMain.contador_local_int
+    
+    #print(directorioFunciones.get("main").getType("A"))
+    
+    for index, i in enumerate(lista_cuadruplos):
+        print(str(index)+".-", i.get())
 
 #Se genera el primer cuadruplo para posteriormente insertar la dirección de inicio del main
 def p_cuadruploMain(p):
@@ -207,7 +235,7 @@ def p_gotoMain(p):
     '''
     gotoMain : empty
     '''
-    saltos.append(len(lista_cuadruplos)+1)
+    saltos.append(len(lista_cuadruplos))
 
     #Cambiar el GOTOF incompleto por el completo
     goto = saltos.pop()
@@ -360,7 +388,7 @@ def p_startFunc(p):
     '''
     #Se guarda la direccion en la tabla de la funcion
     tablaVar = directorioFunciones.get(contexto[-1])
-    tablaVar.setDirV(len(lista_cuadruplos)+1)
+    tablaVar.setDirV(len(lista_cuadruplos))
 
 #Se define el fin de la declaración de la función
 def p_exitFunc(p):
@@ -502,23 +530,23 @@ def p_assignment(p):
         else: #es temporal
             tipoIzq = tipos.pop()
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 16000:
-                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA INT ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 17000:
-                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA FLOAT ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 18000:
-                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA CHAR ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
-                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA BOOL ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
 
@@ -537,22 +565,22 @@ def p_assignment(p):
             
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -599,7 +627,9 @@ def p_generarERA(p):
     else:
         raise Error("NO EXISTE FUNCION CON ESE NOMBRE")
     #Generar ERA hacia la dirección donde empieza la funcion
-    lista_cuadruplos.append(Cuadruplos("ERA", "", "", p[-1]))
+    direccion = p[-1]
+    directorioFunciones.get(direccion).dirV
+    lista_cuadruplos.append(Cuadruplos("ERA", "", "", directorioFunciones.get(direccion).dirV))
 
 #Se pueden mandar a llamar varios parámetros
 def p_call_funcc(p):
@@ -631,22 +661,22 @@ def p_mandarParam(p):
 
         #Dependiendo de su tipo asignarle una dirección de memoria
         if tipo_Validar == "int":
-            if temporal_int + espacio_temp_i >= 16000:
+            if temporal_int + espacio_temp_i >= 2000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_int + espacio_temp_i
         elif tipo_Validar == "float":
-            if temporal_float + espacio_temp_f >= 17000:
+            if temporal_float + espacio_temp_f >= 3000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_float + espacio_temp_f
         elif tipo_Validar == "char":
-            if temporal_float + espacio_temp_c >= 18000:
+            if temporal_float + espacio_temp_c >= 4000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_char + espacio_temp_c
         elif tipo_Validar == "bool":
-            if temporal_bool + espacio_temp_b >= 1:
+            if temporal_bool + espacio_temp_b >= 5000:
                 raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
             else:
                 memoria = temporal_char + espacio_temp_c
@@ -673,6 +703,11 @@ def p_exp(p):
     global temporal_float
     global temporal_char
     global temporal_bool
+    global contador_temporal_int
+    global contador_temporal_float
+    global contador_temporal_char
+    global contador_temporal_bool
+
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
         operador = operadores.pop()
@@ -696,22 +731,22 @@ def p_exp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -731,22 +766,22 @@ def p_exp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -760,18 +795,22 @@ def p_exp(p):
             tipo_temporal = cubo.get(tipoIzq, tipoDer, operador)
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
+                contador_temporal_int = contador_temporal_int + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
                 operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
+                contador_temporal_float = contador_temporal_float + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
                 operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
+                contador_temporal_char = contador_temporal_char + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
                 operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
+                contador_temporal_bool = contador_temporal_bool + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
                 operandos.append((temporal_bool+espacio_temp_b))
 
@@ -790,6 +829,11 @@ def p_expp(p):
     global temporal_float
     global temporal_char
     global temporal_bool
+    global contador_temporal_int
+    global contador_temporal_float
+    global contador_temporal_char
+    global contador_temporal_bool
+    
 
     if len(p) >= 3 and p[2]:
         operadores.append(p[2])
@@ -814,22 +858,22 @@ def p_expp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -849,22 +893,22 @@ def p_expp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -879,18 +923,22 @@ def p_expp(p):
             #Dependiendo del tipo se incrementa el contador y se genera el cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
+                contador_temporal_int = contador_temporal_int + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
                 operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
+                contador_temporal_float = contador_temporal_float + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
                 operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
+                contador_temporal_char = contador_temporal_char + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
                 operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
+                contador_temporal_bool = contador_temporal_bool + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
                 operandos.append((temporal_bool+espacio_temp_b))
 
@@ -905,6 +953,11 @@ def p_m_exp(p):
     global temporal_float
     global temporal_char
     global temporal_bool
+    global contador_temporal_int
+    global contador_temporal_float
+    global contador_temporal_char
+    global contador_temporal_bool
+    
 
     if len(p) > 2:
         operadores.append(p[2])
@@ -929,22 +982,22 @@ def p_m_exp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -964,22 +1017,22 @@ def p_m_exp(p):
 
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -993,18 +1046,22 @@ def p_m_exp(p):
             #Dependiendo del tipo incremental el temporal y generar cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
+                contador_temporal_int = contador_temporal_int + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
                 operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
+                contador_temporal_float = contador_temporal_float + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
                 operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
+                contador_temporal_char = contador_temporal_char + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
                 operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
+                contador_temporal_bool = contador_temporal_bool + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
                 operandos.append((temporal_bool+espacio_temp_b))
 
@@ -1019,6 +1076,11 @@ def p_termino(p):
     global temporal_float
     global temporal_char
     global temporal_bool
+    global contador_temporal_int
+    global contador_temporal_float
+    global contador_temporal_char
+    global contador_temporal_bool
+    
 
     if len(p) > 2:
         operadores.append(p[2])
@@ -1043,22 +1105,22 @@ def p_termino(p):
             tipoIzq = tipos.pop()
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoIzq == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_int + espacio_temp_i
             elif tipoIzq == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_float + espacio_temp_f
             elif tipoIzq == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
             elif tipoIzq == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaI = temporal_char + espacio_temp_c
@@ -1077,22 +1139,22 @@ def p_termino(p):
             tipoDer = tipos.pop()
             #Dependiendo de su tipo asignarle una dirección de memoria
             if tipoDer == "int":
-                if temporal_int + espacio_temp_i >= 16000:
+                if temporal_int + espacio_temp_i >= 2000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_int + espacio_temp_i
             elif tipoDer == "float":
-                if temporal_float + espacio_temp_f >= 17000:
+                if temporal_float + espacio_temp_f >= 3000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_float + espacio_temp_f
             elif tipoDer == "char":
-                if temporal_float + espacio_temp_c >= 18000:
+                if temporal_float + espacio_temp_c >= 4000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
             elif tipoDer == "bool":
-                if temporal_bool + espacio_temp_b >= 1:
+                if temporal_bool + espacio_temp_b >= 5000:
                     raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                 else:
                     memoriaD = temporal_char + espacio_temp_c
@@ -1105,18 +1167,22 @@ def p_termino(p):
             #Dependiendo del tipo incremental el temporal y generar cuadruplo
             if tipo_temporal == "int":
                 temporal_int = temporal_int + 1
+                contador_temporal_int = contador_temporal_int + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_int+espacio_temp_i)))
                 operandos.append((temporal_int+espacio_temp_i))
             elif tipo_temporal == "float":
                 temporal_float = temporal_float + 1
+                contador_temporal_float = contador_temporal_float + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_float+espacio_temp_f)))
                 operandos.append((temporal_float+espacio_temp_f))
             elif tipo_temporal == "char":
                 temporal_char = temporal_char + 1
+                contador_temporal_char = contador_temporal_char + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_char+espacio_temp_c)))
                 operandos.append((temporal_char+espacio_temp_c))
             else:
                 temporal_bool = temporal_bool + 1
+                contador_temporal_bool = contador_temporal_bool + 1
                 lista_cuadruplos.append(Cuadruplos(operador, memoriaI, memoriaD, (temporal_bool+espacio_temp_b)))
                 operandos.append((temporal_bool+espacio_temp_b))
 
@@ -1135,6 +1201,11 @@ def p_factor(p):
     global temporal_float
     global temporal_char
     global temporal_bool
+    global contador_temporal_int
+    global contador_temporal_float
+    global contador_temporal_char
+    global contador_temporal_bool
+    
     
     if p[1] == "(":
         pass
@@ -1175,22 +1246,22 @@ def p_factor(p):
                     tipoIzq = tipos.pop()
 
                     if tipoIzq == "int":
-                        if temporal_int + espacio_temp_i >= 16000:
+                        if temporal_int + espacio_temp_i >= 2000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_int + espacio_temp_i
                     elif tipoIzq == "float":
-                        if temporal_float + espacio_temp_f >= 17000:
+                        if temporal_float + espacio_temp_f >= 3000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_float + espacio_temp_f
                     elif tipoIzq == "char":
-                        if temporal_float + espacio_temp_c >= 18000:
+                        if temporal_float + espacio_temp_c >= 4000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
                     elif tipoIzq == "bool":
-                        if temporal_bool + espacio_temp_b >= 1:
+                        if temporal_bool + espacio_temp_b >= 5000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
@@ -1212,22 +1283,22 @@ def p_factor(p):
 
                     #Dependiendo de su tipo asignarle una dirección de memoria
                     if tipoDer == "int":
-                        if temporal_int + espacio_temp_i >= 16000:
+                        if temporal_int + espacio_temp_i >= 2000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_int + espacio_temp_i
                     elif tipoDer == "float":
-                        if temporal_float + espacio_temp_f >= 17000:
+                        if temporal_float + espacio_temp_f >= 3000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_float + espacio_temp_f
                     elif tipoDer == "char":
-                        if temporal_float + espacio_temp_c >= 18000:
+                        if temporal_float + espacio_temp_c >= 4000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
                     elif tipoDer == "bool":
-                        if temporal_bool + espacio_temp_b >= 1:
+                        if temporal_bool + espacio_temp_b >= 5000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
@@ -1340,22 +1411,22 @@ def p_variableAssignment(p):
 
                     #Dependiendo de su tipo asignarle una dirección de memoria
                     if tipoIzq == "int":
-                        if temporal_int + espacio_temp_i >= 16000:
+                        if temporal_int + espacio_temp_i >= 2000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_int + espacio_temp_i
                     elif tipoIzq == "float":
-                        if temporal_float + espacio_temp_f >= 17000:
+                        if temporal_float + espacio_temp_f >= 3000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_float + espacio_temp_f
                     elif tipoIzq == "char":
-                        if temporal_float + espacio_temp_c >= 18000:
+                        if temporal_float + espacio_temp_c >= 4000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
                     elif tipoIzq == "bool":
-                        if temporal_bool + espacio_temp_b >= 1:
+                        if temporal_bool + espacio_temp_b >= 5000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaI = temporal_char + espacio_temp_c
@@ -1374,22 +1445,22 @@ def p_variableAssignment(p):
                     print("Estemporal")
                     tipoDer = tipos.pop()
                     if tipoDer == "int":
-                        if temporal_int + espacio_temp_i >= 16000:
+                        if temporal_int + espacio_temp_i >= 2000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_int + espacio_temp_i
                     elif tipoDer == "float":
-                        if temporal_float + espacio_temp_f >= 17000:
+                        if temporal_float + espacio_temp_f >= 3000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_float + espacio_temp_f
                     elif tipoDer == "char":
-                        if temporal_float + espacio_temp_c >= 18000:
+                        if temporal_float + espacio_temp_c >= 4000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
                     elif tipoDer == "bool":
-                        if temporal_bool + espacio_temp_b >= 1:
+                        if temporal_bool + espacio_temp_b >= 5000:
                             raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
                         else:
                             memoriaD = temporal_char + espacio_temp_c
@@ -1447,7 +1518,7 @@ def p_ifEnd(p):
     '''
     ifEnd : empty 
     '''
-    saltos.append(len(lista_cuadruplos)+1)
+    saltos.append(len(lista_cuadruplos))
     #Obtener la expresion a evaluar
     resultado = operandos_verificar.pop()
 
@@ -1470,7 +1541,7 @@ def p_cuadruploElse(p):
     lista_cuadruplos.append(Cuadruplos("GOTO", "", "", ""))
     
     #Posicion saliendo del else
-    saltos.append(len(lista_cuadruplos)+1)
+    saltos.append(len(lista_cuadruplos))
 
     #Obtener la expresion a evaluar
     resultado = operandos_verificar.pop()
@@ -1494,7 +1565,7 @@ def p_ifEndElse(p):
     ifEndElse : empty 
     '''
     #Agregar el index actual (+1 para salir del else)
-    saltos.append(len(lista_cuadruplos)+1)
+    saltos.append(len(lista_cuadruplos))
 
     #Cambiar el GOTO incompleto por el completo
     goto = saltos.pop()
@@ -1518,8 +1589,43 @@ def p_writingg(p):
     '''
     operadores.append("print")
     operador = operadores.pop()
-    operandoDer = operandos.pop(0)
-    lista_cuadruplos.append(Cuadruplos(operador, "", "", operandoDer))
+    valor = operandos.pop(0)
+    tablaVar = directorioFunciones.get(contexto[-1])
+    #Obtener el tipo 
+    if tablaVar.verify(valor): #Ver si es local
+        tipoIzq = tablaVar.getType(valor)
+        memoria = tablaVar.getMemory(valor)
+    elif tablaConstantes.verify(valor): #Ver si es constante
+        tipoIzq = tablaConstantes.getType(valor)
+        memoria = tablaConstantes.getMemory(valor)
+    elif tablaGlobal.verify(valor): #Ver si es global
+        tipoIzq = tablaGlobal.getType(valor)
+        memoria = tablaGlobal.getMemory(valor)
+    else: #es temporal
+        tipo = tipos.pop()
+
+        #Dependiendo de su tipo asignarle una dirección de memoria
+        if tipo == "int":
+            if temporal_int + espacio_temp_i >= 2000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_int + espacio_temp_i
+        elif tipo == "float":
+            if temporal_float + espacio_temp_f >= 3000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_float + espacio_temp_f
+        elif tipo == "char":
+            if temporal_float + espacio_temp_c >= 4000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_char + espacio_temp_c
+        elif tipoIzq == "bool":
+            if temporal_bool + espacio_temp_b >= 5000:
+                raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+            else:
+                memoria = temporal_char + espacio_temp_c
+    lista_cuadruplos.append(Cuadruplos(operador, "", "", memoria))
 
 #Manejo de strings
 def p_auxString(p):
@@ -1557,7 +1663,7 @@ def p_multivariables(p):
         memory = tablaVar.getMemory(operandoDer)
     else:
         if tablaGlobal.verify(operandoDer):
-            memory = tablaVar.getMemory(operandoDer)
+            memory = tablaGlobal.getMemory(operandoDer)
         else:
             raise Error("VARIABLE NO DECLARADA")
 
@@ -1576,7 +1682,7 @@ def p_whileMigaja(p):
        
     '''
     #Se suma 1 porque las listas inician en 0
-    saltos.append(len(lista_cuadruplos) + 1)
+    saltos.append(len(lista_cuadruplos))
 
 #Evaluar la expresion del while
 def p_whileEval(p):
@@ -1605,7 +1711,7 @@ def p_whileEnd(p):
        
     '''
     #Guardar el index en el que acaba el while (se suma 2 para direccionar a lo que sigue fuera del while)
-    saltos.append(len(lista_cuadruplos)+2)
+    saltos.append(len(lista_cuadruplos)+1)
     
     #Cambiar el GOTOF incompleto por el completo
     gotoF = saltos.pop()
@@ -1638,17 +1744,146 @@ def p_return(p):
         raise Error("LAS FUNCIONES VOID NO DEBEN RETORNAR")
     else:
         valor = operandos.pop()
-        lista_cuadruplos.append(Cuadruplos("RET","" , "", valor))
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo 
+        if tablaVar.verify(valor): #Ver si es local
+            tipoIzq = tablaVar.getType(valor)
+            memoria = tablaVar.getMemory(valor)
+        elif tablaConstantes.verify(valor): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(valor)
+            memoria = tablaConstantes.getMemory(valor)
+        elif tablaGlobal.verify(valor): #Ver si es global
+            tipoIzq = tablaGlobal.getType(valor)
+            memoria = tablaGlobal.getMemory(valor)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria = temporal_char + espacio_temp_c
+        lista_cuadruplos.append(Cuadruplos("RET","" , "", memoria))
 
 #Funcion que grafica una expresion
 def p_graph(p):
     '''
-    graph : PLOT PARENOPEN exp PARENCLOSE SEMICOLON
+    graph : PLOT PARENOPEN exp COLON exp PARENCLOSE SEMICOLON
     
     '''
-    if p[1]:
-        valor = operandos.pop()
-        lista_cuadruplos.append(Cuadruplos("PLOT","" , "", valor))
+    tablaVar = directorioFunciones.get(contexto[-1])
+    operando2 = operandos.pop()
+    operando1 = operandos.pop()
+
+    if tablaVar.verify(operando1) or tablaConstantes.verify(operando1):
+        declarada1 = True
+    else:
+        if tablaGlobal.verify(operando1):
+            declarada1 = True
+        else:
+            print(operando1, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if tablaVar.verify(operando2) or tablaConstantes.verify(operando2):
+        declarada2 = True
+    else:
+        if tablaGlobal.verify(operando2):
+            declarada2 = True
+        else:
+            print(operando2, "No declarada")
+            raise Error("VARIABLE NO DECLARADA")
+    
+    if declarada1 and declarada2:
+        tablaVar = directorioFunciones.get(contexto[-1])
+        
+        #Obtener el tipo 
+        if tablaVar.verify(operando2): #Ver si es local
+            tipoIzq = tablaVar.getType(operando2)
+            memoria2 = tablaVar.getMemory(operando2)
+        elif tablaConstantes.verify(operando2): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando2)
+            memoria2 = tablaConstantes.getMemory(operando2)
+        elif tablaGlobal.verify(operando2): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando2)
+            memoria2 = tablaGlobal.getMemory(operando2)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c 
+        #Obtener el tipo 
+        if tablaVar.verify(operando1): #Ver si es local
+            tipoIzq = tablaVar.getType(operando1)
+            memoria1 = tablaVar.getMemory(operando1)
+        elif tablaConstantes.verify(operando1): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando1)
+            memoria1 = tablaConstantes.getMemory(operando1)
+        elif tablaGlobal.verify(operando1): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando1)
+            memoria1 = tablaGlobal.getMemory(operando1)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c 
+
+
+        lista_cuadruplos.append(Cuadruplos("PLOT",memoria1, memoria2, ""))
 
 #Funcion que regresa el maximo de un arreglo
 def p_max(p):
@@ -1657,10 +1892,11 @@ def p_max(p):
        
     '''
     tablaVar = directorioFunciones.get(contexto[-1])
-    if tablaVar.verify(p[3]) or tablaConstantes.verify(p[3]):
+    valor = p[3]
+    if tablaVar.verify(valor) or tablaConstantes.verify(valor):
         declarada = True
     else:
-        if tablaGlobal.verify(p[3]):
+        if tablaGlobal.verify(valor):
             declarada = True
         else:
             print(p[3], "No declarada")
@@ -1745,7 +1981,113 @@ def p_binomial(p):
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada1 and declarada2 and declarada3:
-        lista_cuadruplos.append(Cuadruplos("BINOMIAL",operando1, operando2, operando3))
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo 
+        if tablaVar.verify(operando3): #Ver si es local
+            tipoIzq = tablaVar.getType(operando3)
+            memoria3 = tablaVar.getMemory(operando3)
+        elif tablaConstantes.verify(operando3): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando3)
+            memoria3 = tablaConstantes.getMemory(operando3)
+        elif tablaGlobal.verify(operando3): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando3)
+            memoria3 = tablaGlobal.getMemory(operando3)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+        
+        #Obtener el tipo 
+        if tablaVar.verify(operando2): #Ver si es local
+            tipoIzq = tablaVar.getType(operando2)
+            memoria2 = tablaVar.getMemory(operando2)
+        elif tablaConstantes.verify(operando2): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando2)
+            memoria2 = tablaConstantes.getMemory(operando2)
+        elif tablaGlobal.verify(operando2): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando2)
+            memoria2 = tablaGlobal.getMemory(operando2)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c 
+        #Obtener el tipo 
+        if tablaVar.verify(operando1): #Ver si es local
+            tipoIzq = tablaVar.getType(operando1)
+            memoria1 = tablaVar.getMemory(operando1)
+        elif tablaConstantes.verify(operando1): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando1)
+            memoria1 = tablaConstantes.getMemory(operando1)
+        elif tablaGlobal.verify(operando1): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando1)
+            memoria1 = tablaGlobal.getMemory(operando1)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c 
+
+        lista_cuadruplos.append(Cuadruplos("BINOMIAL",memoria1, memoria2, memoria3))
 
 def p_poisson(p):
     '''
@@ -1775,7 +2117,78 @@ def p_poisson(p):
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada1 and declarada2:
-        lista_cuadruplos.append(Cuadruplos("POISSON",operando1, operando2, ""))
+        tablaVar = directorioFunciones.get(contexto[-1])
+        
+        #Obtener el tipo 
+        if tablaVar.verify(operando2): #Ver si es local
+            tipoIzq = tablaVar.getType(operando2)
+            memoria2 = tablaVar.getMemory(operando2)
+        elif tablaConstantes.verify(operando2): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando2)
+            memoria2 = tablaConstantes.getMemory(operando2)
+        elif tablaGlobal.verify(operando2): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando2)
+            memoria2 = tablaGlobal.getMemory(operando2)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c 
+        #Obtener el tipo 
+        if tablaVar.verify(operando1): #Ver si es local
+            tipoIzq = tablaVar.getType(operando1)
+            memoria1 = tablaVar.getMemory(operando1)
+        elif tablaConstantes.verify(operando1): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando1)
+            memoria1 = tablaConstantes.getMemory(operando1)
+        elif tablaGlobal.verify(operando1): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando1)
+            memoria1 = tablaGlobal.getMemory(operando1)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c 
+
+        lista_cuadruplos.append(Cuadruplos("POISSON",memoria1, memoria2, ""))
 
 def p_uniforme(p):
     '''
@@ -1815,7 +2228,113 @@ def p_uniforme(p):
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada1 and declarada2 and declarada3:
-        lista_cuadruplos.append(Cuadruplos("UNIFORME",operando1, operando2, operando3))
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo 
+        if tablaVar.verify(operando3): #Ver si es local
+            tipoIzq = tablaVar.getType(operando3)
+            memoria3 = tablaVar.getMemory(operando3)
+        elif tablaConstantes.verify(operando3): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando3)
+            memoria3 = tablaConstantes.getMemory(operando3)
+        elif tablaGlobal.verify(operando3): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando3)
+            memoria3 = tablaGlobal.getMemory(operando3)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+        
+        #Obtener el tipo 
+        if tablaVar.verify(operando2): #Ver si es local
+            tipoIzq = tablaVar.getType(operando2)
+            memoria2 = tablaVar.getMemory(operando2)
+        elif tablaConstantes.verify(operando2): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando2)
+            memoria2 = tablaConstantes.getMemory(operando2)
+        elif tablaGlobal.verify(operando2): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando2)
+            memoria2 = tablaGlobal.getMemory(operando2)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c 
+        #Obtener el tipo 
+        if tablaVar.verify(operando1): #Ver si es local
+            tipoIzq = tablaVar.getType(operando1)
+            memoria1 = tablaVar.getMemory(operando1)
+        elif tablaConstantes.verify(operando1): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando1)
+            memoria1 = tablaConstantes.getMemory(operando1)
+        elif tablaGlobal.verify(operando1): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando1)
+            memoria1 = tablaGlobal.getMemory(operando1)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c 
+
+        lista_cuadruplos.append(Cuadruplos("UNIFORME",memoria1, memoria2, memoria3))
 
 def p_normal(p):
     '''
@@ -1855,7 +2374,113 @@ def p_normal(p):
             raise Error("VARIABLE NO DECLARADA")
     
     if declarada1 and declarada2 and declarada3:
-        lista_cuadruplos.append(Cuadruplos("NORMAL",operando1, operando2, operando3))
+        tablaVar = directorioFunciones.get(contexto[-1])
+       
+       #Obtener el tipo 
+        if tablaVar.verify(operando3): #Ver si es local
+            tipoIzq = tablaVar.getType(operando3)
+            memoria3 = tablaVar.getMemory(operando3)
+        elif tablaConstantes.verify(operando3): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando3)
+            memoria3 = tablaConstantes.getMemory(operando3)
+        elif tablaGlobal.verify(operando3): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando3)
+            memoria3 = tablaGlobal.getMemory(operando3)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria3 = temporal_char + espacio_temp_c
+        
+        #Obtener el tipo 
+        if tablaVar.verify(operando2): #Ver si es local
+            tipoIzq = tablaVar.getType(operando2)
+            memoria2 = tablaVar.getMemory(operando2)
+        elif tablaConstantes.verify(operando2): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando2)
+            memoria2 = tablaConstantes.getMemory(operando2)
+        elif tablaGlobal.verify(operando2): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando2)
+            memoria2 = tablaGlobal.getMemory(operando2)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria2 = temporal_char + espacio_temp_c 
+        #Obtener el tipo 
+        if tablaVar.verify(operando1): #Ver si es local
+            tipoIzq = tablaVar.getType(operando1)
+            memoria1 = tablaVar.getMemory(operando1)
+        elif tablaConstantes.verify(operando1): #Ver si es constante
+            tipoIzq = tablaConstantes.getType(operando1)
+            memoria1 = tablaConstantes.getMemory(operando1)
+        elif tablaGlobal.verify(operando1): #Ver si es global
+            tipoIzq = tablaGlobal.getType(operando1)
+            memoria1 = tablaGlobal.getMemory(operando1)
+        else: #es temporal
+            tipo = tipos.pop()
+
+            #Dependiendo de su tipo asignarle una dirección de memoria
+            if tipo == "int":
+                if temporal_int + espacio_temp_i >= 2000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_int + espacio_temp_i
+            elif tipo == "float":
+                if temporal_float + espacio_temp_f >= 3000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_float + espacio_temp_f
+            elif tipo == "char":
+                if temporal_float + espacio_temp_c >= 4000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c
+            elif tipoIzq == "bool":
+                if temporal_bool + espacio_temp_b >= 5000:
+                    raise Error("LIMITE DE ESPACIO DE MEMORIA ALCANZADO")
+                else:
+                    memoria1 = temporal_char + espacio_temp_c 
+
+        lista_cuadruplos.append(Cuadruplos("NORMAL",memoria1, memoria2, memoria3))
 
 #Estatuto vacío
 def p_empty(p):
@@ -1868,9 +2493,6 @@ def p_empty(p):
 def p_error(p):
    raise Error("HAY UN ERROR")
 
-#Creación de la instancia de la maquina virtual
-maquinaVirtual = MaquinaVirtual(lista_cuadruplos, directorioFunciones, tablaConstantes)
-
 #Creación del parser yacc
 parser = yacc.yacc()
 
@@ -1880,7 +2502,8 @@ if __name__ == '__main__':
         datos = archivo.read()
         archivo.close()
         if(yacc.parse(datos, tracking=True) == 'COMPILED'):
-            
+            vars = [contGI, contGF, contGC, contLI, contLF, contLC, contador_temporal_int, contador_temporal_float, contador_temporal_char, contador_temporal_bool]
+            maquinaVirtual = Maquina(lista_cuadruplos, vars, tablaConstantes)
             #Iniciar la máquina
             maquinaVirtual.start()
         else:

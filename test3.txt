@@ -1,10 +1,5 @@
 program test;
 var int edad;
-function void imprime(int a){
-    a = 0;
-    print(a);
-    print("ESTOY EN LA FUNCION");
-}
 main(){
 int a,b, c;
 edad = 9;
@@ -14,9 +9,8 @@ print("Ingresa tu edad: ");
 read edad;
 a = a + c;
 read b;
-b = b*b;
+b = b/b;
 print(b);
-imprime(a)
 while(b < 9){
     print(b);
     b = b+1;
@@ -26,6 +20,4 @@ if(edad >= 18){
     a = a + 1;
 }
 print(edad);
-imprime(a)
-print(a);
 }

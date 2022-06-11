@@ -1,0 +1,16 @@
+program test;
+var int glob;
+main(){
+int variable, a, A, B, C, D, E, F, G, H, I, J, K, L, M, N, Z;
+variable = 9;
+A = 8+9;
+if(((A+B) * C + D * E * F + K / H * J) + G * L + H + J > (A - C * D) / F){
+    print(Z);
+    return 89;
+}
+if(((A * B - C * D) > C + D * E / F) && (G * H - J > L - A) && B + C > D * F){
+    while(a > 10){
+        print("Siu", "au", 9+7.4, "alo?");
+    }
+}
+}

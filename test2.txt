@@ -1,0 +1,30 @@
+program test;
+var int edad;
+main(){
+int a, c;
+edad = 9;
+a = 10;
+print("Ingresa tu edad: ");
+read edad;
+c = a + 1;
+if(edad >= 18){
+    print("Wow! Eres un adulto");
+    a = a + 1;
+}else{
+    while(edad < 18){
+        print("Aun eres chico! A ver dame tu edad de nuevo:");
+        read edad;
+    }
+    print("YA CRECISTE!");
+}
+print(a);
+plot(a, c);
+print("POISSON");
+poisson(4,1);
+print("NORMAL");
+normal(4,1,20);
+print("UNIFORME");
+uniforme(7,9,10);
+print("BINOMIAL");
+binomial(25,0.6,6);
+}

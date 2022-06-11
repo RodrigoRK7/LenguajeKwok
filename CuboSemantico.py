@@ -55,6 +55,21 @@ class CuboSemantico:
                     "&&": 'Error',
                     "||": 'Error',
                     "=": 'Error'
+                },
+                'bool': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
                 }
             },
             'float': {
@@ -89,6 +104,21 @@ class CuboSemantico:
                     "=": 'float'
                 },
                 'char': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
+                },
+                'bool': {
                     "+": 'Error',
                     "-": 'Error',
                     "*": 'Error',
@@ -149,6 +179,83 @@ class CuboSemantico:
                     "&&": 'Error',
                     "||": 'Error',
                     "=": 'char'
+                },
+                'bool': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
+                }
+            },
+            'bool': {
+                'int': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
+                },
+                'float': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
+                },
+                'char': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'Error',
+                    "!=": 'Error',
+                    "&&": 'Error',
+                    "||": 'Error',
+                    "=": 'Error'
+                },
+                'bool': {
+                    "+": 'Error',
+                    "-": 'Error',
+                    "*": 'Error',
+                    "/": 'Error',
+                    ">": 'Error',
+                    "<": 'Error',
+                    ">=": 'Error',
+                    "<=": 'Error',
+                    "==": 'bool',
+                    "!=": 'bool',
+                    "&&": 'bool',
+                    "||": 'bool',
+                    "=": 'Error'
                 }
             }
         }
